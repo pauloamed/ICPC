@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int size;
+long long size;
 
 long long bit[ 100001 ];
 long long v[ 100001 ];
@@ -39,18 +39,6 @@ long long inversoes_subarrays( long long bit_v[] ){
     return ans;
 }
 
-long long gcd(long long a, long long b){
-    long long temp;
-    if( a > b ) swap(a,b);
-
-    while( a != 0 ){
-        temp = a;
-        a = b % a;
-        b = temp;
-    }
-    return b;
-}
-
 
 long long fastexp( long long base, long long exp){
     if( exp == 0 ) return 1;
@@ -69,7 +57,7 @@ long long inverso( long long a ){
 }
 
 int main(){
-    scanf("%d", &size);
+    scanf("%lld", &size);
     for(int i = 1; i <= size; ++i){
         scanf("%lld", v + i);
     }
@@ -81,11 +69,11 @@ int main(){
         bit[i] = 0;
     }
 
-    long long formula = (((size * (size + 1)) % primo) * inverso( 2)) % primo;
+    long long formula = ((size * (size + 1)) / 2) % primo;
 
     long long szs(0);
-    for(int i = 1; i <= size; ++i){
-        szs = (szs + ( size - (i - 1) ) * i * ( i - 1 )) % primo;
+    for(long long i = 1; i <= size; ++i){
+        szs = (szs + ( size - (i - 1) ) * ((i * ( i - 1 )) % primo)) % primo;
     }
     szs = (szs * inverso(2)) % primo;
 
@@ -95,10 +83,6 @@ int main(){
     numerador = ( numerador +( ((primo-2) * invsub)%primo )) % primo;
     // printf("%lld\n", numerador);
     numerador = (numerador + szs) % primo;
-    // printf("%lld\n", numerador);
-    long long mdc = inverso(gcd( formula, numerador ));
-    formula = (formula * mdc) % primo;
-    numerador = (numerador * mdc) % primo;
     // printf("%lld\n", formula);
     // printf("%lld\n", numerador);
 
