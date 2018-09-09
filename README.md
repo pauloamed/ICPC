@@ -17,11 +17,11 @@
 
 - Prüfer 
   - Algorithm creates a list that has a bijective relation to a tree
-
 - Havel-Haimiki
   - Algorithm for discovering whether a list of vertices degrees forms a graph or not
 - DFS
 - BFS
+- Topological Ordering
 - Union-Find
   - Cycles compression
 - Strongly Connected Componentes

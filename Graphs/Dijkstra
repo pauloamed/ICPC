@@ -1,0 +1,25 @@
+Dijkstra
+
+Dado um grafo com pesos com N vertices e M arestas, calcular a distancia entre um vertice Vi (0 < i < n) e Vj vertices (0 < j < n).
+É iterativo
+É guloso
+
+Estruturas necessarias:
+Lista de adjacencia para "percorrer" grafo
+Vetor com distancia para os N vertices
+PQ ou SET para ordenacao de pares(distancia,vertice)
+
+Algoritmo:
+Inicializar vetor_dist com infinito
+Escolher um vertice
+Dizer que sua distancia para ele mesmo eh igual a 0
+Inserir o par (dist,vertice) desse vertice raiz na estrutura de ordenacao / nesse caso (0, r)
+Enquanto a estrutura nao tiver vazia
+	Vertice atual = Vertice do primeiro par da fila
+	Distancia atual = distancia do primeiro par da fila
+	Se a distancia atual for maior que a distancia que eu tenho computada para chegar no vertice em que estou, nao vale a pena seguir esse caminho, logo, eu sigo para o proximo par
+	Para cada vertice adjacente
+		Checar se a distancia atual + custo para atingir esse vertice eh menor que a distancia computada
+		Se sim,
+			Checar se vertice ja foi posto na estrutura de ordenacao (se no vetor de distancia valor != INF). Se sim, excluir
+				Inserir vertice com nova distancia na estrutura de ordenacao

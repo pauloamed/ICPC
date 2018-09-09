@@ -1,0 +1,12 @@
+Kosaraju
+
+Identifica componentes fortemente conexos num grafo
+
+Precisa
+Lista de adjacencia
+Marcacao de visitados
+Pilha
+
+Leitura de grafo
+Criacao de grafo transposto (oposto) ao lido
+Fazer DFS e adicionar o vertice a lista em tempo de saida
