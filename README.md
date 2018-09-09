@@ -4,6 +4,7 @@
 - BIT / Fenwick Tree
   - Inversions
   - Inversions of subarrays
+  - 2D BITs
 - Segment Tree
   - Seg Tree with Lazy Propagation
 - RMQ
