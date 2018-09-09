@@ -1,60 +1,74 @@
-# Traning Reposiroty
+# Traning Repository
+##Data Structures
+
+- BIT / Fenwick Tree
+  - Inversions
+  - Inversions of subarrays
+- Segment Tree
+- RMQ
+- Sparce Table
+- Mo's
+- Sqrt Decomposition
+- Treap - Cartesian Tree
+
+
 ## Graphs
 
-**Prüfer:** Prüfer Algorithm creates a list that has a bijective relation to a tree
+- Prüfer 
+  - Algorithm creates a list that has a bijective relation to a tree
 
-**Havel-Haimiki:** - Havel-Haimiki algorithm for discovering whether a list of vertices degrees forms a graph or not
+- Havel-Haimiki
+  - Algorithm for discovering whether a list of vertices degrees forms a graph or not
+- DFS
+- BFS
+- Union-Find
+  - Cycles compression
+- Strongly Connected Componentes
+  - Kosaraju's algorithm
+  - Trajan's algorithm
+- Dijkstra's algorithm (distance 1-All nodes)
+- Floyd-Warshall (distance All-All nodes)
+- Lowest Common Ancestor
+- DSU on Tree
+- Centroid Decomposition
+- Flow
 
-**CF_Exercices** - Graphs exercises from codeforces.com
+## Geometry
 
+- Simple tasks
+  - Point-point, point-segment, point-line distances
+  - Clockwise, counterclockwise positions
+  - Polar sorting
+  - Points rotation, translation
+  - Trignometry
+- Colinearity
+- Closest pair of points
+- Convex Hull
+  - Farthest pair of points
+- Intersections
+  - Segment-Segment Intersection
+  - Line-Line Intersection
+  - Polygon-Polygon Intersection
+- Line Sweep
+  - Plane Sweep
+- Minkowsky Sum
 
+## Dynamic Programming
 
-## Missing
+- Knapsack problem
+- DP otimization
+- Travelling Salesman approaches
 
-Otimização de PD
+## Math
 
- Soma de minkowsky
+- Fast Expo
+- Number Theory
+- FFT
+- Multiplicative functions
 
- Line Sweep
+## Others
 
- Convex Hull
-
- Jogo de nim
-
-Two pointers
-
-BIT - Fenwick Tree
-
-Mo's
-
-Seg Tree
-
-Knapsack problem
-
-Hashing
-
-Sufix Array
-
-Sparse table
-
-Union Find
-
-Sqrt Decomposition
-
-RMQ
-
-Treap - Cartesian Tree
-
-LCA
-
-Centroid Decomposition
-
-DSU on Tree
-
-Fluxos em grafos
-
-Funções multiplicativas
-
-mö
-
-FFT
+- Nim game
+- Two pointers
+- Hashing
+- Suffix Array

@@ -41,6 +41,10 @@ vector<par> graham_scan(vector<par>& pontos){
     c = inicio;
     sort(pontos.begin(), pontos.end(), compare);
 
+    int j;
+    for( j = pontos.size() - 2; j >= 0 && prod_vet(menos(pontos[j], inicio), menos(pontos.back(), inicio)) == 0; --j ){}
+    reverse(pontos.begin() + j+1, pontos.end());
+
     vector<par> ans;
     ans.push_back(pontos[0]);
     ans.push_back(pontos[1]);
