@@ -43,6 +43,8 @@
   - Points rotation, translation
   - Trignometry
 - Colinearity
+- Point inside Polygon
+- Binary Search in a Polygon
 - Closest pair of points
 - Convex Hull
   - Farthest pair of points
@@ -66,6 +68,8 @@
 - Number Theory
 - FFT
 - Multiplicative functions
+- Meet in the middle
+- Baby steps, Giant steps
 
 ## Others
 
