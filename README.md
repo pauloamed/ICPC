@@ -1,10 +1,11 @@
 # Traning Repository
-##Data Structures
+## Data Structures
 
 - BIT / Fenwick Tree
   - Inversions
   - Inversions of subarrays
 - Segment Tree
+  - Seg Tree with Lazy Propagation
 - RMQ
 - Sparce Table
 - Mo's
