@@ -1,8 +1,10 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int v[100];
-int bit_v[100 + 1];
+#define MAXN 101
+
+int v[MAXN];
+int bit_v[MAXN];
 
 int query( int index ){
     int ans(0);
@@ -15,7 +17,7 @@ int query( int index ){
 }
 
 void update( int index, int val ){
-      for( index++; index <= 101; index += index & (-index)){
+      for( index++; index <= MAXN; index += index & (-index)){
           bit_v[index] += val;
       }
 }

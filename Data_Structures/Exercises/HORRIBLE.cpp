@@ -1,7 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define MAX 1000
+#define MAX 100010
+#define int long long
 
 int vals[MAX];
 int segt[3*MAX];
@@ -13,18 +14,19 @@ void maybe_updt_lazy(int l, int r, int node){
         if(l!=r){
             lp[(node<<1)+1] += lp[node];
             lp[(node<<1)+2] += lp[node];
-        }lp[node] = 0;
+        }
+        lp[node] = 0;
     }
 }
 
 int build(int l, int r, int node){
     lp[node] = 0;
-    if(l == r) return segt[node] = vals[l];
-    else{
-        int mid = (l + r)/2;
-        segt[node] = build(l, mid, (node<<1)+1) +
-                     build(mid+1, r, (node<<1)+2);
-    }return segt[node];
+
+    if(l == r) return segt[node] = 0;
+    int mid = (l + r)/2;
+    segt[node] = build(l, mid, (node<<1)+1) +
+                 build(mid+1, r, (node<<1)+2);
+    return segt[node];
 }
 
 void update_range(int l, int r, int node, int lu, int ru, int diff){
@@ -58,20 +60,25 @@ int query(int l, int r, int node, int lq, int rq){
     }
 }
 
-int main(){
-    int n;
-    cin >> n;
-    for(int i(0); i < n; ++i){
-        cin >> vals[i];
+main(){
+    int T;
+    cin >> T;
+    while(T--){
+        int n, c1;
+        cin >> n >> c1;
+
+        int a, b, c, d;
+
+        build(0,n-1,0);
+        for(int i(0); i < c1; ++i){
+            cin >> a >> b >> c;
+            if(a==0){
+                cin >> d;
+                update_range(0,n-1,0,b-1,c-1,d);
+            }else{
+                cout << query(0,n-1,0,b-1,c-1) << endl;
+            }
+        }
     }
-    build(0, n-1, 0);
-    cout << query(0,n-1,0,0,n-1) << endl;
-    cout << query(0,n-1,0,0,(n-1)/2) << endl;
-    cout << query(0,n-1,0,(n-1)/2 + 1,n-1) << endl;
 
-    update_range(0,n-1,0,1,1,100);
-
-    cout << query(0,n-1,0,0,n-1) << endl;
-    cout << query(0,n-1,0,0,(n-1)/2) << endl;
-    cout << query(0,n-1,0,(n-1)/2 + 1,n-1) << endl;
 }
