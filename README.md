@@ -8,7 +8,7 @@
 - Segment Tree
   - Seg Tree with Lazy Propagation
 - RMQ
-- Sparce Table
+- Sparse Table
 - Mo's
 - Sqrt Decomposition
 - Treap - Cartesian Tree
