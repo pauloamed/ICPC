@@ -1,6 +1,6 @@
 # Traning Repository
 ## Data Structures
-
+Exercises - https://docs.google.com/spreadsheets/d/1Yw7_AqRCH30jBGuf3y1OGvPlfK4WEFdKWGfWkqkzVxg/edit?usp=sharing
 - BIT / Fenwick Tree
   - Inversions
   - Inversions of subarrays
