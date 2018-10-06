@@ -30,6 +30,7 @@ void update(int l, int r, int node, int i, int new_val){
         if(vals[lc] < vals[rc]) segt[node] = lc;
         else segt[node] = rc;
     }else{
+        //segt[i] = ?
         vals[i] = new_val;
     }
 }
