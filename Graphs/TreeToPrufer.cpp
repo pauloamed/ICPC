@@ -33,13 +33,11 @@ int main(){
   }
 
   int vt,cont=0;
-  set<int> ::iterator it;
   vector<int> seq;
 
   while(cont < n-2){
-    it = folhas.end();
-    vt = *(--it);
-    folhas.erase(it);
+    auto it = folhas.rbegin();
+    folhas.erase(*it);
     visited[vt] = true;
 
     for(int i = 0; i < v[vt].size(); i++){
