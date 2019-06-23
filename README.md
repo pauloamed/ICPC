@@ -1,39 +1,37 @@
 # Traning Repository
 ## Data Structures
-Exercises - https://docs.google.com/spreadsheets/d/1Yw7_AqRCH30jBGuf3y1OGvPlfK4WEFdKWGfWkqkzVxg/edit?usp=sharing
 - BIT / Fenwick Tree
-  - Inversions
-  - Inversions of subarrays
-  - 2D BITs
+  - Query: range Update: local
+  - Query: local Update: range
 - Segment Tree
-  - Seg Tree with Lazy Propagation
-- RMQ
+- Segment Tree with lazy
 - Sparse Table
 - Mo's
 - Sqrt Decomposition
 - Treap - Cartesian Tree
+- Union-Find
 
 
 ## Graphs
 
 - Prüfer 
-  - Algorithm creates a list that has a bijective relation to a tree
 - Havel-Haimiki
-  - Algorithm for discovering whether a list of vertices degrees forms a graph or not
 - DFS
 - BFS
 - Topological Ordering
-- Union-Find
-  - Cycles compression
+- Cycle compression
 - Strongly Connected Componentes
-  - Kosaraju's algorithm
-  - Trajan's algorithm
-- Dijkstra's algorithm (distance 1-All nodes)
-- Floyd-Warshall (distance All-All nodes)
+  - Lowpt algorithm
+- Shortest paths
+  - Dijkstra's algorithm
+  - Floyd-Warshall algorithm
 - Lowest Common Ancestor
-- DSU on Tree
 - Centroid Decomposition
 - Flow
+  - Dinitz
+- Maximum Matching
+  - Blossom algorithm
+  - Hopcroft–Karp
 
 ## Geometry
 
