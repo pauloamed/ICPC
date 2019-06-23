@@ -2,61 +2,62 @@
 using namespace std;
 
 #define MAXN 1000
-#define pipii vector<pair<int,pair<int,int>>>
 
-int parent[MAXN];
-int size[MAXN];
-pipii a;
+int parent[MAXN]; // vetor com pais do union find
+int size[MAXN]; // vetor com tamanhos do union find
+vector<pair<size_t,pair<size_t,size_t>>> a; // vetor com arestas
 
-int find(int x){
-    int temp, root = x;
+/*
+COMPLEXIDADE TEMPO:
+    O(m log m) - ORDENACAO DAS ARESTAS
+    ~O(m) - AMORTIZADA NO UNION FIND
+COMPLEXIDADE ESPACO:
+    O(n+m) - GUARDANDO UNION FIND E ARESTAS
+
+DEPOIS QUE UM VERTICE FOR REMOVIDO, ELE NAO SERA MAIS VISITADO
+*/
+
+size_t find(size_t cur){ // Find do union find com comp de caminho
+    size_t temp, root = cur;
+
+    // Procurando a raiz
     while(parent[root] != root)
         root = parent[root];
-    while(parent[x] != x){
-        temp = parent[x];
-        parent[x] = root;
-        x = temp;
+
+    // Vou a caminho da raiz
+    while(parent[x] != cur){
+        temp = parent[cur]; // backup do pai do current
+        parent[cur] = root; // o novo pai do current eh a raiz
+        cur = temp; // subo pro pai no backup
     }
+
     return root;
 }
 
-void join(int x, int y){
-    x = find(x);
-    y = find(y);
+void join(size_t x, size_t y){ // Union do union find
+    // acho as respectivas raizes
+    x = find(x); y = find(y);
 
-    if(x == y) return;
+    if(x == y) return; // for a mesma, faco nada
+
+    // quero sempre botar o x no y
     if(size[x] > size[y]) swap(x,y);
-    size[y] += size[x];
-    parent[x] = y;
+    size[y] += size[x]; // arvore y tem seu tamanho aumentado
+    parent[x] = y; // pai de x eh o y
 }
 
-pipii kruskal(int n){
-    sort(a.begin(), a.end());
-    pipii ans;
-    int cont = 0;
-    for(int i = 0; i < a.size(); ++i){
-        if(find(a[i].second.first) == find(a[i].second.second)) continue;
-        join(a[i].second.first, a[i].second.second);
-        ans.push_back(a[i]);
-        if(ans.size() == n-1) return ans;
-    }
-    return pipii();
-}
+vector<pair<size_t,pair<size_t,size_t>>> kruskal(size_t n){ // param: tamanho do grafo
+    sort(a.begin(), a.end()); // ordenando lista de arestas
+    vector<pair<size_t,pair<size_t,size_t>>> ans; // lista de arestas que serao selecionadas
 
-int main(){
-    int n, m; cin >> n >> m;
-    for(int i = 1; i <= n; ++i){
-        parent[i] = i;
-        size[i] = 1;
-    }
-    for(int i = 0; i < m; ++i){
-        int x, y, z; cin >> x >> y >> z;
-        a.push_back({z,{x,y}});
-    }
-    auto ans = kruskal(n);
+    size_t cont = 0;
+    for(size_t i = 0; i < a.size(); ++i){ // para cada aresta na lista
+        if(find(a[i].second.first) == find(a[i].second.second))
+            continue; // se formar ciclo, nao adiciona
 
-    printf("MST:\n");
-    for(int i = 0; i < ans.size(); ++i){
-        printf("%d %d %d\n", ans[i].first, ans[i].second.first, ans[i].second.second);
+        join(a[i].second.first, a[i].second.second); // adiciona no union find
+        ans.push_back(a[i]); // adiciona no vetor resposta
+        if(ans.size() == n-1) return ans; // se chegar a n-1 arestas, eh arvore
     }
+    return vector<pair<size_t,pair<size_t,size_t>>>(); // se n der certo, retorna vazio
 }
