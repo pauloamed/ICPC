@@ -12,6 +12,8 @@ COMPLEXIDADE TEMPO:
     O(n+m)
 COMPLEXIDADE ESPACO:
     O(n) - VETOR DE VISITADOS
+
+    - Menor caminho para grafos sem pesos
 */
 
 
