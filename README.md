@@ -1,29 +1,31 @@
 # Traning Repository
 ## Data Structures
 - BIT / Fenwick Tree
-  - Query: range Update: local
-  - Query: local Update: range
+  - Query: range Update: local (OK)
+  - Query: local Update: range (OK)
 - Segment Tree
 - Segment Tree with lazy
 - Sparse Table
 - Mo's
 - Sqrt Decomposition
 - Treap - Cartesian Tree
-- Union-Find
+- Union-Find (OK)
+- Persistent Union-Find
+- Trie
 
 
 ## Graphs
 
 - Prüfer 
 - Havel-Haimiki
-- DFS
-- BFS
+- DFS (OK)
+- BFS (OK)
 - Topological Ordering
 - Cycle compression
 - Strongly Connected Componentes
   - Lowpt algorithm
 - Shortest paths
-  - Dijkstra's algorithm
+  - Dijkstra's algorithm (OK)
   - Floyd-Warshall algorithm
 - Lowest Common Ancestor
 - Centroid Decomposition
