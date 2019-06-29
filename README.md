@@ -69,6 +69,7 @@
 - Multiplicative functions
 - Meet in the middle
 - Baby steps, Giant steps
+- Polynomial long division
 
 ## Others
 
