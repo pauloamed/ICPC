@@ -59,6 +59,7 @@
 - Polygon area
   - Shoelace formula
 - Pick's theorem
+- Determine if a list of points is in (counter)clockwise order
 
 ## Dynamic Programming
 
