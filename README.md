@@ -20,6 +20,8 @@
 - BFS (OK)
 - Topological Ordering
 - Cycle compression
+- Biconnected Componentes
+  - Lowpt algorithm (OK)
 - Strongly Connected Componentes
   - Lowpt algorithm
 - Shortest paths
@@ -33,6 +35,10 @@
   - Blossom algorithm
   - Hopcroft–Karp
 - Edge Cover
+- Minimum Spanning Tree
+  - Kruskal (OK)
+  - Prim (OK)
+- Hierholzer
 
 ## Geometry
 
