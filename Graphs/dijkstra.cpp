@@ -10,6 +10,10 @@ vector<size_t, size_t> v[100]; // Lista de adjacencia com pesos
 set<pair<size_t,size_t>> s; // Set do Dijkstra com dists e atuais
 
 /*
+Analisa um vertice por vez, aquele com menor distancia ja calculada
+Como nao tem aresta negativa, depois que um vertice for removido, ele nao sera
+mais visitado
+
 COMPLEXIDADE TEMPO:
     HEAP TEM SIMULTANEAMENTE O(n) CARAS
     n OPERACOES DE INSERT E DELETE (log n)
@@ -19,10 +23,14 @@ COMPLEXIDADE TEMPO:
 COMPLEXIDADE ESPACO:
     O(n)
 
-DEPOIS QUE UM VERTICE FOR REMOVIDO, ELE NAO SERA MAIS VISITADO
 */
 
-void dijkstra(size_t u){
+void dijkstra(size_t u, size_t n){
+    for(size_t i = 0; i < n; ++i){
+        dist[i] = INF; // inicializando distancias
+        parent[i] = i; // inicializando pai
+    }
+
     dist[u] = 0; // Distancia para o vertice de inicio atualizada
     set.insert({0, u}); // Adiciono a dist p ele e ele, na heap ordenada por dists
 
@@ -46,7 +54,5 @@ void dijkstra(size_t u){
                 s.insert({dist_adj,v[cur_vertice][i]}); // Manda pro set
             }
         }
-
-
     }
 }

@@ -8,13 +8,16 @@ int size[MAXN]; // vetor com tamanhos do union find
 vector<pair<size_t,pair<size_t,size_t>>> a; // vetor com arestas
 
 /*
+Ordena as arestas por peso decrescente, e vai gulosamente tentando adiciona-las
+a MST, sem formar ciclos.
+Funciona OK com aresta negativa.
+
 COMPLEXIDADE TEMPO:
     O(m log m) - ORDENACAO DAS ARESTAS
     ~O(m) - AMORTIZADA NO UNION FIND
 COMPLEXIDADE ESPACO:
     O(n+m) - GUARDANDO UNION FIND E ARESTAS
 
-DEPOIS QUE UM VERTICE FOR REMOVIDO, ELE NAO SERA MAIS VISITADO
 */
 
 size_t find(size_t cur){ // Find do union find com comp de caminho
