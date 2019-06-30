@@ -1,17 +1,15 @@
 # Traning Repository
 ## Data Structures
-- BIT / Fenwick Tree
-  - Query: range Update: local (OK)
-  - Query: local Update: range (OK)
-- Segment Tree
-- Segment Tree with lazy
+- BIT / Fenwick Tree (OK)
+- Segment Tree (with lazy prop.) (OK)
+- Union-Find (OK)
 - Sparse Table
 - Mo's
 - Sqrt Decomposition
 - Treap - Cartesian Tree
-- Union-Find (OK)
 - Persistent Union-Find
 - Trie
+- Suffix Array
 
 
 ## Graphs
@@ -34,6 +32,7 @@
 - Maximum Matching
   - Blossom algorithm
   - Hopcroft–Karp
+- Edge Cover
 
 ## Geometry
 
@@ -69,7 +68,7 @@
 
 ## Math
 
-- Fast Expo
+- Fast Expo (recursive and iterative)
 - Number Theory
 - FFT
 - Multiplicative functions
@@ -82,4 +81,4 @@
 - Nim game
 - Two pointers
 - Hashing
-- Suffix Array
+
