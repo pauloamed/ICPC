@@ -5,6 +5,12 @@ using namespace std;
 #define lpss list<pair<size_t, size_t>>
 #define edgelist vector<pair<lpss::iterator, lpss::iterator>
 
+/*
+ - Passeio euclidiano em O(m)
+ Vai construindo ciclos disjuntos em arestas
+*/
+
+
 vector<size_t> v[MAXN]; // lista de adjacencia original
 
 void dfs(size_t x, size_t ini, list<size_t> &temp, lpss *_v, edgelist &edges, bool init=true){
