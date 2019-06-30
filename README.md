@@ -19,14 +19,14 @@
 - DFS (OK)
 - BFS (OK)
 - Topological Ordering
-- Cycle compression
-- Biconnected Componentes
-  - Lowpt algorithm (OK)
+- Biconnected Components (OK)
+  - Lowpt (undirected) algorithm (OK)
 - Strongly Connected Componentes
-  - Lowpt algorithm
+  - Lowpt (directed) algorithm
 - Shortest paths
   - Dijkstra's algorithm (OK)
   - Floyd-Warshall algorithm
+- Hierholzer
 - Lowest Common Ancestor
 - Centroid Decomposition
 - Flow
@@ -35,10 +35,7 @@
   - Blossom algorithm
   - Hopcroft–Karp
 - Edge Cover
-- Minimum Spanning Tree
-  - Kruskal (OK)
-  - Prim (OK)
-- Hierholzer
+- Cycle compression
 
 ## Geometry
 
