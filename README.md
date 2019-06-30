@@ -56,6 +56,9 @@
 - Line Sweep
   - Plane Sweep
 - Minkowsky Sum
+- Polygon area
+  - Shoelace formula
+- Pick's theorem
 
 ## Dynamic Programming
 
