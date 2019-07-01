@@ -22,11 +22,13 @@
 - Biconnected Components (OK)
   - Lowpt (undirected) algorithm (OK)
 - Strongly Connected Components
-  - Lowpt (directed) algorithm
+  - Lowpt (directed) algorithm (OK)
 - Shortest paths
   - Dijkstra's algorithm (OK)
-  - Floyd-Warshall algorithm
+  - Floyd-Warshall algorithm (OK)
 - Hierholzer (OK)
+- Transitive closure
+  - Warshall algorithm (OK)
 - Lowest Common Ancestor
 - Centroid Decomposition
 - Flow
