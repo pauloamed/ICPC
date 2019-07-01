@@ -14,19 +14,19 @@
 
 ## Graphs
 
-- Prüfer 
+- Prüfer (OK)
 - Havel-Haimiki
 - DFS (OK)
 - BFS (OK)
-- Topological Ordering
+- Topological Ordering (OK)
 - Biconnected Components (OK)
   - Lowpt (undirected) algorithm (OK)
-- Strongly Connected Componentes
+- Strongly Connected Components
   - Lowpt (directed) algorithm
 - Shortest paths
   - Dijkstra's algorithm (OK)
   - Floyd-Warshall algorithm
-- Hierholzer
+- Hierholzer (OK)
 - Lowest Common Ancestor
 - Centroid Decomposition
 - Flow
