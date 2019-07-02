@@ -3,7 +3,7 @@ using namespace std;
 
 #define MAXN 10000
 #define lpss list<pair<size_t, size_t>>
-#define edgelist vector<pair<lpss::iterator, lpss::iterator>
+#define edgelist vector<pair<lpss::iterator, lpss::iterator>>
 
 /*
  - Passeio euclidiano em O(m)
