@@ -19,21 +19,17 @@
 - DFS (OK)
 - BFS (OK)
 - Topological Ordering (OK)
-- Biconnected Components (OK)
-  - Lowpt (undirected) algorithm (OK)
-- Strongly Connected Components
-  - Lowpt (directed) algorithm
-- Shortest paths
-  - Dijkstra's algorithm (OK)
-  - Floyd-Warshall algorithm
-- Hierholzer (OK)
+- Biconnected Components - Lowpt (undirected) algorithm (OK)
+- Strongly Connected Components - Lowpt (directed) algorithm (OK)
+- Shortest paths - One to All - Dijkstra's algorithm (OK)
+- Shortest paths - All to All Floyd-Warshall algorithm (OK)
+- Euler path - Hierholzer (OK)
+- Transitive closure - Warshall algorithm (OK)
 - Lowest Common Ancestor
 - Centroid Decomposition
-- Flow
-  - Dinitz
-- Maximum Matching
-  - Blossom algorithm
-  - Hopcroft–Karp
+- Flow - Dinitz
+- Bipartite Maximum Matching - Hopcroft–Karp
+- Genral Maximum Matching - Blossom algorithm
 - Edge Cover
 - Cycle compression
 
