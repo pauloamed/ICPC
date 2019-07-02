@@ -40,6 +40,28 @@ void update( int index, int val ){
     }
 }
 
+size_t find(int val){ // funcao que retorna a primeira posicao do acumulado maior que val
+    // essa funcao vai tentando ativar os bits de ret enquanto percorre a BIT
+    // se um bit eh ligado, eh como se tivesse entrado na subarvore induzida por ele
+    // entao val eh atualizado, e o mesmo processo eh realizado para a subarvore atual
+
+    size_t ret = 0; // indice de retorno
+    size_t i = (size_t) log2(MAXN); // maior bit ativo possivel
+    while(i >= 0){ // enquanto posso ir pra direita nos bits
+
+        size_t maybe_ret = (ret | (1<<i)); // novo indice se o bit for ativo
+        if(maybe_ret >= MAXN) continue; // caso ultrapasse o limite no calc do indice
+
+        if(bit[maybe_ret] <= val){ // caso eu possa adicionar esse bit
+            ret = maybe_ret; // atualizo o retorno
+            val -= bit[ret]; // atualizo o objetivo (val)
+        }
+
+        --i; // ando pra direita na bit
+    }
+    return ret + 1;
+}
+
 //////////////////////////////////////////////////////////////////////////////////
 //              Query num ponto especifico e Update numa range                  //
 //////////////////////////////////////////////////////////////////////////////////
