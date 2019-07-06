@@ -22,21 +22,23 @@ retorno ou cruzamento.
 
 size_t idx[MAXN]; // vetor com id de cada vertice (posicao de entrada)
 size_t low[MAXN]; // vetor com lowpt
-size_t root[MAXN]; // vetor indicando qual a raiz da arvore de cada vertice
+bool active[MAXN]; // vetor indicando se o no ta na ativo na arvore de recursao
 vector<size_t> v[MAXN]; // lista de adjacencia
 vector<size_t> temp; // vetor temporario para impressao, pilha de recursao
 
+int ans = 0;
 void dfs(int x, int _root, int &t){
-    low[x] = idx[x] = t++; // att low e id
-    root[x] = _root; // att raiz
+    low[x] = idx[x] = ++t; // att low e id
+    active[x] = true; // att raiz
     temp.push_back(x); // ad na pilha de recur
+    // printf(">> %d: %d %d\n", x, low[x], idx[x]);
 
     for(int i = 0; i < v[x].size(); ++i){
         if(!idx[v[x][i]]){ // se o adj nao foi vis ainda (aresta de arvore)
             dfs(v[x][i], _root, t); // passo recursivo
             low[x] = min(low[x], low[v[x][i]]); // tento atualizar lowpt do atual
-        }else{ // eh aresta de arvore, avanco ou cruzamento
-            if(root[x] == root[v[x][i]] && idx[v[x][i]] < id[x]){
+        }else{ // eh de avanco, retorno ou cruzamento
+            if(active[v[x][i]] && idx[v[x][i]] < idx[x]){
                 // primeira condicao: estao na msm arvore
                 // segunda condicao: eh aresta de retorno ou cruzamento
                 low[x] = min(low[x], idx[v[x][i]]); // tenta atualizar lowpt de x
@@ -44,16 +46,18 @@ void dfs(int x, int _root, int &t){
         }
     }
 
-    // printf("%d: %d %d\n", x, low[x], idx[x]);
+    // printf("<< %d: %d %d\n", x, low[x], idx[x]);
     if(low[x] == idx[x]){ // x raiz de arvore (eh forte)
-        printf("Componente fortemente conexa: ");
+        // printf("Componente fortemente conexa: ");
+        ans++;
         while(true){
-            printf("%d ", temp.back());
+            // printf("%d ", temp.back());
+            active[temp.back()] = false;
             if(temp.back() == x){ // se cheguei na arvore
                 temp.pop_back(); break; // tiro raiz e paro de tirar
             }else temp.pop_back(); // vou consumindo a lista
         }
-        printf("\n");
+        // printf("\n");
     }
 }
 
@@ -68,4 +72,5 @@ int main(){
     for(int i = 1; i <= n; ++i){
         if(!idx[i]) dfs(i, i, t); // se nao foi visitado ainda, visite
     }
+    cout << ans << endl;
 }
