@@ -1,4 +1,11 @@
 # Traning Repository
+Used:
+ - Handbook of geometry for competitive programmers, Victor Lecomte
+ - Cormen
+ - Competitive Programming
+ - Wikipedia
+ - Geek for geeks
+
 ## Data Structures
 - BIT / Fenwick Tree (OK)
 - Segment Tree (with lazy prop.) (OK)
