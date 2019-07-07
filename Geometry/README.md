@@ -1,13 +1,14 @@
 # Geometria
 ## Orientações
-1. Evite usar floating points
-
-## Tricks
-- Eliminar pontos muito próximos
-- Adicionar ruído a alguns pontos para evitar colinearidade/planaridade
+- Evitar usar floating points (junto a isso: divisão, raiz quadrada, funções trigonométricas)
+- Fazer a menor quantidade de comparações possível
+- Atentar aos limites da imagem das operações usadas (ex: cosseno in [-1;1])
+- Evitar criar muitos casos, quando muitos casos implicam em mais código e então mais erro
+- Atentar ao erro quando comparar floating points (prática) com números reais
 - Diminuir a magnitude dos floatings trabalhados, alterando conseq. o erro
 - Usar a estrutura `stableSum` para somatório de floatings não negativos
-
+-* Eliminar pontos muito próximos
+-* Adicionar ruído a alguns pontos para evitar colinearidade/planaridade
 
 ## Erro, *cutoff* e *chance*
 ### Erro relativo e absoluto
