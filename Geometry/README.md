@@ -9,9 +9,9 @@
 - Usar a estrutura `stableSum` para somatório de floatings não negativos
 
 
-## Erro, cutoff e chance
+## Erro, *cutoff* e *chance*
 ### Erro relativo e absoluto
-#### Catastrophic cancelletion
+#### *Catastrophic cancelletion*
 ### Considerações sobre pontos flutuantes
 - Valores decimais no codigo ou como entrada são representados pela representação mais próxima
 - As 5 operações básicas (+, -, x, /, sqrt()) são realizadas como se a precisão fosse infinita (sobre a entrada) e então o resultado é arredondado para a representação mais próxima
