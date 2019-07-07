@@ -10,7 +10,7 @@ Used:
 - BIT / Fenwick Tree (OK)
 - Segment Tree (with lazy prop.) (OK)
 - Union-Find (OK)
-- Sparse Table
+- Sparse Table (OK)
 - Mo's
 - Sqrt Decomposition
 - Treap - Cartesian Tree
@@ -43,26 +43,26 @@ Used:
 ## Geometry
 
 - Simple tasks
+  - Point and vector algebra
   - Point-point, point-segment, point-line distances
-  - Clockwise, counterclockwise positions
+  - Clockwise, counterclockwise orientations
   - Polar sorting
-  - Points rotation, translation
   - Trignometry
-- Colinearity
+  - Colinearity
+- Convex Hull
 - Point inside Polygon
 - Binary Search in a Polygon
 - Closest pair of points
-- Convex Hull
-  - Farthest pair of points
+- Farthest pair of points
 - Intersections
-  - Segment-Segment Intersection
-  - Line-Line Intersection
-  - Polygon-Polygon Intersection
+  - Segment-Segment intersection
+  - Line-Line intersection
+  - Polygon-Polygon intersection
+  - Circle-Circle intersection
 - Line Sweep
   - Plane Sweep
 - Minkowsky Sum
-- Polygon area
-  - Shoelace formula
+- Polygon area - Shoelace formula
 - Pick's theorem
 - Determine if a list of points is in (counter)clockwise order
 
@@ -74,6 +74,7 @@ Used:
 
 ## Math
 
+- Root of quadratic polynom
 - Fast Expo (recursive and iterative)
 - Number Theory
 - FFT
