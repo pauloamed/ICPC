@@ -26,6 +26,8 @@ struct pv{
         return asin(cosa);
     }
 
+    // comparacao entre pontos, pra ordenacao
+
     // orientacao
     // se ret < 0: sentido horario
     // se ret < 0: sentido anti horario

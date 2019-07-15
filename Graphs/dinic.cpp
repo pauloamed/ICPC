@@ -35,7 +35,7 @@ void bfs(size_t s, size_t t, size_t n, size_t lvl[], vector<size_t> flows[]){
     else return true; // consegui acessar t com a bfs
 }
 
-int Graph::sendFlow(size_t x, size_t t, size_t flow, vector<size_t> flows[], int start[])
+int dfs(size_t x, size_t t, size_t flow, vector<size_t> flows[], int start[])
 {
     if (u == t) return flow; // atingiu sumidouro
 
@@ -70,40 +70,22 @@ int Graph::sendFlow(size_t x, size_t t, size_t flow, vector<size_t> flows[], int
 }
 
 
-int maxflow(size_t s, size_t t, size_t n){
+int dinic(size_t s, size_t t, size_t n){
     if (s == t) return -1; // Caso de borda
-
-    vector<size_t> flows[n]; // vetor auxiliar com fluxos atuais passando por arestas
-
-    // percorrendo lista de adj para construir o vetor auxiliar
-    for(size_t i = 0; i < n; ++i)
-        for(size_t j = 0; j < v[i].size(); ++j)
-            flows[i].push_back(0);
-
     size_t lvl[n]; // vetor auxiliar com a profundidade calculada dos vertices na bfs
+    int flow, total = 0;  // fluxo encontrado na dfs e fluxo total a ser achado
+    build(); // construcao de estruturas auxiliares
+
+    while(bfs(s,t,n,lvl)){ // enquanto consigo alcancar t
+
+            // armazena estado atual do vertice (em relacao a aresta a ser visitada)
+            size_t *curr = new size_t[n+1];
+
+            // enquanto nao encontro caminho bloqueador
+            while (int flow = dfs(s, INT_MAX, t, start))
+                total += flow; // Add path flow to overall flow
 
 
-
-    int total = 0;  // Initialize result
-
-    // Augment the flow while there is path
-    // from source to sink
-    while(true){
-        bfs(s,t,n,lvl,flows); // tentando chegar em t com s
-        if(lvl[t] == n) return total; // nao conseguiu, acabou
-        else{ // conseguiu, agora passa o fluxo pra t
-
-            // store how many edges are visited
-            // from V { 0 to V }
-            int *start = new int[V+1];
-
-            // while flow is not zero in graph from S to D
-            while (int flow = sendFlow(s, INT_MAX, t, start))
-
-            // Add path flow to overall flow
-            total += flow;
-
-        }
     }
 
     // return maximum flow
