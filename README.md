@@ -32,7 +32,7 @@ Used:
 - Shortest paths - All to All Floyd-Warshall algorithm (OK)
 - Euler path - Hierholzer (OK)
 - Transitive closure - Warshall algorithm (OK)
-- Lowest Common Ancestor
+- Lowest Common Ancestor (OK)
 - Centroid Decomposition
 - Flow - Dinitz
 - Bipartite Maximum Matching - Hopcroft–Karp
