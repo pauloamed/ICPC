@@ -42,29 +42,19 @@ Used:
 
 ## Geometry
 
-- Simple tasks
-  - Point and vector algebra
-  - Point-point, point-segment, point-line distances
-  - Clockwise, counterclockwise orientations
-  - Polar sorting
-  - Trignometry
-  - Colinearity
-- Convex Hull
-- Point inside Polygon
+- Simple tasks (~OK)
+- Convex Hull (OK)
+- Point inside Polygon (OK)
+- Polygon area - Shoelace formula (OK)
+- Determine if a list of points is in (counter)clockwise order (OK)
+- Closest pair of points (OK)
 - Binary Search in a Polygon
-- Closest pair of points
 - Farthest pair of points
 - Intersections
-  - Segment-Segment intersection
-  - Line-Line intersection
-  - Polygon-Polygon intersection
-  - Circle-Circle intersection
 - Line Sweep
-  - Plane Sweep
+- Plane Sweep
 - Minkowsky Sum
-- Polygon area - Shoelace formula
-- Pick's theorem
-- Determine if a list of points is in (counter)clockwise order
+
 
 ## Dynamic Programming
 
