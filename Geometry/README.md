@@ -2,6 +2,7 @@
 Material utilizado:
 - Handbook of geometry for competitive programmers, Victor Lecomte
 - Competitive Programming 3, Steven & Felix
+- https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
 ## Orientações
 - Evitar usar floating points (junto a isso: divisão, raiz quadrada, funções trigonométricas)
 - Fazer a menor quantidade de comparações possível
