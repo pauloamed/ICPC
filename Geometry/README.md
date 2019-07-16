@@ -68,13 +68,13 @@ Poligonos
 ## Algoritmos (e extensões) não implementados
 ### 3 pontos colineares
 Para cada ponto, realizar ordenação polar ((N)(NlogN)). Checar se pontos adjacentes sao colineares para cada ordenação.
-### Área do polígono - Shoelace formula
+### Área do polígono - *Shoelace formula*
 - Polígono nao se intersecta. Origem não precisa estar dentro do polígono;
 - Polígono é dado ordenado (anti ou horário);
 - Aplica produto vetorial aos vetores induzidos (origem) pelos pontos, dois a dois, achando a área do paralelogramo. Divide essa área por dois;
 - Processar o polígono no sentido reverso resulta na área negativa.
 ### Orientação do polígono (anti/horário)
-Examinar o sinal da área calculada usando o Shoelace formula.
+Examinar o sinal da área calculada usando o *shoelace formula*.
 ### Perímetro de polígono
 Dado que o polígono foi dado ordenado, basta somar as distâncias dos segmentos.
 ### Convexidade de polígono
