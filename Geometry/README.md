@@ -53,8 +53,7 @@ Aqui eu entendi que fica legal kkk
 ##### /, sqrt()
 Para essas operações, não há garantias
 
-### Objetos geométricos
-0D,1D,2D,3D
+## Objetos geométricos
 #### 0D
 Pontos
 #### 1D
