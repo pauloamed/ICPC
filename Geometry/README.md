@@ -104,11 +104,13 @@ cos(x-y) = sin(x)*sin(y)+cos(y)*cos(x)
 ```
 #### Lei dos senos
 ```
-Em um triângulo ABC qualquer, inscrito em uma circunferência de raio r, de lados AB, BC e AC, que medem respectivamente a, b e c, com ângulos internos Â, ^B e Ĉ, vale a seguinte relação:
+Em um triângulo ABC qualquer, inscrito em uma circunferência de raio r, de lados AB, BC e AC, que medem respectivamente a, b
+e c, com ângulos internos Â, ^B e Ĉ, vale a seguinte relação:
 (a/sin(Â)) = (b/sin(^B)) = (c/sin(Ĉ)) = 2r
 ```
 #### Lei dos cossenos
 ```
-Triângulo ABC qualquer de lados AB, BC e AC, que medem respectivamente a, b e c, com ângulos internos Â, ^B e Ĉ, vale a seguinte relação:
+Triângulo ABC qualquer de lados AB, BC e AC, que medem respectivamente a, b e c, com ângulos internos Â, ^B e Ĉ, vale a 
+seguinte relação:
 a² = b² + c² - 2*b*c*cos(Â)
 ```
