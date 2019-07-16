@@ -72,7 +72,7 @@ Para cada ponto, realizar ordenação polar ((N)(NlogN)). Checar se pontos adjac
 - Polígono nao se intersecta. Origem não precisa estar dentro do polígono;
 - Polígono é dado ordenado (anti ou horário);
 - Aplica produto vetorial aos vetores induzidos (origem) pelos pontos, dois a dois, achando a área do paralelogramo. Divide essa área por dois;
-- Processar o polígono no sentido reverso resulta na área negativa.
+- Processar o polígono no sentido reverso resulta na área com sinal oposto.
 ### Orientação do polígono (anti/horário)
 Examinar o sinal da área calculada usando o *shoelace formula*.
 ### Perímetro de polígono
@@ -80,10 +80,35 @@ Dado que o polígono foi dado ordenado, basta somar as distâncias dos segmentos
 ### Convexidade de polígono
 Checar se todos produtos vetoriais (de pontos 3 a 3) possuem o mesmo sinal.
 ### *Online convex hull*
+Dado um convex hull, quero saber se consigo adicionar um ponto a ele (tornar área igual ou menor?). Pode ser implementado com `set`. Acho a posição em que o ponto deveria ficar (log) e checo se o produto vetorial dele com os adjacentes indica se o polígono ainda é convexo. Caso de borda: pontos colineares (fico com o ponto mais distante).
 
 ## Teoria
 ### *Winding number*
+In mathematics, the winding number of a closed curve in the plane around a given point is an integer representing the total number of times that curve travels counterclockwise around the point. The winding number depends on the orientation of the curve, and is negative if the curve travels around the point clockwise.
+Se for nulo, o ponto está fora do polígono. Caso contrário (?).
 ### Teorema de *Pick*
+- Pontos inteiros: pontos com coordenadas inteiras
+```
+- A: área do polígono
+- i: #pontos inteiros no interior do polígono
+- b: #pontos inteiros na borda do polígono
+A = i + (b/2) - 1
+```
 ### Trigonometria
+#### Soma, diferença de ângulos
+```
+sin(x+y) = sin(x)*cos(y)+sin(y)*cos(x)
+sin(x-y) = sin(x)*cos(y)-sin(y)*cos(x)
+cos(x+y) = cos(x)*cos(y)-sin(y)*sin(x)
+cos(x-y) = sin(x)*sin(y)+cos(y)*cos(x)
+```
 #### Lei dos senos
+```
+Em um triângulo ABC qualquer, inscrito em uma circunferência de raio r, de lados AB, BC e AC, que medem respectivamente a, b e c, com ângulos internos Â, ^B e Ĉ, vale a seguinte relação:
+(a/sin(Â)) = (b/sin(^B)) = (c/sin(Ĉ)) = 2r
+```
 #### Lei dos cossenos
+```
+Triângulo ABC qualquer de lados AB, BC e AC, que medem respectivamente a, b e c, com ângulos internos Â, ^B e Ĉ, vale a seguinte relação:
+a² = b² + c² - 2*b*c*cos(Â)
+```
