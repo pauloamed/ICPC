@@ -64,6 +64,8 @@ Circulos
 Poligonos
 ### 3D
 
+## *Winding number*
+
 ## Algoritmos simples - não implementados
 ### 3 pontos colineares
 Para cada ponto, realizar ordenação polar ((N)(NlogN)). Checar se pontos adjacentes sao colineares para cada ordenação.
