@@ -43,27 +43,18 @@ Erros de precisão podem ser estimados em dois cenários:
 - Entrada da operação é exata
 - Entrada da operação é imprecisa
 
-#### Entrada exata
-Aqui eu entendi que fica legal kkk
-
-#### Entrada imprecisa
-##### +, -
-
-##### *
-##### /, sqrt()
-Para essas operações, não há garantias
+#### TODO
 
 ## Objetos geométricos
 #### 0D
-Pontos
+- Pontos: (...)
 #### 1D
-Linhas
-Vetores
+- Linhas: (...)
+- Vetores: (...)
 Segmentos
 #### 2D
-Circulos
-Poligonos
-#### 3D
+- Circulos: (...)
+- Poligonos: (...)
 
 ## Algoritmos (e extensões) não implementados
 ### 3 pontos colineares
@@ -83,6 +74,15 @@ Checar se todos produtos vetoriais (de pontos 3 a 3) possuem o mesmo sinal.
 Dado um convex hull, quero saber se consigo adicionar um ponto a ele (tornar área igual ou menor?). Pode ser implementado com `set`. Acho a posição em que o ponto deveria ficar (log) e checo se o produto vetorial dele com os adjacentes indica se o polígono ainda é convexo. Caso de borda: pontos colineares (fico com o ponto mais distante).
 
 ## Teoria
+### Teorema de Helly
+Let C be a finite family of convex sets in Rn such that, for k ≤ n + 1, any k members of C have a nonempty intersection. Then the intersection of all members of C is nonempty
+### Soma de Minkowski
+- Soma/diferença (n^2) entre conjuntos de pontos no R²
+- O *zero set* (conjunto com o vetor nulo) é o elemento nulo da operação
+- O conjunto vazio somado a qualquer outro conjunto resulta no conjunto vazio
+- For all non-empty subsets S1 and S2 of a real vector-space, the convex hull of their Minkowski sum is the Minkowski sum of their convex hulls
+- If S is a convex set then also μS+λS is a convex set; furthermore μS+λS=(μ+λ)S for every μ,λ≥0. Conversely, if this “distributive property” holds for all non-negative real numbers, μ,λ, then the set is convex.
+- Soma de Minkowski entre conjuntos convexos: O(n+m) [implementado]
 ### *Winding number*
 In mathematics, the winding number of a closed curve in the plane around a given point is an integer representing the total number of times that curve travels counterclockwise around the point. The winding number depends on the orientation of the curve, and is negative if the curve travels around the point clockwise.
 Se for nulo, o ponto está fora do polígono. Caso contrário (?).
