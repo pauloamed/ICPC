@@ -66,8 +66,6 @@ Circulos
 Poligonos
 #### 3D
 
-### *Winding number*
-
 ## Algoritmos (e extensões) não implementados
 ### 3 pontos colineares
 Para cada ponto, realizar ordenação polar ((N)(NlogN)). Checar se pontos adjacentes sao colineares para cada ordenação.
@@ -85,6 +83,7 @@ Checar se todos produtos vetoriais (de pontos 3 a 3) possuem o mesmo sinal.
 ### *Online convex hull*
 
 ## Teoria
+### *Winding number*
 ### Teorema de *Pick*
 ### Trigonometria
 #### Lei dos senos
