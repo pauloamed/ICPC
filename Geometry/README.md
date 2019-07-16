@@ -84,3 +84,6 @@ Checar se todos produtos vetoriais (de pontos 3 a 3) possuem o mesmo sinal.
 ## Estruturas implementadas
 ### `neumaierSum`
 Acumulador de pontos flutuantes com melhor precisão
+
+## Extensões de problemas
+### *Online convex hull*
