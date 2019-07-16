@@ -1,8 +1,8 @@
 # Traning Repository
 Used:
  - Handbook of geometry for competitive programmers, Victor Lecomte
- - Cormen
- - Competitive Programming
+ - Introduction to Algorithms, ...
+ - Competitive Programming 3, ...
  - Wikipedia
  - Geek for geeks
 
@@ -15,12 +15,8 @@ Used:
 - Sqrt Decomposition
 - Treap - Cartesian Tree
 - Persistent Union-Find
-- Trie
-- Suffix Array
-
 
 ## Graphs
-
 - Prüfer (OK)
 - Havel-Haimiki
 - DFS (OK)
@@ -33,11 +29,11 @@ Used:
 - Euler path - Hierholzer (OK)
 - Transitive closure - Warshall algorithm (OK)
 - Lowest Common Ancestor (OK)
-- Centroid Decomposition
 - Flow - Dinitz
 - Bipartite Maximum Matching - Hopcroft–Karp
-- Genral Maximum Matching - Blossom algorithm
 - Edge Cover
+- Genral Maximum Matching - Blossom algorithm
+- Centroid Decomposition
 - Cycle compression
 
 ## Geometry
@@ -57,25 +53,30 @@ Used:
 
 
 ## Dynamic Programming
-
 - Knapsack problem
 - DP otimization
 - Travelling Salesman approaches
 
 ## Math
-
 - Root of quadratic polynom
+- Polynomial long division
 - Fast Expo (recursive and iterative)
 - Number Theory
 - FFT
 - Multiplicative functions
 - Meet in the middle
 - Baby steps, Giant steps
-- Polynomial long division
+
+## String
+- KMP
+- Trie
+- Suffix Array
+- Suffix Tree
+- Aho–Corasick
 
 ## Others
-
 - Nim game
 - Two pointers
 - Hashing
+
 
