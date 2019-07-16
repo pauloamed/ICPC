@@ -5,7 +5,6 @@ struct neumaierSum{
     double sum = 0; // guarda o somatorio
     double c = 0; // guarda o compensador
 
-
     void operator+=(double a){ // adicionando o valor a ao acumulado
 
         // if(a < 0) // SOMATORIO DE REAIS NAO NEGATIVOS
