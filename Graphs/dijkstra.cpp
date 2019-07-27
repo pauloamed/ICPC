@@ -6,7 +6,7 @@ using namespace std;
 
 size_t dist[MAXN]; // Vetor de distancias
 size_t parent[MAXN]; // Vetor com o pai
-vector<size_t, size_t> v[100]; // Lista de adjacencia com pesos
+vector<pair<size_t, size_t>> v[100]; // Lista de adjacencia com pesos
 set<pair<size_t,size_t>> s; // Set do Dijkstra com dists e atuais
 
 /*
@@ -42,16 +42,16 @@ void dijkstra(size_t u, size_t n){
 
         for(size_t i = 0; i < v[cur_vertice].size(); i++){ // Pra cada adjacente
             // Distancia pro adjacente
-            size_t dist_adj = cur_dist + dist[v[cur_vertice][i]];
+            size_t dist_adj = cur_dist + v[cur_vertice][i].second;
 
             // Se a dist computada pro adj for menor que a armazenada
-            if(dist_adj < dist[v[cur_vertice][i]]){
+            if(dist_adj < dist[v[cur_vertice][i].first]){
                 // Remove registro antigo se tiver
-                s.erase({dist[v[cur_vertice][i]], v[cur_vertice][i]});
+                s.erase({dist[v[cur_vertice][i]], v[cur_vertice][i].first});
 
-                dist[v[cur_vertice][i]] = dist_adj; // Atualiza distancia
-                parent[v[cur_vertice][i]] = cur_vertice; // Atualiza pai
-                s.insert({dist_adj,v[cur_vertice][i]}); // Manda pro set
+                dist[v[cur_vertice][i].first] = dist_adj; // Atualiza distancia
+                parent[v[cur_vertice][i].first] = cur_vertice; // Atualiza pai
+                s.insert({dist_adj,v[cur_vertice][i].first}); // Manda pro set
             }
         }
     }
