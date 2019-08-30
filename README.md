@@ -68,6 +68,7 @@ Used:
 - Baby steps, Giant steps
 
 ## String
+- Manacher
 - KMP
 - Trie
 - Suffix Array
