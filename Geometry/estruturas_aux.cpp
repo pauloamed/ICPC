@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-struct neumaierSum{
+struct neumaierSum{ // estrutura para acumular numeros flutuantes
     double sum = 0; // guarda o somatorio
     double c = 0; // guarda o compensador
 

@@ -41,7 +41,7 @@ matriz fast_expo(matriz base, long long expo){
 
 int main(){
     long long x; cin >> x;
-    matriz base(3,1,1,3);
+    matriz base(1,0,0,1);
     base = fast_expo(base, x);
     cout << base.a11 << endl;
 }
