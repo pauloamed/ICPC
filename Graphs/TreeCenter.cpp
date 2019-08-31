@@ -8,7 +8,7 @@ int degree[MAXN];
 
 int main(){
     int n; cin >> n;
-    for(int i = 0; i <n-1; ++i){
+    for(int i = 0; i < n-1; ++i){
         int a, b; cin >> a >> b;
         v[a].push_back(b);
         v[b].push_back(a);
