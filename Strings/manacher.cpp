@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define debug printf
+#define debug
 using namespace std;
 
 struct {
@@ -9,28 +9,36 @@ struct {
 	// these arrays are built in O(N) where N is the size of str
 	vector<int> buildD(string &str, int even){
 		vector<int> d(str.size(), 0);
-		for(int i = 0, l = 0, r = 0; i < str.size(); i++){
-			int k = (i >= r) ? even : min(r-i-1, d[r-i-1+l-even]);
-			while(i+k < str.size() && i-k+even >= 0 && str[i+k] == str[i-k+even]) k++;
-			d[i] = --k;
+		for(int i = 0, l = 0, r = 0; i < (int)str.size(); i++){
+			int ind = r-i-1+even+l;
+			assert(i>=r || ind >= 0);
+			int k = (i >= r) ? even : max(even, min(r-i-1, d[ind]));
+			while(i+k-even < (int)str.size() && i-k >= 0 && str[i+k-even] == str[i-k]) k++;
+			d[i] = k-1;
+			assert(d[i] >= 0);
+			if(i+d[i]-even >= r){
+				r = i+d[i]-even;
+				l = i-d[i];
+			}
 		}
 		return d;
 	}
 	
 	// counts how many substrings of str are palindromes
-	int run(string &str){
+	// watch out as this can be very large
+	long long run(string &str){
 		vector<int> d1 = buildD(str, 0);
 		vector<int> d2 = buildD(str, 1);
-		int s = str.size();
+		long long s = str.size();
 		for(auto k : d1) s += k;
 		for(auto k : d2) s += k;
 		return s;
-		
 	}
 } manacher;
 
 int main(){
 	string str;
-	cin >> str;
-	cout << manacher.run(str) << endl;
+	while(cin >> str){
+		cout << manacher.run(str) << endl;
+	}
 }
