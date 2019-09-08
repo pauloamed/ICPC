@@ -1,0 +1,1 @@
+function compila { g++ -std=c++11 -Wall -Wconversion -o2 $1.cpp -o $1; }

@@ -60,7 +60,7 @@ bool operator <(const pv & l, const pv & r){
     return l.x < r.x || (l.x == r.x && l.y < r.y);
 }
 
-// polygon must be clockwise or anti-clockwise oriented
+// polygon must be clockwise or counter-clockwise oriented
 // will return its area
 double polygonArea(vector<pv> &v){
 	T ans = 0;
