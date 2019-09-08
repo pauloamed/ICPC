@@ -58,20 +58,3 @@ vector<par> graham_scan(vector<par>& pontos){
 
     return ans;
 }
-
-int main(){
-    int N, a, b;
-    cin >> N;
-
-    vector<par> v;
-    for(int i(0); i < N; ++i){
-        cin >> a >> b;
-        v.push_back(_mp(a,b));
-    }
-
-    vector<par> convex_hull(graham_scan(v));
-
-    for(int i(0); i < convex_hull.size(); ++i){
-        cout << convex_hull[i].x << " " << convex_hull[i].y << endl;
-    }
-}
