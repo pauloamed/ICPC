@@ -37,7 +37,7 @@ void precalc(size_t n){
     for(size_t i = 1; i < K; ++i){ // para cada tam de intervalo
         size_t j = 0; // comeco na pos inicial. para cada posicao.
         size_t interval_size = (1 << i); // tamanho do intervalo def pelo for externo
-        while(j + interval_size < n){ // enquanto o interv. estiver num pos valida
+        while(j + interval_size <= n){ // enquanto o interv. estiver num pos valida
             size_t last_interv = i-1; // recuperando valor de i para o intervalo anterior
             size_t last_invert_size = (1 << (i-1)); // recuperando tam do interv anterior
 
