@@ -39,9 +39,8 @@ void update_range(int l, int r, int node, int lu, int ru, int diff){
         }
     }else{ //parcialmente dentro, nao faz lp nos filhos
         int mid = (l + r)/2; // mid
-        int left_query = query(l, mid, (node<<1)+1, lq, rq); // faz query da esq
-        int right_query = query(mid+1, r, (node<<1)+2, lq, rq); // query da dir
-        return left_query + right_query; // MERGE
+        update_range(l, mid, (node<<1)+1, lu, ru, diff); // faz query da esq
+        update_range(mid+1, r, (node<<1)+2, lu, ru, diff); // query da dir
     }
 }
 

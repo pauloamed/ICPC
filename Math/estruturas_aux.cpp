@@ -7,7 +7,7 @@ struct neumaierSum{ // estrutura para acumular numeros flutuantes
 
     void operator+=(double a){ // adicionando o valor a ao acumulado
 
-        // if(a < 0) // SOMATORIO DE REAIS NAO NEGATIVOS
+        // if(a < 0) // SOMATORIO DE REAIS NAO NEGATIVOS, PIOR QUE TA NAO FICA
         //     printf("TEM QUE SER NAO NEGATIVO POXA MAN\n");
 
         double t = sum + a;
