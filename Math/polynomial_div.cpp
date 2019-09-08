@@ -1,74 +1,97 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <iterator>
+#include <vector>
+
 using namespace std;
+typedef vector<double> Poly;
 
-/*
-https://rosettacode.org/wiki/Polynomial_long_division
-
-In algebra, polynomial long division is an algorithm for dividing a polynomial
-by another polynomial of the same or lower degree.
-
-
-
-*/
+// does:  prints all members of vector
+// input: c - ASCII char with the name of the vector
+//        A - reference to polynomial (vector)
+void Print(char name, const Poly &A) {
+	cout << name << "(" << A.size()-1 << ") = [ ";
+	copy(A.begin(), A.end(), ostream_iterator<decltype(A[0])>(cout, " "));
+	cout << "]\n";
+}
 
 int main() {
-    // polinomio / divisor = quociente
-    // polinomio % divisor = resto
-    // p/d = q, p%d = r
-    vector<double> p, d, q;
-    size_t dp, dd, dq; // graus dos polinomios = tamanho dos vetores
+	Poly N, D, d, q, r;        // vectors - N / D == q && N % D == r
+	size_t dN, dD, dd, dq, dr; // degrees of vectors
+	size_t i;                  // loop counter
 
-    cin >> dp >> dd; // lendo grau do original e do divisor
-    dq = dp - dd; // inicializando grau do quociente e do resto
+	// setting the degrees of vectors
+	cout << "Enter the degree of N: ";
+	cin >> dN;
+	cout << "Enter the degree of D: ";
+	cin >> dD;
+	dq = dN-dD;
+	dr = dN-dD;
 
-    size_t bdp = dp; // backup do grau do polinomio
+	if( dD < 1 || dN < 1 ) {
+		cerr << "Error: degree of D and N must be positive.\n";
+		return 1;
+	}
 
-    p.resize(dp+1);
-    d.resize(dp+1);
-    q.resize(dq+1);
+	// allocation and initialization of vectors
+	N.resize(dN+1);
+	cout << "Enter the coefficients of N:"<<endl;
+	for ( i = 0; i <= dN; i++ ) {
+		cout << "N[" << i << "]= ";
+		cin >> N[i];
+	}
 
+	D.resize(dN+1);
+	cout << "Enter the coefficients of D:"<<endl;
+	for ( i = 0; i <= dD; i++ ) {
+		cout << "D[" << i << "]= ";
+		cin >> D[i];
+	}
 
-    for ( i = 0; i <= dp; i++ ) cin >> p[i]; // lendo coeficientes do original
-    for ( i = 0; i <= dd; i++ ) cin >> d[i]; // lendo coeficientes do divisor
+	d.resize(dN+1);
+	q.resize(dq+1);
+	r.resize(dr+1);
 
-    // cout << "-- Procedure --" << endl << endl;
+	cout << "-- Procedure --" << endl << endl;
+	if( dN >= dD ) {
+		while(dN >= dD) {
+			// d equals D shifted right
+			d.assign(d.size(), 0);
 
-    while(dp >= dd){
-        // d equals D shifted right
-        d.assign(d.size(), 0);
+			for( i = 0 ; i <= dD ; i++ )
+				d[i+dN-dD] = D[i];
+			dd = dN;
 
-        // para cada coeficiente do divisor
-        for(size_t i = 0; i <= dD; i++) d[i+dN-dD] = D[i];
+			Print( 'd', d );
 
-        dd = dN;
+			// calculating one element of q
+			q[dN-dD] = N[dN]/d[dd];
 
-        // Print( 'd', d );
+			Print( 'q', q );
 
-        // calculating one element of q
-        q[dN-dD] = N[dN]/d[dd];
+			// d equals d * q[dN-dD]
+			for( i = 0 ; i < dq + 1 ; i++ )
+				d[i] = d[i] * q[dN-dD];
 
-        // Print( 'q', q );
+			Print( 'd', d );
 
-        // d equals d * q[dN-dD]
-        for(size_t i = 0 ; i < dq + 1 ; i++ )
-        d[i] = d[i] * q[dN-dD];
+			// N equals N - d
+			for( i = 0 ; i < dN + 1 ; i++ )
+				N[i] = N[i] - d[i];
+			dN--;
 
-        // Print( 'd', d );
+			Print( 'N', N );
+			cout << "-----------------------" << endl << endl;
 
-        // N equals N - d
-        for(size_t i = 0 ; i < dN + 1 ; i++ )
-        N[i] = N[i] - d[i];
-        dN--;
+		}
+	}
 
-        // Print( 'N', N );
-        // cout << "-----------------------" << endl << endl;
+	// r equals N
+	for( i = 0 ; i <= dN ; i++ )
+		r[i] = N[i];
 
-    }
+	cout << "=========================" << endl << endl;
+	cout << "-- Result --" << endl << endl;
 
-    for(int i = 0; i < DN; ++i) cout << q[i] << " "; cout << endl;
-    for(int i = 0; i < DN; ++i) cout << r[i] << " "; cout << endl;
-
-
-    // Print( 'r', r );
-    // Print( 'q', q );
+	Print( 'q', q );
+	Print( 'r', r );
 }
