@@ -54,7 +54,7 @@ struct pv{
     }
 }
 
-// polygon must be clockwise or anti-clockwise oriented
+// polygon must be clockwise or counter-clockwise oriented
 // will return its area
 double polygonArea(const vector<pv> &v){
 	double ans = 0;
