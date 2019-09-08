@@ -21,7 +21,7 @@ struct pv{
         double cosa = max(min(dot(v) / norml2() / v.norml2(), 1.0), -1.0);
         return acos(cosa);
     }
-    double angle_pv(pv v){ // angulo usando a definicao de produto escalar
+    double angle_pv(pv v){ // angulo usando a definicao de produto vetorial
         double sena = max(min(cross(v) / norml2() / v.norml2(), 1.0), -1.0);
         return asin(cosa);
     }
@@ -52,6 +52,17 @@ struct pv{
         if(a.orient(b,c) < 0) swap(b,c); // resumir pra um caso
         return (a.orient(b,p) >= 0) && (a.orient(c,p) <= 0); // se ta dentro
     }
+}
+
+// polygon must be clockwise or anti-clockwise oriented
+// will return its area
+double polygonArea(const vector<pv> &v){
+	double ans = 0;
+	int n = (int)v.size();
+	for(int i = 0; i < n; i++){
+		ans += v[i].cross(v[(i+1)%n]);
+	}
+	return fabs(ans)/2.0;
 }
 
 // POLAR SORT
