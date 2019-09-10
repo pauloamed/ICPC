@@ -1,10 +1,11 @@
 # Traning Repository
 Used:
  - Handbook of geometry for competitive programmers, Victor Lecomte
- - Introduction to Algorithms, ...
- - Competitive Programming 3, ...
+ - Introduction to Algorithms, Cormen
+ - Competitive Programming 3, Halim
  - Wikipedia
  - Geek for geeks
+ - cp-algorithms.com
 
 ## Data Structures
 - BIT / Fenwick Tree (OK)
