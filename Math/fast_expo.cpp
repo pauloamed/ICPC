@@ -33,9 +33,9 @@ ll fastexp(ll base, int expo){ // iterativo
     return ans;
 }
 
-ll inverso( ll a ){
+ll inverso( ll a, ll pmod ){
     // a^(m-1) ≡ 1 (mod m), m primo
     // a^(-1) ≡ a^(m-2) (mod m)
     // o inverso de a eh a^(m-2)
-    return fastexp( a, primo - 2 );
+    return fastexp( a, pmod - 2 );
 }
