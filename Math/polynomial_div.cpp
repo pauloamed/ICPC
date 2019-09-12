@@ -1,3 +1,6 @@
+// retirado de https://rosettacode.org/wiki/Polynomial_long_division
+
+
 #include <iostream>
 #include <iterator>
 #include <vector>

@@ -59,17 +59,6 @@ Segmentos
 ## Algoritmos (e extensões) não implementados
 ### 3 pontos colineares
 Para cada ponto, realizar ordenação polar ((N)(NlogN)). Checar se pontos adjacentes sao colineares para cada ordenação.
-### Área do polígono - *Shoelace formula*
-- Polígono nao se intersecta. Origem não precisa estar dentro do polígono;
-- Polígono é dado ordenado (anti ou horário);
-- Aplica produto vetorial aos vetores induzidos (origem) pelos pontos, dois a dois, achando a área do paralelogramo. Divide essa área por dois;
-- Processar o polígono no sentido reverso resulta na área com sinal oposto.
-### Orientação do polígono (anti/horário)
-Examinar o sinal da área calculada usando o *shoelace formula*.
-### Perímetro de polígono
-Dado que o polígono foi dado ordenado, basta somar as distâncias dos segmentos.
-### Convexidade de polígono
-Checar se todos produtos vetoriais (de pontos 3 a 3) possuem o mesmo sinal.
 ### *Online convex hull*
 Dado um convex hull, quero saber se consigo adicionar um ponto a ele (tornar área igual ou menor?). Pode ser implementado com `set`. Acho a posição em que o ponto deveria ficar (log) e checo se o produto vetorial dele com os adjacentes indica se o polígono ainda é convexo. Caso de borda: pontos colineares (fico com o ponto mais distante).
 
