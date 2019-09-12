@@ -1,34 +1,43 @@
-// extracted from geeks for geeks
-// tests primality of given number
-bool millerTest(ll d, ll n) { 
-    ll a = 2 + rand() % (n - 4); 
-    ll x = power(a, d, n); 
-  
-    if (x == 1  || x == n-1) 
-       return true; 
-  
-    while (d != n-1) { 
-        x = mulmod(x, x, n);
-        d *= 2; 
-        if (x == 1)      return false; 
-        if (x == n-1)    return true; 
-    } 
-    return false; 
-} 
+uint64_t binpower(uint64_t base, uint64_t e, uint64_t mod) {
+    uint64_t result = 1;
+    base %= mod;
+    while (e) {
+        if (e & 1)
+            result = (uint64_t)((__uint128_t)result * base % mod);
+        base = (uint64_t)((__uint128_t)base * base % mod);
+        e >>= 1;
+    }
+    return result;
+}
 
-// probabilistic, uses millerTest, use k = 100
-// runs in O(k*log^3(n))
-// returns true if n is prime
-bool isPrime(ll n, int k){
-    if (n <= 1 || n == 4)  return false; 
-    if (n <= 3) return true; 
-	if (n%2 == 0) return false;
+bool check_composite(uint64_t n, uint64_t a, uint64_t d, int s) {
+    uint64_t x = binpower(a, d, n);
+    if (x == 1 || x == n - 1)
+        return false;
+    for (int r = 1; r < s; r++) {
+        x = (uint64_t)((__uint128_t)x * x % n);
+        if (x == n - 1)
+            return false;
+    }
+    return true;
+}
 
-    ll d = n - 1; 
-    while (d % 2 == 0) d /= 2; 
-  
-    for (int i = 0; i < k; i++) 
-         if (!millerTest(d, n)) return false; 
-  
-	return true;
+bool MillerRabin(uint64_t n) { // returns true if n is prime, else returns false.
+    if (n < 2)
+        return false;
+
+    int r = 0;
+    uint64_t d = n - 1;
+    while ((d & 1) == 0) {
+        d >>= 1;
+        r++;
+    }
+
+    for (unsigned int a : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {
+        if (n == a)
+            return true;
+        if (check_composite(n, a, d, r))
+            return false;
+    }
+    return true;
 }
