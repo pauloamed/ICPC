@@ -1,14 +1,29 @@
-
 struct {
-	// in order to use, you should define 'total', which is the amount of nodes in the
-	// flow graph.
+	// in order to use, you should run prepare() with the amount of nodes
 	// the algorithm will create a matrix with size total*total.
 	// the complexity of the algorithm is O(VE^2)
-	vector<vector<int>> capacity(total, vector<int>(total, 0));
+	
+	// pay attention to this variable
+	const int INF = 2e9;
+	int n;
+	void prepare(int _n){
+		this->n = _n;
+		adj = vector<vector<int>>(_n);
+		capacity = vector<vector<int>>(_n, vector<int>(_n, 0));
+	}
+
+	// adds edge (a, b) with capacity c
+	void addEdge(int a, int b, int c){
+		adj[a].push_back(b);
+		adj[b].push_back(a);
+		capacity[a][b] = c;
+	}
+	
+	vector<vector<int>> capacity;
 	
 	// the adjacency list must represent an UNDIRECTED graph,
 	// which means it should contain u->v and v->u edges
-	vector<vector<int>> adj(total);
+	vector<vector<int>> adj;
 	 
 	int bfs(int s, int t, vector<int>& parent) {
 		fill(parent.begin(), parent.end(), -1);
@@ -37,7 +52,7 @@ struct {
 	 
 	int maxflow(int s, int t) {
 		int flow = 0;
-		vector<int> parent(total); 
+		vector<int> parent(this->n); 
 		int new_flow;
 	 
 		while ((new_flow = bfs(s, t, parent))) {
@@ -54,7 +69,3 @@ struct {
 		return flow;
 	}
 } edmondskarp;
-
-int main(){
-	
-}
