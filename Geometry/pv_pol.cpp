@@ -2,6 +2,11 @@
 using namespace std;
 
 typedef long long T; // mudar para o tipo a ser usado
+
+int sgn(T val){
+    return val > 0 ? 1 : (val == 0 ? 0 : -1);
+}
+
 struct pv{
     T x,y;
 
@@ -9,6 +14,8 @@ struct pv{
     pv operator+(pv p){ return {x+p.x, y+p.y};} // soma
     pv operator-(pv p){ return {x-p.x, y-p.y};} // subtracao
     pv operator*(T k){ return {x*k, y*k};} // multiplicacao por constante
+    pv operator/(T k){ return {x/k, y/k};} // divisao por constante
+
     T dot(pv v){ return x*v.x + y*v.y;} // produto escalar
     T cross(pv v){return {x*v.y - y*v.x};} // produto vetorial
     // prod vet de pontos
@@ -30,7 +37,7 @@ struct pv{
 
     // comparacao entre pontos, pra ordenacao
 
-    // orientacao para pontos
+    // orientacao dos pontos na ordem THIS->A->B
     // se ret < 0: sentido horario
     // se ret > 0: sentido anti horario
     // se ret == 0; colineares
@@ -46,36 +53,20 @@ struct pv{
     // transformacoes
     // rotaciona o vetor em a radianos
     // pv rotate(double a){ return {((double) x)*cos(a) - y*sin(a), (T) x*sin(a) + y*cos(a)}; }
+    pv perp(){ return {this->y, -this->x}; } // gira 90 graus no sentido horario
 
     // dentro de ...
-    bool inAngle(pv a, pv b, pv c, pv p){
-        // checa se o ponto ta dentro do angulo def por a,b,c
-        if(a.orient(b,c) == 0) printf("COLINEARES\n"); // da ruim se forem colineares
-        if(a.orient(b,c) < 0) swap(b,c); // resumir pra um caso
-        return (a.orient(b,p) >= 0) && (a.orient(c,p) <= 0); // se ta dentro
-    }
 };
+
+bool inAngle(pv a, pv b, pv c, pv p){
+    // checa se o ponto ta dentro do angulo def por a,b,c
+    if(a.orient(b,c) == 0) printf("COLINEARES\n"); // da ruim se forem colineares
+    if(a.orient(b,c) < 0) swap(b,c); // resumir pra um caso
+    return (a.orient(b,p) >= 0) && (a.orient(c,p) <= 0); // se ta dentro
+}
 
 bool operator <(const pv & l, const pv & r){
     return l.x < r.x || (l.x == r.x && l.y < r.y);
-}
-
-// polygon must be clockwise or counter-clockwise oriented
-// will return its area
-double polygonArea(vector<pv> &v){
-	T ans = 0;
-	int n = (int)v.size();
-	for(int i = 0; i < n; i++){
-		ans += v[i].cross(v[(i+1)%n]);
-	}
-	return ((double) abs(ans))/2.0;
-}
-
-// POLAR SORT
-// TODO
-
-int sgn(T val){
-    return val > 0 ? 1 : (val == 0 ? 0 : -1);
 }
 
 bool pointInTriangle(pv a, pv b, pv c, pv point){
@@ -83,6 +74,12 @@ bool pointInTriangle(pv a, pv b, pv c, pv point){
     // (area of APB) + (area of BPC) + (area of CPA) must be equal to area of ABC
     T a2 = abs(point.cross(a, b)) + abs(point.cross(b, c)) + abs(point.cross(c, a));
     return ((a1 - a2) == 0);
+}
+
+bool pointInDisk(pv a, pv b, pv c){
+    // checks if point c is inside of minimum enclosing disk from a and b
+    if((a == c) || (b == c)) return true;
+    return (a-c).dot(b-c) <= 0;
 }
 
 vector<pv> prepare(vector<pv> points, pv &lexsmaller){ // add & to points if needed
@@ -100,10 +97,35 @@ vector<pv> prepare(vector<pv> points, pv &lexsmaller){ // add & to points if nee
     // rotate vector point so it starts at pos
     rotate(points.begin(), points.begin() + pos, points.end());
 
-    // all points in polygon become a vector starting at origin
+    // generates edges of polygon
     vector<pv> seq;
     for(int i = 0; i < n-1; i++) seq.push_back(points[i + 1] - points[0]);
     return seq;
+}
+
+// polygon must be clockwise or counter-clockwise oriented
+double polygonArea(vector<pv> &v){ // v is the list of edges (use prepare)
+	T ans = 0;
+	int n = (int)v.size();
+	for(int i = 0; i < n; i++){
+		ans += v[i].cross(v[(i+1)%n]);
+	}
+	return ((double) abs(ans))/2.0;
+}
+
+bool polygonOrientation(vector<pv> &v){ // v is the list of edges (use prepare)
+    return polygonArea(v) > 0;
+}
+
+bool polygonIsConvex(vector<pv> &v){
+    int state = 0;
+    int n = (int) v.size();
+    for(int i = 0; i < v.size(); ++i){
+        int q = v[i].orient(v[(i+1)%n], v[(i+2)%n]);
+        if(state == 0) state = q;
+        else if(state != q && q != 0) return false;
+    }
+    return true;
 }
 
 bool pointInConvexPolygon(vector<pv> &seq, pv leftmost, pv point){
