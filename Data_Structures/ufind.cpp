@@ -10,6 +10,7 @@
 
 size_t sizes[MAXN]; // vetor com tamanhos
 size_t parents[MAXN]; // vetor com pai de cada no
+// stack<pair<int,int>> old_pai, old_tam; ROLLBACK
 
 void init(size_t n){
     for(size_t i = 0; i < n; ++i){
@@ -19,6 +20,7 @@ void init(size_t n){
 }
 
 size_t do_find(current){
+    // ROLLBACK DOESNT HAVE PATH COMPRESSION
     size_t new_root = current; // variavel para guardar nova raiz
     while(new_root != parents[new_root]) // enquanto nao encontro no raiz
         new_root = parents[new_root]; // subo na arvore
@@ -41,7 +43,17 @@ void do_union(size_t a, size_t b){
     if(a == b) return; // se for a mesma raiz, nao tenho o que unir
 
     // uniao por tamanho
-    if(sizes[a] > sizes[b]) swap(a,b); // quero unir "b" a "a"
+    if(sizes[a] < sizes[b]) swap(a,b); // quero unir "b" a "a"
+ 
+    // old_tam.push({a, sizes[a]}); ROLLBACK
+    // old_pai.push({b, parents[b]}); ROLLBACK
+ 
     sizes[a] += sizes[b]; // atualizando tamanho de "a"
     parents[b] = a; // pai de "b" eh "a"
 }
+
+void rollback(){
+    sizes[old_tam.top().first] = old_tam.top().second; old_tam.pop();
+    parents[old_pai.top().first] = old_pai.top().second; old_pai.pop();
+}
+
