@@ -1,4 +1,5 @@
 // extracted from https://codeforces.com/blog/entry/12145?#comment-168098
+// see also https://cp-algorithms.com/string/string-hashing.html
 struct SingleHash {
     vector<int> suf, b;
     int mod;
