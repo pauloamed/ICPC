@@ -143,7 +143,7 @@ bool pointInConvexPolygon(vector<pv> &seq, pv leftmost, pv point){
     while(r - l > 1){
         int mid = (l + r)/2;
         int pos = mid;
-        if(seq[pos].cross(point) >= 0) l = mid;
+        if(seq[pos].cross(point) >= 0) l = mid; // change >= to <= depending on polygon orientation
         else r = mid;
     }
 

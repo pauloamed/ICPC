@@ -43,19 +43,6 @@ Erros de precisão podem ser estimados em dois cenários:
 - Entrada da operação é exata
 - Entrada da operação é imprecisa
 
-#### TODO
-
-## Objetos geométricos
-#### 0D
-- Pontos: (...)
-#### 1D
-- Linhas: (...)
-- Vetores: (...)
-Segmentos
-#### 2D
-- Circulos: (...)
-- Poligonos: (...)
-
 ## Algoritmos (e extensões) não implementados
 ### 3 pontos colineares
 Para cada ponto, realizar ordenação polar ((N)(NlogN)). Checar se pontos adjacentes sao colineares para cada ordenação.

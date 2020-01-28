@@ -39,7 +39,7 @@ bool properSegmentInSegment(pv s1a, pv s1b, pv s2a, pv s2b, pv &inter){
 
     if(oriS1aToS2 * oriS1bToS2 < 0){ // points of s1 are on dif sides from s2
         if(oriS2aToS1 * oriS2bToS1 < 0){ // points of s2 are on dif sides from s1
-            inter = ((s1a * oriS1bToS2) - (s1b * oriS1aToS2)) / (oriS1bToS2 - oriS1aToS2);
+            inter = ((s1a * oriS1bToS2) - (s1b * oriS1aToS2)) / (oriS1bToS2 - oriS1aToS2); // PODE DAR OVERFLOW
             return true;
         }
     }

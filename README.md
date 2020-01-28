@@ -10,6 +10,8 @@ Used:
 ## Data Structures
 - BIT / Fenwick Tree (OK)
 - Segment Tree (with lazy prop.) (OK)
+- Implicit Segment Tree (OK)
+- Persistent Segment Tree (OK)
 - Union-Find (OK)
 - Sparse Table (OK)
 - Mo's
@@ -30,9 +32,9 @@ Used:
 - Euler path - Hierholzer (OK)
 - Transitive closure - Warshall algorithm (OK)
 - Lowest Common Ancestor (OK)
-- Flow - Dinitz
-- Bipartite Maximum Matching - Hopcroft–Karp
-- Edge Cover
+- Flow - Dinitz (OK)
+- Bipartite Maximum Matching - Hopcroft–Karp (OK)
+- Edge Cover (OK)
 - Genral Maximum Matching - Blossom algorithm
 - Centroid Decomposition
 - Cycle compression
@@ -46,7 +48,7 @@ Used:
 - Determine if a list of points is in (counter)clockwise order (OK)
 - Closest pair of points (OK)
 - Binary Search in a Polygon
-- Farthest pair of points
+- Farthest pair of points (OK)
 - Intersections
 - Line Sweep
 - Plane Sweep
@@ -71,11 +73,11 @@ Used:
 ## String
 - Manacher (OK)
 - Z-Algorithm (OK)
-- KMP
-- Trie
+- KMP (OK)
+- Trie (OK)
 - Suffix Array
 - Suffix Tree
-- Aho–Corasick
+- Aho–Corasick (OK)
 
 ## Others
 - Nim game

@@ -1,18 +1,18 @@
-#include <bits/stdc++.h>
-
-using namespace std;
 struct {
 	// this function returns the Z-vector.
 	// the Z-vector is defined as: Z[i] says that the string s[0..Z[i]] matches the string s[i..i+Z[i]]
 	// the construction of the array is made in O(n)
-	vector<int> build(const string &str){
-		vector<int> z(str.size(), 0);
-		z[0] = str.size();
-		int n = str.size();
-		for(int i = 1, l = 0, r = 0; i < n; i++){
-			assert(r >= l);
-			z[i] = i >= r ? 0 : min(z[i-l], r-i-1);
-			while(i+z[i] < n && str[i+z[i]] == str[z[i]]) z[i]++;
+	// this code was tested with the problem https://codeforces.com/contest/149/problem/E, martian strings
+	vector<int> build(const string& s) {
+		int n = (int) s.length();
+		vector<int> z(n);
+		for (int i = 1, l = 0, r = 0; i < n; ++i) {
+			if (i <= r)
+				z[i] = min (r - i + 1, z[i - l]);
+			while (i + z[i] < n && s[z[i]] == s[i + z[i]])
+				++z[i];
+			if (i + z[i] - 1 > r)
+				l = i, r = i + z[i] - 1;
 		}
 		return z;
 	}
@@ -27,9 +27,3 @@ struct {
 	}
 
 } zalgo;
-int main(){
-	string s, p;
-	cin >> s >> p;
-	cout << zalgo.countMatches(s, p) << endl;
-	
-}
