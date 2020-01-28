@@ -5,20 +5,27 @@ using namespace std;
 pattern search: dada uma string texto T e um padrao P, achar as ocorrencias de P
 em T em O(len(T))
 
-quando é encontrado um erro, a gnt sabe que tudo que veio antes foi um acerto. logo
-se os ultimos k acertos forem iguais aos primeiros k acertos, a gnt nao precisa checar
-esses k caracteres de novo. e eu consigo ter acesso ao valor k em O(1). assim,
-nosso objetivo nao eh ter que voltar toda a string do padrao para comparacao.
-pra isso, a gnt cria uma tabela de prefixos, que vai guardar o tamanho do maior
-prefixo proprio (pq proprio?) que da match com um sufixo proprio, ambos de uma
-substrings que eh um prefixo do padrao. Logo, se uma comparacao falhar no i-esimo
-caractere do padrao e eu estiver no j-esimo caractere do texto, eu pulo para o
-j+1+pat[i] caractere ao inves de para o j+1
+prefix func: t[i]: tamanho do maior prefixo proprio que tambem eh sufixo em s[0...i]
 
-sufixo do que foi comparado (do que esta certo), nao de tudo. se ta certo, eh pq
-se eu testasse de novo, iria dar match. logo, eu nao preciso testar de novo, se
-eu sei que vai dar match. entao eu vejo o tamanho do maior prefixo que eh tambem
-sufixo.
+se temos que s[i+1] = s[t[i]], temos que t[i+1] = t[i] + 1 (acumulo de acertos)
+caso contrario, queremos achar o maior j < t[i] para realizar novamente a comparacao s[i+1] == s[...],
+ou seja, queremos achar o maior j < t[i] tal que s[0:j] = s[i-j+1:i]
+
+para isso bastava decrementar o j iterativamente, mas podemos agilizar o processo utilizando
+a tabela t[]: sendo k = t[i], temos que s[0:k-1] = s[i-k:i]. ou seja, temos no "comeco" da
+string uma substring (prefixo) de tamanho k igual a outra substring (sufixo de s[:i]) de tamanho k
+
+se essa substring S em questao ela mesma tiver um prefixo proprio igual a algum sufixo proprio, o 
+tamanho l dessa substring em comum sera o valor j procurado (s[0:l] = s[k-l+1: k] -> s[0:l] = s[i-l+1:i]).
+
+acontece que a comparacao tambem pode falhar para esse valor, e temos entao que ir reduzindo o valor de j
+até a comparação dar certo
+
+complexidade:
+    i incrementa += 1 no n vezes
+    j increvemnta += 1 no max n vezes (nao ate n) mas pode decrementar seu valor (n = 2n)
+    
+    
 
 construcao da tabela: O(len(P))
 query: O(len(T))
@@ -31,7 +38,7 @@ void preprocess(string pat, int t[]){
     int j = 0, i = 1; // iteradores
     while (i < pat.size()){ // calcular pra todo elemento no padrao
         if(pat[i] == pat[j]){ //
-            t[i] = ++j; // pre incrementa j e pos incrementa i
+            t[i] = ++j; // sucesso!
         }else{ // (pat[i] != pat[j])
             if(j == 0){ // nao tem nenhum match ate agora
                 t[i] = 0;
