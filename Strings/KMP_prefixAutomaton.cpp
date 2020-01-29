@@ -74,6 +74,27 @@ vector<int> kmp(string pat, string txt){
     return ans;
 }
 
+//cp-algorithms.com
+void computeAutomaton(string s, vector<vector<int>>& aut , int pi[]) {
+    s += '#';
+    int n = s.size();
+    aut.assign(n, vector<int>(26, 0)); 
+    // estado 0 eh o inicial. estado i eh o estado de sucesso pra o prefixo s[0...i-1]
+    aut[0][s[0] - 'a'] = 1; // crio a conexao da primeira letra
+    for (int i = 1; i < n; i++) { // para da um dos n estados (1...n-1)
+        for (int c = 'a'; c <= 'z'; c++) { // para cada char
+            // se deu match, marco que posso ir pro proximo estado
+            if(c == s[i]) aut[i][c - 'a'] = i + 1; 
+            else aut[i][c - 'a'] = aut[pi[i-1]][c - 'a']; 
+            // se nao deu match, considero o estado pi[i-1]. esse estado representa
+            // o prefixo P, que pela definicao de pi, é o maior prefixo que eh sufixo
+            // de s[0...i-1]. olhando o que esse estado fez quando c apareceu é equivalente
+            // a considerar que esse estado atual deu erro e eu reli todo esse sufixo que eh prefixo
+            // chegando ao estado pi[i-1]
+        }
+    }
+}
+
 int main(){
     string pat, txt; cin >> pat >> txt;
     for(auto &a: kmp(pat, txt)) cout << a << " "; cout << endl;
