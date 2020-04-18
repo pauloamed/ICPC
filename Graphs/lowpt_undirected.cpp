@@ -14,7 +14,7 @@ int lvl[MAXN]; // vetor auxiliar com o level de cada vertice
 Componentes biconexas de um grafo nao direcionado
  - Numa DFS, podemos formar dois tipos de arestas:
      - Aresta da arvore: aresta conectando um vertice ja visitado a um ainda nao visitado
-     - Aresta de retorno: aresta conectando um vertice ja visitado a um ja visitado
+     - Aresta de retorno: aresta conectando um vertice ja visitado a um ja visitado. ARESTAS DE RETORNO CONECTA UM VERTICE A UM ANCESTRAL.
  - Lowpt(v) é igual ao vértice mais próximo da raiz da arvore de recursao (T) que pode
    ser alcançado a partir de v, caminhando-se em T para baixo através de zero ou mais
    arestas na árvore e, em seguida, para cima utilizando no máximo uma aresta de retorno.
