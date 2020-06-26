@@ -64,6 +64,18 @@ size_t find(int val){ // funcao que retorna a primeira posicao do acumulado maio
     return ret + 1;
 }
 
+
+int first_zero(){
+    int ans = 0;
+    if(bit[1] == 0) return 0;
+    for(int i = MAXLOG-1; i >= 0; --i){
+        int maybe_ans = (ans | (1<<i)); // novo indice se o bit for ativo
+        if(maybe_ans >= MAXV) continue; // caso ultrapasse o limite no calc do indice
+        if(bit[maybe_ans] == (1 << i)) ans = maybe_ans;
+    }
+    return ans;
+}
+
 //////////////////////////////////////////////////////////////////////////////////
 //              Query num ponto especifico e Update numa range                  //
 //////////////////////////////////////////////////////////////////////////////////
