@@ -51,7 +51,7 @@ size_t find(int val){ // funcao que retorna a primeira posicao do acumulado maio
 
         size_t maybe_ret = (ret | (1<<i)); // novo indice se o bit for ativo
         if(maybe_ret >= MAXN){
-            i++; continue; // caso ultrapasse o limite no calc do indice
+            i--; continue; // caso ultrapasse o limite no calc do indice
         }
 
         if(bit[maybe_ret] <= val){ // caso eu possa adicionar esse bit
