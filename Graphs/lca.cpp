@@ -30,7 +30,8 @@ void init_st(){
 }
 
 void init(int root, int n){ // funcao init, raiz e #nos
-    bool jafoi = new bool[n]; // visitados
+    bool *jafoi = new bool[n]; // visitados
+    // botando que o pai da raiz eh -1, pode ser ela mesma tbm
     init_dfs(root, -1, jafoi); // calcular os ancestrais imediatos
     delete[] jafoi;
     init_st(); // init da sparse table
