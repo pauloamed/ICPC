@@ -5,6 +5,8 @@ using namespace std;
 pattern search: dada uma string texto T e um padrao P, achar as ocorrencias de P
 em T em O(len(T))
 
+KMP: pode ser usado pra computar qnts vezes uma substr(0...i) se reprete em s
+
 prefix func: t[i]: tamanho do maior prefixo proprio que tambem eh sufixo em s[0...i]
 
 se temos que s[i+1] = s[t[i]], temos que t[i+1] = t[i] + 1 (acumulo de acertos)
