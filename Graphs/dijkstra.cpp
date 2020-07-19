@@ -7,7 +7,6 @@ using namespace std;
 int dist[MAXN]; // Vetor de distancias
 int parent[MAXN]; // Vetor com o pai
 vector<pair<int, int>> v[MAXN]; // Lista de adjacencia com pesos
-set<pair<int,int>> s; // Set do Dijkstra com dists e atuais
 
 /*
 Analisa um vertice por vez, aquele com menor distancia ja calculada
@@ -23,15 +22,16 @@ COMPLEXIDADE ESPACO:
 */
 
 void dijkstra(int u, int n){
+    set<pair<int,int>> s; // Set do Dijkstra com dists e atuais
     for(int i = 0; i < n; ++i){
         dist[i] = INF; // inicializando distancias
         parent[i] = i; // inicializando pai
     }
 
     dist[u] = 0; // Distancia para o vertice de inicio atualizada
-    set.insert({0, u}); // Adiciono a dist p ele e ele, na heap ordenada por dists
+    s.insert({0, u}); // Adiciono a dist p ele e ele, na heap ordenada por dists
 
-    while(!pq.empty()){
+    while(!s.empty()){
         int cur_dist = s.begin()->first; // Recuperando dist pro vertice atual
         int cur_vertice = s.begin()->second; // Recuperando o vertice atual
         s.erase(s.begin()); // Removendo vertice atual do set, cada vertice passa por isso 1
@@ -44,7 +44,7 @@ void dijkstra(int u, int n){
             // Se a dist computada pro adj for menor que a armazenada
             if(dist_adj < dist[v[cur_vertice][i].first]){
                 // Remove registro antigo se tiver
-                s.erase({dist[v[cur_vertice][i]], v[cur_vertice][i].first});
+                s.erase({dist[v[cur_vertice][i].first], v[cur_vertice][i].first});
 
                 dist[v[cur_vertice][i].first] = dist_adj; // Atualiza distancia
                 parent[v[cur_vertice][i].first] = cur_vertice; // Atualiza pai
