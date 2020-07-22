@@ -1,6 +1,6 @@
 ll mulmod(ll a, ll b, ll c){ // multiplicacao modular
     // multiplicar (a*b) equivale a sum(a * 2^i * b_i), onde (a*2^i) é representado
-    // na linha do meio, b_i na primeira linha, e o passo de sum na ultima linha
+    // na linha do meio, b_i na ultima linha, e o passo de sum na primeira linha
     ll ans = 0;
     a %= c;
     while(b > 0){
