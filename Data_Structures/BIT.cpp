@@ -40,13 +40,13 @@ void update( int index, int val ){
     }
 }
 
-size_t find(int val){ // funcao que retorna a primeira posicao do acumulado maior que val
+int find(int val){ // funcao que retorna a primeira posicao do acumulado maior que val
     // essa funcao vai tentando ativar os bits de ret enquanto percorre a BIT
     // se um bit eh ligado, eh como se tivesse entrado na subarvore induzida por ele
     // entao val eh atualizado, e o mesmo processo eh realizado para a subarvore atual
 
-    size_t ret = 0; // indice de retorno
-    size_t i = (size_t) log2(MAXN); // maior bit ativo possivel
+    int ret = 0; // indice de retorno
+    int i = (int) log2(MAXN); // maior bit ativo possivel
     while(i >= 0){ // enquanto posso ir pra direita nos bits
 
         size_t maybe_ret = (ret | (1<<i)); // novo indice se o bit for ativo
