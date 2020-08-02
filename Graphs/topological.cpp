@@ -26,12 +26,11 @@ bool loop(int x){
     if(perm[x]) return false; // Visitando novamente um vertice, mas nao na sua subarvore
     if(temp[x]) return true; // Se temp[x] ta ativo, estou numa subarvore de temp[x]. Ciclo
 
-    bool ans = false; // Retorno se tem ciclo
-
     if(v[x].size() > 0) temp[x] = true; // Se tem filho, ponho x na pilha de recursao
 
+    bool ans = false; // Retorno se tem ciclo
     for(size_t i = 0; i < v[x].size(); i++)
-        ans = max(ans, loop(v[x][i])); // Checo se da em loop
+        ans |= loop(v[x][i]; // Checo se da em loop
 
     temp[x] = false; // Tiro x da pilha de recursao
     ts.push_back(x); // Adiciono x na ordenacao topologica (isso so eh feito depois que todos seus filhos
@@ -61,7 +60,5 @@ int main(){
     // Imprime a ordenacao
     for(int i = 0; i < ts.size(); i++){
         printf("%lu ", ts[i]);
-    }cout << endl;
-
-
+    } cout << '\n';
 }
