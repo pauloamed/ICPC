@@ -1,15 +1,12 @@
-#include<bits/stdc++.h>
-using namespace std;
-
 #define MAXV 100100
 #define MAXLOG 17
-#define INF 1e9
+#define INF 1e9 * 2
 
 vector<int> v[MAXV]; // lista de adj
 
 int st[MAXV][MAXLOG]; // sparse table (x,i) guardando ancestral de ordem 2^i de x
 int lvl[MAXV]; // lvl=profundidade de cada no
-bool vis_lca[MAXV]; // vis
+bool vis_lca[MAXV]; // lvl=profundidade de cada no
 
 void init_dfs(int x, int par){
     vis_lca[x] = true; // marcando vertice como visitado
@@ -26,7 +23,8 @@ void init_st(){
     for(int x = 1; x < MAXLOG; ++x) // 2^0 ja foi calculado, calculo pro resto
         for(int i = 0; i < MAXV; ++i){ // pra cada vertice
             // olho o ancestral 2^(i-1) do meu 2^(i-1), achando entao o meu 2^i
-            st[i][x] = st[st[i][x-1]][x-1];
+            if(st[i][x-1] == -1) st[i][x] = -1;
+            else st[i][x] = st[st[i][x-1]][x-1];
     }
 }
 
