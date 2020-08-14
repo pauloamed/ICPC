@@ -49,7 +49,7 @@ int find(int val){ // funcao que retorna a primeira posicao do acumulado maior q
     int i = (int) log2(MAXN); // maior bit ativo possivel
     while(i >= 0){ // enquanto posso ir pra direita nos bits
 
-        size_t maybe_ret = (ret | (1<<i)); // novo indice se o bit for ativo
+        int_long? maybe_ret = (ret | (1<<i)); // novo indice se o bit for ativo
         if(maybe_ret >= MAXN){
             i--; continue; // caso ultrapasse o limite no calc do indice
         }
@@ -61,7 +61,7 @@ int find(int val){ // funcao que retorna a primeira posicao do acumulado maior q
 
         --i; // ando pra direita na bit
     }
-    return ret + 1;
+    return ret + 1; // RETORNA POSICAO DA BIT, QUE EH 1 INDEXADA
 }
 
 
