@@ -38,6 +38,16 @@ int query(int l, int r, int node, int lq, int rq){
     }
 }
 
+pair<int,int> find(int l, int r, int node, int lq, int rq, int x){
+    if(segt[node].first <= x || r < lq || l > rq) return {-INF, -1};
+    if(l == r) return segt[node];
+    int mid = (l + r)/2; // mid
+    auto ret = find(mid+1, r, (node<<1)+2, lq, rq, x); // find da subarv dir
+    // cout << ret.first << endl;
+    if(ret.first != -INF) return ret;
+    else return find(l, mid, (node<<1)+1, lq, rq, x); // find da subarv esq
+}
+
 int main(){
     build(0, n-1, 0); // dar o build sempre antes de usar
     // valores inicais: l=0, r=n-1, node=0
