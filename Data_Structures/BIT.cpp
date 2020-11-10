@@ -40,17 +40,19 @@ void update( int index, int val ){
     }
 }
 
-size_t find(int val){ // funcao que retorna a primeira posicao do acumulado maior que val
+int find(int val){ // funcao que retorna a primeira posicao do acumulado maior que val
     // essa funcao vai tentando ativar os bits de ret enquanto percorre a BIT
     // se um bit eh ligado, eh como se tivesse entrado na subarvore induzida por ele
     // entao val eh atualizado, e o mesmo processo eh realizado para a subarvore atual
 
-    size_t ret = 0; // indice de retorno
-    size_t i = (size_t) log2(MAXN); // maior bit ativo possivel
+    int ret = 0; // indice de retorno
+    int i = (int) log2(MAXN); // maior bit ativo possivel
     while(i >= 0){ // enquanto posso ir pra direita nos bits
 
-        size_t maybe_ret = (ret | (1<<i)); // novo indice se o bit for ativo
-        if(maybe_ret >= MAXN) continue; // caso ultrapasse o limite no calc do indice
+        int_long? maybe_ret = (ret | (1<<i)); // novo indice se o bit for ativo
+        if(maybe_ret >= MAXN){
+            i--; continue; // caso ultrapasse o limite no calc do indice
+        }
 
         if(bit[maybe_ret] <= val){ // caso eu possa adicionar esse bit
             ret = maybe_ret; // atualizo o retorno
@@ -59,7 +61,19 @@ size_t find(int val){ // funcao que retorna a primeira posicao do acumulado maio
 
         --i; // ando pra direita na bit
     }
-    return ret + 1;
+    return ret + 1; // RETORNA POSICAO DA BIT, QUE EH 1 INDEXADA
+}
+
+
+int first_zero(){
+    int ans = 0;
+    if(bit[1] == 0) return 0;
+    for(int i = MAXLOG-1; i >= 0; --i){
+        int maybe_ans = (ans | (1<<i)); // novo indice se o bit for ativo
+        if(maybe_ans >= MAXV) continue; // caso ultrapasse o limite no calc do indice
+        if(bit[maybe_ans] == (1 << i)) ans = maybe_ans;
+    }
+    return ans;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
