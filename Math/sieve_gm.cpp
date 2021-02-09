@@ -4,10 +4,6 @@
 int min_prime_fact[MAXN];
 
 // to be used for multiplicative functions
-// such functions f(n) = f(a)f(b) when gcd(a,b)=1 (a.k.a coprimes)
-// the behaviour of these functions for p^k is their singularity
-// once one defines f(p^k), the factorization of n = p^k*q^l*...
-// yields f(n) = f(p^k)*f(q^l)*..., since all primes are coprimes
 int count_exp_min_prime_fact[MAXN];
 
 
@@ -35,45 +31,17 @@ void sieve(int n){
             min_prime_fact[i * pr[j]] = pr[j];
             if(pr[j] == min_prime_fact[i]){
               phi[i * pr[j]] = phi[i] * pr[j];
-
+	      func[i * prime[j]] = func[i] / cnt[i] * (cnt[i] + 1);
               // since i and i*pr[j] have the same min count fact (pr[j])
               // (but i has already some pr[j] as factors)
               count_exp_min_prime_fact[i * pr[j]] = count_exp_min_prime_fact[i] + 1;
               break;
             }else{
               // i and pr[j] are coprime. thus, i * pr[j] has only one pr[j] factor
+	      func[i * prime[j]] = func[i] * func[prime[j]];
               count_exp_min_prime_fact[i * pr[j]] = 1;
               phi[i * pr[j]] = phi[i] * phi[pr[j]];
             }
         }
     }
-}
-
-
-
-// https://codeforces.com/blog/entry/54090
-std::vector <int> prime;
-bool is_composite[MAXN];
-int func[MAXN], cnt[MAXN];
-
-void sieve (int n) {
-	std::fill (is_composite, is_composite + n, false);
-	func[1] = 1;
-	for (int i = 2; i < n; ++i) {
-		if (!is_composite[i]) {
-			prime.push_back (i);
-			func[i] = 1; cnt[i] = 1;
-		}
-		for (int j = 0; j < prime.size () && i * prime[j] < n; ++j) {
-			is_composite[i * prime[j]] = true;
-			if (i % prime[j] == 0) {
-				func[i * prime[j]] = func[i] / cnt[i] * (cnt[i] + 1);
-				cnt[i * prime[j]] = cnt[i] + 1;
-				break;
-			} else {
-				func[i * prime[j]] = func[i] * func[prime[j]];
-				cnt[i * prime[j]] = 1;
-			}
-		}
-	}
 }
