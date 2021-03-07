@@ -150,3 +150,43 @@ bool pointInConvexPolygon(vector<pv> &seq, pv leftmost, pv point){
     int pos = l;
     return pointInTriangle(seq[pos], seq[pos + 1], {0, 0}, point);
 }
+
+vector<pv> graham_scan(vector<pv>& pontos){
+  int n = pontos.size();
+  int pivot_id = 0;
+  for(int i = 1; i < n; ++i){
+    if(pontos[i].y > pontos[pivot_id].y) continue;
+    else if(pontos[i].y < pontos[pivot_id].y) pivot_id = i;
+    else if(pontos[i].x < pontos[pivot_id].x) pivot_id = i;
+  }
+
+  swap(pontos[0], pontos[pivot_id]);
+  pv pivot = pontos[0];
+  sort(pontos.begin() + 1, pontos.end(),
+  [&](pv &a, pv &b) -> bool{
+    int temp = pivot.orient(a, b);
+    if(temp != 0) return temp > 0;
+    return (a - pivot).sq() < (b - pivot).sq();
+  });
+
+  int i = 0;
+  vector<pv> ans;
+  for(; ans.size() < 2 && i < n; ++i){
+    if(i == 0) ans.push_back(pontos[i]);
+    else if(pontos[i] != pontos[i - 1]) ans.push_back(pontos[i]);
+  }
+
+
+  for(; i <= n; ++i){
+    if(i == n){
+      while(ans.size() > 2 && ans[ans.size() - 2].orient(pontos[0], ans.back()) >= 0)
+        ans.pop_back();
+    }else{
+      while(ans.size() >= 2 && ans[ans.size() - 2].orient(pontos[i], ans.back()) >= 0)
+        ans.pop_back();
+      ans.push_back(pontos[i]);
+    }
+  }
+
+  return ans;
+}
