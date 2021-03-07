@@ -128,14 +128,24 @@ bool polygonIsConvex(vector<pv> &v){
     return true;
 }
 
-bool pointInConvexPolygon(vector<pv> &seq, pv leftmost, pv point){
+// 0: fora
+// 1: borda
+// 2: dentro
+int pointInConvexPolygon(vector<pv> &seq, pv leftmost, pv point){
     point = point - leftmost;
     int n = (int) seq.size();
 
     // checking if point is outside of polygon by looking at p_(n-1)p_0p_1 triangle
-    if(seq[0].cross(point) != 0 && sgn(seq[0].cross(point)) != sgn(seq[0].cross(seq[n - 1]))) return false;
-    if(seq[n - 1].cross(point) != 0 && sgn(seq[n - 1].cross(point)) != sgn(seq[n - 1].cross(seq[0]))) return false;
-    if(seq[0].cross(point) == 0) return seq[0].sq() >= point.sq();
+    if(seq[0].cross(point) != 0 && sgn(seq[0].cross(point)) != sgn(seq[0].cross(seq[n - 1]))) return 0;
+    if(seq[n - 1].cross(point) != 0 && sgn(seq[n - 1].cross(point)) != sgn(seq[n - 1].cross(seq[0]))) return 0;
+    for(auto x : {0ll, n-1}){
+      if(seq[x].cross(point) == 0){
+        int a = seq[x].sq();
+        int b = point.sq();
+        if(b <= a) return 1;
+        else return 0;
+      }
+    }
 
     // retrieves last (l) non negative cross product (first negative is l + 1)
     // point must be between l and l+1
@@ -148,7 +158,9 @@ bool pointInConvexPolygon(vector<pv> &seq, pv leftmost, pv point){
     }
 
     int pos = l;
-    return pointInTriangle(seq[pos], seq[pos + 1], {0, 0}, point);
+    if(pointInSegment(seq[pos], seq[pos + 1], point)) return 1;
+    else if(pointInTriangle(seq[pos], seq[pos + 1], {0, 0}, point)) return 2;
+    else return 0;
 }
 
 vector<pv> graham_scan(vector<pv>& pontos){
