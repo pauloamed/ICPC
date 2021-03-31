@@ -49,7 +49,6 @@ struct DynamicCHT : multiset<Line,less<>> {
   // Note that the lines from both direcitons (before and after) the recently
   // added may be removed.
 	void add(int m, int b){
-    // x: iterator for the previous line (in order)
     // y: iterator for the added line
     // z: iterator for the next line (in order)
 		auto z = insert({m, b, inf}), y = z++;
