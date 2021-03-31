@@ -2,8 +2,10 @@
 using namespace std;
 
 // https://github.com/VictorLamarca/CP---Algorithms/blob/master/geometry/Convex_Hull/CHT/cht.cpp
+#define int long long
 
-#define int long long // ATENCAO
+
+
 const int inf = LLONG_MAX; // ATENCAO
 
 struct Line{
@@ -47,6 +49,7 @@ struct DynamicCHT : multiset<Line,less<>> {
   // Note that the lines from both direcitons (before and after) the recently
   // added may be removed.
 	void add(int m, int b){
+    // x: iterator for the previous line (in order)
     // y: iterator for the added line
     // z: iterator for the next line (in order)
 		auto z = insert({m, b, inf}), y = z++;
@@ -107,4 +110,3 @@ struct DynamicCHT : multiset<Line,less<>> {
 		return lower_bound(x)->eval(x);
 	}
 };
-
