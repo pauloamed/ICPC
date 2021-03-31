@@ -1,3 +1,8 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// https://github.com/VictorLamarca/CP---Algorithms/blob/master/geometry/Convex_Hull/CHT/cht.cpp
+
 const int inf = LLONG_MAX; // ATENCAO
 
 struct Line{
