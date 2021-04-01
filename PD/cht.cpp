@@ -1,6 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
+/*
+PEGAR MIN: INSERIR RETAS COM COEFICIENTE E BIAS NEGADOS E NEGAR O RESULTADO DA QUERY 
+
+*/
+
+
 // https://github.com/VictorLamarca/CP---Algorithms/blob/master/geometry/Convex_Hull/CHT/cht.cpp
 #define int long long
 
