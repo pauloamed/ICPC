@@ -100,7 +100,14 @@ struct DynamicCHT : multiset<Line,less<>> {
     auto x = --y;
     while(true){
       // updating endpos of the line to the left of Z
-      x->p = x->intersect(*z); // updating x endpos
+	int newIntersect = x->intersect(*z);
+	if(newIntersect < x->p) x->p = newIntersect; // updating x endpos
+	else{
+		// the added line is useless if it only intersects
+		// to the one to the left afther the one on the left
+		// stops being maximum
+		erase(z); break;
+	}
       if(x == begin()) break;
       y = x--; // now x << y << z
       if(x->p < y->p) break;
