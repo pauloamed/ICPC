@@ -3,8 +3,7 @@ using namespace std;
 
 
 /*
-PEGAR MIN: INSERIR RETAS COM COEFICIENTE E BIAS NEGADOS E NEGAR O RESULTADO DA QUERY 
-
+PEGAR MIN: INSERIR RETAS COM COEFICIENTE E BIAS NEGADOS E NEGAR O RESULTADO DA QUERY
 */
 
 
@@ -66,7 +65,7 @@ struct DynamicCHT : multiset<Line,less<>> {
     // If the added line has same slope than the next one, it is useless.
     // By ordering, it will have a lower bias, so it will always produce
     // smaller results
-    if(y->m == z->m){ erase(y); return; }
+    if(z != end() && y->m == z->m){ erase(y); return; }
     if(y != begin()){
       auto x = --y; y++;
       if(x->m == y->m) x = erase(x);
@@ -89,6 +88,7 @@ struct DynamicCHT : multiset<Line,less<>> {
     }
 
     if(y == begin()) return; // wont remove anynone to the left
+    // cerr << size() << endl;
 
     // erasing lines to the left of the added one, using the same idea that is
     // used when removing from the right
@@ -100,14 +100,16 @@ struct DynamicCHT : multiset<Line,less<>> {
     auto x = --y;
     while(true){
       // updating endpos of the line to the left of Z
-	int newIntersect = x->intersect(*z);
-	if(newIntersect < x->p) x->p = newIntersect; // updating x endpos
-	else{
-		// the added line is useless if it only intersects
-		// to the one to the left afther the one on the left
-		// stops being maximum
-		erase(z); break;
-	}
+    	int newIntersect = x->intersect(*z);
+      // cerr << newIntersect << " " << x->p << endl;
+    	if(newIntersect <= x->p) x->p = newIntersect; // updating x endpos
+    	else{
+        // cerr << newIntersect << " " << x->p << endl;
+    		// the added line is useless if it only intersects
+    		// to the one to the left afther the one on the left
+    		// stops being maximum
+    		erase(z); break;
+    	}
       if(x == begin()) break;
       y = x--; // now x << y << z
       if(x->p < y->p) break;
