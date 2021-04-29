@@ -1,3 +1,8 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define MAXN 100010
+
 struct DSU{
   int numComponents;
   int sizes[MAXN]; // vetor com tamanhos
@@ -18,6 +23,13 @@ struct DSU{
       int newRoot = current; // variavel para guardar nova raiz
       while(newRoot != parents[newRoot]) // enquanto nao encontro no raiz
           newRoot = parents[newRoot]; // subo na arvore
+
+      // compressao de caminho (*) REMOVER SE FOR ROLLBACK
+      int next; // backup do pai
+      while(parents[current] != newRoot){ // enquanto nao acho a nova raiz
+          next = parents[current]; // faco o backup do pai
+          parents[current] = newRoot; // digo que o pai eh a raiz achada (*)
+
       return newRoot; // retornamo a raiz da arvore
   }
 
