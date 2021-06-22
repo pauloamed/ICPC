@@ -41,6 +41,7 @@ void update_range(int l, int r, int node, int lu, int ru, int diff){
         int mid = (l + r)/2; // mid
         update_range(l, mid, (node<<1)+1, lu, ru, diff); // faz query da esq
         update_range(mid+1, r, (node<<1)+2, lu, ru, diff); // query da dir
+        segt[node] = segt[(node<<1)+1] + segt[(node<<1)+2];
     }
 }
 
