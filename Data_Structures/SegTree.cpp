@@ -21,13 +21,12 @@ struct SegTreeLazy{
   
   void lazyProp(int node, T val, int l, int r){
     assert(l == r);
-    // if(l == r){
+    if(l == r){
     segt[node] = val; // ATTENTION
-    // }
-    // if(l != r){
-    //     lp[(node<<1)+1] = val;  // ATTENTION
-    //     lp[(node<<1)+2] = val;  // ATTENTION
-    // }
+    }else{
+      lp[(node<<1)+1] = val;  // ATTENTION
+      lp[(node<<1)+2] = val;  // ATTENTION
+    }
   }
   
   
