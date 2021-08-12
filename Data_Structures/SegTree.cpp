@@ -2,10 +2,10 @@
 using namespace std;
 
 
-template<int MAXN, class T, T (*BinaryOp)(T,T)>
+template<int N, class T, T (*BinaryOp)(T,T)>
 struct SegTreeLazy{
-  T segt[3*MAXN]; // segtree
-  T lp[3*MAXN]; // lazy prop
+  T segt[4*N]; // segtree
+  T lp[4*N]; // lazy prop
   
   T NEUTRAL_LP;
   T NEUTRAL_VAL;
