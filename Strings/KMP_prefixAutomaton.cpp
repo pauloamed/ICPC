@@ -139,6 +139,8 @@ Ans solve(string pref_a, string suf_a, string t, int split_a){
   return ans;
 }
 
+
+// https://oj.uz/problem/view/BOI19_necklace4
 int main(){
   string a, b; cin >> a >> b;
   a = "#" + a;
