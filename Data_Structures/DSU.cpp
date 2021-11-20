@@ -29,7 +29,8 @@ struct DSU{
       while(parents[current] != newRoot){ // enquanto nao acho a nova raiz
           next = parents[current]; // faco o backup do pai
           parents[current] = newRoot; // digo que o pai eh a raiz achada (*)
-
+      }
+        
       return newRoot; // retornamo a raiz da arvore
   }
 
