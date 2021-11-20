@@ -3,22 +3,21 @@ using namespace std;
 
 
 /*
-PEGAR MIN: INSERIR RETAS COM COEFICIENTE E BIAS NEGADOS E NEGAR O RESULTADO DA QUERY
+The following structure queries the maximum lin. func. at point X. 
+The minimum can be queried by negating both slopes and biases and also the query result.
 */
 
 
-// https://github.com/VictorLamarca/CP---Algorithms/blob/master/geometry/Convex_Hull/CHT/cht.cpp
-#define int long long
+#define TYPE long double // CAN ALSO BE INT
 
-
-
-const int inf = LLONG_MAX; // ATENCAO
+const TYPE inf = LLONG_MAX; // ATENCAO
 
 struct Line{
 	// Line equation defined as y = x * m + b
   // m: slope, b: intersect/bias
   // p: x-pos where the line stops being the maximum
-	mutable int m, b, p;
+	mutable TYPE m, b, p;
+  mutable int id;
 
   // comparator to other Lines, uses slopes for comparison
   // used for ordering the container (insertion)
@@ -28,17 +27,19 @@ struct Line{
   }
 
   // comparator to scalars, used in querying best line for a given value
-	bool operator <(const int x) const { return p < x;}
+	bool operator <(const TYPE x) const { return p < x;}
 
   // evals scalar for this line
-  int eval(int x) const { return x*m + b;}
+  TYPE eval(TYPE x) const { return x*m + b;}
 
-  int intersect (const Line &o) const{
+  TYPE intersect (const Line &o) const{
     // floor division (works for negative values) (eg. floor(-1/2) = -1 , c++ returns 0)
     // note that (a^b) < 0 iff a*b<0 (there is a bit indicating if x is negative)
     // if a/b < 0 and it isnt a integer, add -1 to c++ result
-    int x = b - o.b, y = o.m - m;
-    return (x/y) - ((x^y) < 0 && x % y);
+    TYPE x = b - o.b, y = o.m - m;
+    // cout << (x/y) << "\n";
+    return (x/y); // DOUBLE
+    // return (x/y) - ((x^y) < 0 && x % y); // INT
   }
 };
 
@@ -54,10 +55,10 @@ struct DynamicCHT : multiset<Line,less<>> {
   // Also, the added line may be useless and wont modify the structure
   // Note that the lines from both direcitons (before and after) the recently
   // added may be removed.
-	void add(int m, int b){
+	void add(TYPE m, TYPE b, int id){
     // y: iterator for the added line
     // z: iterator for the next line (in order)
-		auto z = insert({m, b, inf}), y = z++;
+		auto y = insert({m, b, inf, id}), z = next(y);
     // y << z
 
 
@@ -67,7 +68,7 @@ struct DynamicCHT : multiset<Line,less<>> {
     // smaller results
     if(z != end() && y->m == z->m){ erase(y); return; }
     if(y != begin()){
-      auto x = --y; y++;
+      auto x = prev(y);
       if(x->m == y->m) x = erase(x);
     }
 
@@ -78,17 +79,16 @@ struct DynamicCHT : multiset<Line,less<>> {
       // if intersect(A,B) > R, A starts being a better line before B
       // (slope is better) and ends after B ends itself. I.e. B is now useless
 
-      // if there is no z, the limit is inf
+      // if there is no z, the limit of the current line is inf
       if(z == end()){ y->p = inf; break;}
 
       // else z is valid and may be removed
       y->p = y->intersect(*z);
       if(y->p < z->p) break;
-      else z = erase(z);
+      else z = erase(z); // z now points to the next(z)
     }
 
     if(y == begin()) return; // wont remove anynone to the left
-    // cerr << size() << endl;
 
     // erasing lines to the left of the added one, using the same idea that is
     // used when removing from the right
@@ -100,7 +100,7 @@ struct DynamicCHT : multiset<Line,less<>> {
     auto x = --y;
     while(true){
       // updating endpos of the line to the left of Z
-    	int newIntersect = x->intersect(*z);
+    	TYPE newIntersect = x->intersect(*z);
       // cerr << newIntersect << " " << x->p << endl;
     	if(newIntersect <= x->p) x->p = newIntersect; // updating x endpos
     	else{
@@ -118,58 +118,67 @@ struct DynamicCHT : multiset<Line,less<>> {
 	}
 
 	// Querying
-	int query(int x){
+	Line query(TYPE x){
     assert(!empty());
     // lower bound for (Line comparator using scalar)
     // first Line y in Set s.t. !(p(y) < x). that is, first line in which x fits it
-		return lower_bound(x)->eval(x);
+		return *lower_bound(x);
 	}
 };
 
+DynamicCHT cansaco, habilidade;
 
-// ######################################################## MONOTONIC CASES BELOW ######################################################
+const TYPE EPS = 1e-9;
 
-deque<pair<int,int>> cht;
-
-pair<double, double> intersect(pair<int,int> a, pair<int,int> b){
-  double num = b.second - a.second;
-  double den = a.first - b.first;
-  double x = (num/den) - ((num^den) < 0 && num % den);
-  return {x, a.first * x + a.second};
+int cmp(double x, double y = 0, double tol = EPS){
+	return (x <= y + tol) ? (x + tol < y) ? -1 : 0 : 1;
 }
 
-int eval(int x, int i){
-  int a = cht[i].first;
-  int b = cht[i].second;
-  return a * x + b;
-}
-
-// If lines slopes are monotonic incresing, lines with greater slopes can 
-// progressively be turned useless, given a better inserted line
-void add(pair<int,int> r){
-  while(cht.size() > 1){
-    double a = intersect(cht[0], r).first; // intersect(cht[n-2], r).first;
-    double b = intersect(cht[0], cht[1]).first; // intersect(cht[n-2], cht.back()).first;
-    if(a < b) break; // a > b
-    cht.pop_front(); // pop_back();
+int main(){
+  int n; cin >> n;
+  for(int i = 0; i < n; ++i){
+    int h_a, h_b, c_a, c_b; cin >> h_a >> h_b >> c_a >> c_b;
+    cansaco.add(-c_b, -c_a, i);
+    habilidade.add(h_b, h_a, i);
   }
-  cht.push_front(r); // push_back(r);
-}
 
+  map<int,pair<TYPE,TYPE>> id2seg[2];
 
-// If queries are monotonic incresing, lines with lower slops will progressively
-// turn useless. Same case for monotonic decreasing
-int query(int x){
-  int evalA = eval(x, cht.size() - 1); // eval(x, 0);
-  if(cht.size() == 1) return evalA;
-  else{
-    int evalB = eval(x, cht.size() - 2); // eval(x, 1);
-    while(evalA < evalB){ // evalA > evalB
-      cht.pop_back(); // cht.pop_front();
-      if(cht.size() == 1) break;
-      evalA = eval(x, cht.size() - 1); // evalA = eval(x, 0);
-      evalB = eval(x, cht.size() - 2); // evalB = eval(x, 1);
+  for(auto it = habilidade.begin(); it != habilidade.end(); it++){
+    auto x = *it;
+    if(x.p < 0) continue;
+
+    TYPE l = 0;
+    if(it != habilidade.begin()) l = prev(it)->p;
+    // l = max(l, (TYPE)0.0);
+    id2seg[0][x.id] = {l, x.p};
+  }  
+  
+  for(auto it = cansaco.begin(); it != cansaco.end(); it++){
+    auto x = *it;
+    if(x.p < 0) continue;
+
+    TYPE l = 0;
+    if(it != cansaco.begin()) l = prev(it)->p;
+    // l = max(l, (TYPE)0.0);
+    id2seg[1][x.id] = {l, x.p};
+  }  
+
+  int ans = 0;
+  for(int i = 0; i < n; ++i){
+    if(!id2seg[0].count(i) || !id2seg[1].count(i)) continue;
+    auto a = id2seg[0][i];
+    auto b = id2seg[1][i];
+
+    TYPE x = max(a.first, b.first);
+    TYPE y = min(a.second, b.second);
+
+    auto inter = y - x;
+    if(cmp(x, y) < 0){
+      ans++;
     }
-    return eval(x, cht.size() - 1); // return eval(x, 0);
+      
   }
+
+  cout << ans << "\n";
 }
