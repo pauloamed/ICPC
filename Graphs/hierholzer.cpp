@@ -1,9 +1,9 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define MAXN 10000
-#define lpss list<pair<size_t, size_t>>
-#define edgelist vector<pair<lpss::iterator, lpss::iterator>>
+#define MAXN 200000
+#define lpss list<pair<int, int>>
+#define edgelist vector<vector<lpss::iterator>>
 
 /*
  - Passeio euclidiano em O(m)
@@ -11,69 +11,143 @@ using namespace std;
 */
 
 
-vector<size_t> v[MAXN]; // lista de adjacencia original
+vector<int> v[MAXN]; // lista de adjacencia original
 
-void dfs(size_t x, size_t ini, list<size_t> &temp, lpss *_v, edgelist &edges, bool init=true){
-    if(temp.front() != x) temp.push_front(x); // Nao inserir elementos repetidos
-    if(!init && x == ini) return; // Se fechou o ciclo
-    else{ // Se nao fechou o ciclo
-        size_t next = _v[x].front().first; // Recuperando proximo vertice a ser acessado
-        size_t e = _v[x].front().second; // Recuperando id da aresta
 
-        // Removendo aresta de ambas listas de adjacencias
+struct Hierholzer{
+  vector<lpss> _v;
+  int N;
+
+  list<int> temp; // Declaracao de lista auxiliar e lista de retorno
+  // temp vai guardar quem ta no ciclo e ainda pode ser usado para iniciar
+  // uma nova busca
+  // ret vai guardar circuito em sua ordem final
+
+  // Vetor auxiliar relacionando os dois lados da aresta
+  edgelist edges;
+
+  bool is_directed = false;
+
+  Hierholzer(int n, bool is_dir):N(n), is_directed(is_dir){ 
+    _v = vector<lpss>(N); 
+  }
+
+  void dfs(int x, int ini, bool init=true){
+    if(!init)temp.push_front(x);
+    if(!init && x == ini) return; // closed cycle
+    else{
+      int next = _v[x].front().first; 
+      int e = _v[x].front().second;
+      if(is_directed){
+        _v[x].erase(edges[e][0]);
+      }else{
         if(x < next){
-            // Entao o it da esquerda ta na lista de x e o da dir na lista de next
-            _v[x].erase(edges[e].first);
-            _v[next].erase(edges[e].second);
+          _v[x].erase(edges[e][0]);
+          _v[next].erase(edges[e][1]);
         }else{
-            // Entao o it da esquerda ta na lista de next e o da dir na lista de x
-            _v[x].erase(edges[e].second);
-            _v[next].erase(edges[e].first);
+          _v[x].erase(edges[e][1]);
+          _v[next].erase(edges[e][0]);
         }
-        dfs(next, ini, temp, v, matrix, false); // Passo recursivo
+      }
+      dfs(next, ini, false);
     }
-}
+  }
 
-list<size_t> hierholzer(size_t n){
-
-     // Lista de adjacencia com (adjacente, id_no_adjacente, bool valido)
-    lpss _v[n];
-
-    // Vetor auxiliar relacionando os dois lados da aresta
-    edgelist edges;
-
-    // Lendo as arestas e construindo estruturas
-    for(size_t i = 0; i < n; ++i){
-        for(size_t j = 0; j < adj[i].size(); ++j){
-            if(i > v[i][j]) continue; // ignoro metade das arestas
-
-            // adiciono na list de adj
-            _v[i].push_back({v[i][j], arestas.size()});
-            _v[v[i][j]].push_back({i, arestas.size()});
-
-            // adiciono no vetor auxiliar
-            // o itr da esq eh da lista do menor id
-            // o itr da dir eh da lista de maior id
-            edges.push_back({_v[i].end()-1, _v[v[i][j]].end()-1});
+  list<int> run_euler(int start){
+    for(int i = 0; i < N; ++i){
+      for(int j = 0; j < v[i].size(); ++j){
+        if(!is_directed && i > v[i][j]) continue; // assert(i < v[i][j])
+        if(is_directed){
+          auto it_i = _v[i].insert(_v[i].end(), {v[i][j], edges.size()});
+          edges.push_back({it_i});
+        }else{
+          auto it_i = _v[i].insert(_v[i].end(), {v[i][j], edges.size()});
+          auto it_vij = _v[v[i][j]].insert(_v[v[i][j]].end(), {i, edges.size()});
+          edges.push_back({it_i, it_vij});
         }
+      }
+    }
+    list<int> ret;
+    temp.push_back(start);
+    dfs(start, start); 
+    while(true){ 
+      while(temp.size() && _v[temp.front()].empty()){
+        ret.splice(ret.begin(), temp, temp.begin());
+      }
+      if(temp.empty()) break; // Se nao posso aproveitar mais ninguem de temp, cabou
+      dfs(temp.front(), temp.front()); // Tentar achar mais um ciclo
+    }
+    return ret;
+  }
+
+  list<int> get_cycle(int start){
+    auto ret = run_euler(start);
+    return ret;
+  }
+
+  list<int> get_path(int start, int target){
+    v[target].push_back(start);
+    if(!is_directed){
+      v[start].push_back(target);
     }
 
-    list<size_t> temp, ret; // Declaracao de lista auxiliar e lista de retorno
-    // temp vai guardar quem ta no ciclo e ainda pode ser usado para iniciar
-    // uma nova busca
-    // ret vai guardar circuito em sua ordem final
+    auto ret = run_euler(start);
+    ret.pop_back();
 
-    dfs(1,1, temp, v, matrix); // Buscando ciclo inicial
-
-    while(true){ // Loop externo (construcao de temp)
-
-        // Loop interno (alimentando ret)
-        while(!temp.empty() && !v[temp.front()].empty()){
-            // Vou preenchendo ret com os vertices de temp, enquanto tem gnt em
-            // temp e enquanto nao posso comecar um novo ciclo do inicio de temp
-            ret.splice(ret.cend(), temp, temp.cbegin());
+    if(start != -1){
+      list<int> a;
+      for(auto it = ret.begin(); next(it) != ret.end(); it++){
+        a.push_back(*it);
+        if(!is_directed && (*it == start && *next(it) == target)){ // start, target (rev slice)
+          list<int> b(next(it), ret.end());
+          reverse(b.begin(), b.end());
+          a.splice(a.end(), b);
+          return a;
+        }else if(*next(it) == start && *it == target){ // target, start (just swap)
+          list<int> b(next(it), ret.end());
+          b.splice(b.end(), a);
+          return b;
         }
-        if(temp.empty()) return ret; // Se nao posso aproveitar mais ninguem de temp, cabou
-        dfs(temp.front(), temp.front(), temp, v, edges); // Tentar achar mais um ciclo
+      }
     }
+    return ret;
+  }
+};
+
+
+
+int main(){
+  int n, m; cin >> n >> m;
+
+  vector<int> degrees(n);
+  for(int i = 0; i < m; ++i){
+    int a, b; cin >> a >> b;
+    a--, b--;
+    v[a].push_back(b);
+    v[b].push_back(a);
+    degrees[a]++;
+    degrees[b]++;
+  }
+
+
+  for(int i = 0; i < n; ++i){
+    if(degrees[i] % 2){
+      cout << "IMPOSSIBLE\n";
+      return 0;    
+    }
+  }
+
+
+  Hierholzer h(n, false);
+  auto x = h.get_cycle(0);
+  // cerr << x.size() << endl;
+  if(x.size() != m + 1){
+    cout << "IMPOSSIBLE\n";
+    return 0;
+  }
+
+  for(auto y : x){
+    cout << y + 1 << " ";
+  }
+  cout << "\n";
 }
