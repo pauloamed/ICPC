@@ -1,7 +1,7 @@
 // https://www.codechef.com/problems/MIXFLVOR
 // two pointers
 // internal state is 2 stacks ressembling a queue
-// may be used for keeping structres with no REMOVE operation and MERGE op
+// may be used for keeping structres with no REMOVE operation but MERGE op
 // keeps merging top of left stack with top of right stack
 
 #include<bits/stdc++.h>
