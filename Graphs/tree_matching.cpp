@@ -6,7 +6,7 @@ using namespace std;
 
 vector<int> v[MAXN];  
 
-int get_matching(int x, int p){
+int get_matching(int x, int p){ // number of unmatched vertices
   bool is_leaf = true;
   int d = 0;
   for(auto y : v[x]){
