@@ -33,80 +33,36 @@ map<int, int> names[MAXN]; // bitset for each depth
 vector<pair<int,int>> queries[MAXN]; // queries at node x
 vector<int> ans; // ans for each query
 
-void solve(int x, int par, bool keep){
-  // cout << x << endl;
-  if(v[x].size() > 1 || par == -1){
-    // retrieving heavy child from x
-    int heavyChildSize = -1;
-    int heavyChild = -1;
+void solve(int x, bool keep){ // maybe worry about parent
+  if(v[x].size() > 0){
+    int heavy_child = -1;
     for(auto y : v[x]){
-      if(y == par) continue;
-      if(sz[y] > heavyChildSize){
-        heavyChild = y;
-        heavyChildSize = sz[y];
-      }
+      if(sz[y] > sz[heavy_child]) heavy_child = y;
     }
-
+ 
     // vising light and then heavy childs of x
     for(auto y : v[x]){
-      if(y == heavyChild || y == par) continue;
-      solve(y, x, false);
+      if(y != heavy_child) solve(y, false);
     }
-    solve(heavyChild, x, true);
-
+    solve(heavy_child, true);
+ 
     for(auto y : v[x]){
       if(y == heavyChild || y == par) continue;
-      for(int t = inTime[y]; t < outTime[y]; ++t){
-        int z = time2Node[t];
-        names[depth[z]][c[z]]++;
+      for(int t = in_time[y]; t < out_time[y]; ++t){
+        int z = time2node[t];
+        // add z
       }
     }
   }
-
-  names[depth[x]][c[x]]++;
-
-  for(auto q : queries[x]){
-    if(q.first >= MAXN) ans[q.second] = 0;
-    else ans[q.second] = names[q.first].size();
-  }
-
+ 
+  // add x
+ 
+  // solve queries
+ 
   if(!keep){
-    for(int t = inTime[x]; t < outTime[x]; ++t){
-      int y = time2Node[t];
-      names[depth[y]][c[y]]--;
-      if(names[depth[y]][c[y]] == 0){
-        names[depth[y]].erase(c[y]);
-      }
+    for(int t = in_time[x]; t < out_time[x]; ++t){
+      int z = time2node[t];
+      // rmv z
     }
   }
-}
-
-int main(){
-  cin.tie(NULL);
-  cin.sync_with_stdio(false);
-
-  int n; cin >> n;
-  c[0] = -1;
-  unordered_map<string,int> s2i;
-  for(int i = 1; i <= n; ++i){
-    string s; cin >> s;
-    if(s2i.count(s) == 0) s2i[s] = s2i.size();
-    c[i] = s2i[s];
-    int x; cin >> x;
-    v[x].push_back(i);
-    v[i].push_back(x);
-  }
-
-  precalc(0, -1, 1);
-
-  int q; cin >> q;
-  ans = vector<int>(q);
-  for(int i = 0; i < q; ++i){
-    int a, b; cin >> a >> b;
-    queries[a].push_back({depth[a] + b, i});
-  }
-
-  solve(0, -1, true);
-
-  for(auto x : ans) cout << x << "\n";
 }
