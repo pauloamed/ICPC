@@ -1,3 +1,5 @@
+// solves https://cses.fi/problemset/task/1709
+
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -94,6 +96,19 @@ struct Flow{
     return flow;
   }
  
+  vector<pair<int,int>> get_cut(){
+    vector<pair<int,int>> cut;
+    for(int i = 0; i < n; ++i){
+      for(int j = 0; j < v[i].size(); ++j){
+        auto &e = v[i][j];
+        if(!e.is_rev && lvl[i] != -1 && lvl[e.to] == -1){
+          cut.push_back({i, e.to});
+        }
+      }
+    }
+    return cut;
+  }
+
   void print(){
     printf("N:%lld\n", n);
     for(int i = 0; i < n; ++i){
@@ -106,41 +121,40 @@ struct Flow{
     }
   }
 };
- 
+
 const int SRC = 0;
 const int SINK = 1;
+const int OFFSET = 2;
+
+void solve(vector<string> matrix){
+  int n = matrix.size();
+  int m = matrix[0].size();
+  Flow f(n + m + 3, SRC, SINK);
+
+  for(int i = 0; i < n; ++i) f.addEdge(SRC, i + OFFSET, 1);
+  for(int i = 0; i < m; ++i) f.addEdge(i + n + OFFSET, SINK, 1);
+  for(int i = 0; i < n; ++i){
+    for(int j = 0; j < m; ++j){
+      if(matrix[i][j] == 'o'){
+        f.addEdge(i + OFFSET, j + n + OFFSET, 1);
+      }
+    }
+  }
+  cout << f.run() << "\n";
+  for(auto x : f.get_cut()){
+    // cout << x.first << " " << x.second << "\n";
+    if(x.first == SRC){
+      cout << 1 << " " << x.second - OFFSET + 1 << "\n";
+    }else{
+      cout << 2 << " " << x.first - OFFSET - n + 1 << "\n";
+    }
+  }
+  // f.print();
+}
 
 int32_t main(){
-  int n, m, k, c; cin >> n >> m >> k >> c;
-
-  Flow f(n * m + 3, SRC, SINK);
-  int curr_id = 1;
-  for(int i = 0; i < n; ++i){
-    vector<int> vals(m); for(auto &x : vals) cin >> x;
-
-    if(m == 1){
-      f.addEdge(SRC, SINK, INT_MAX - vals[0]);
-    }else{
-      f.addEdge(SRC, ++curr_id, INT_MAX - vals[0]);
-      for(int j = 1; j < m - 1; ++j){
-        int a = curr_id;
-        int b = ++curr_id;
-        f.addEdge(a, b, INT_MAX - vals[j]);
-      }
-      f.addEdge(curr_id, SINK, INT_MAX - vals.back());
-    }
-  }
-
-
-  while(k--){
-    int a, b; cin >> a >> b; a--, b--;
-    int start_a = 2 + a * (m - 1);
-    int start_b = 2 + b * (m - 1);
-    for(int i = 0; i < m - 1; ++i){
-      f.addEdge(start_a + i, start_b + i, c);
-      f.addEdge(start_b + i, start_a + i, c);
-    }
-  }
-
-  cout << n * INT_MAX - f.run() << "\n";
+  int n; cin >> n;
+  vector<string> mm(n);
+  for(auto &x : mm) cin >> x;
+  solve(mm);
 }
