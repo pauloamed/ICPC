@@ -23,8 +23,8 @@ int fastexp(int base, int expo){
 // a^(m-1) ≡ 1 (mod m), m prime
 // a^(-1) ≡ a^(m-2) (mod m)
 // a inverse is a^(m-2)
-int inverse( int a, int pmod ){
-  return fastexp( a, pmod - 2 );
+int inverse(int a){
+  return fastexp(a, MOD - 2);
 }
 
 // compute all modular inverses, m prime
