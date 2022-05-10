@@ -1,6 +1,18 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+vector<int> compute_p(string &s){
+  int n = s.size();
+  vector<int> p(n, 0);
+  int pref = 0, suf = 1;
+  while(suf < n){
+    if(s[pref] == s[suf]) p[suf] = ++pref;
+    else if(pref != 0){ pref = p[pref - 1]; continue; }
+    suf++;
+  }
+  return p;
+}
+
 /*
 pattern search: dada uma string texto T e um padrao P, achar as ocorrencias de P
 em T em O(len(T))
