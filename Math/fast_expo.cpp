@@ -1,48 +1,49 @@
-ll mulmod(ll a, ll b, ll c){ // multiplicacao modular
-    // multiplicar (a*b) equivale a sum(a * 2^i * b_i), onde (a*2^i) é representado
-    // na linha do meio, b_i na ultima linha, e o passo de sum na primeira linha
-    ll ans = 0;
-    a %= c;
-    while(b > 0){
-        if(b%2) ans = (ans + a) % c;
-        a = (a * 2) % c;
-        b >>= 1;
-    }
-    return ans % c;
+// recursive fast_exp
+int fastexp(int base, int expo){
+	if(expo == 0) return 1;
+	else if(expo == 1) return a % MOD;
+	int x = (base * base) % MOD;
+	if(expo & 1) return (fastexp(x, expo / 2) * base) % MOD;
+	return fastexp(x, expo / 2);
 }
 
-ll power(ll a, ll b, ll p){ // recursivo
-	if(b == 0) return 1;
-	if(b == 1) return a;
-	ll x = mulmod(a, a, p);
-	if(b&1) return mulmod(power(x, b/2, p), a, p);
-	return power(x, b/2, p)%p;
+// expo = SUM(2^i * expo_i), expo_i: ith bit of expo
+// base^expo = base^(SUM(2^i * expo_i)) = PROD base^(2^i*expo_i)
+// we will iterate through base^(2^i) and use this value only if expo_i is on
+int fastexp(int base, int expo){
+  int ans = 1; // identity
+  while(expo > 0){
+    if(expo & 1) ans = ans * base;
+    expo >>= 1;
+    base = base * base;
+  }
+  return ans;
 }
 
-ll fastexp(ll base, int expo){ // iterativo
-    // expo eh visto como sum(2^i * e_i), onde e_i eh o iesimo bit de e
-    // queremos base^(expo) = base^(sum(2^i * e_i))
-    // base elevada a um somatorio de termos eh um produtorio da base elev. a cada
-    // um desses termos: prod(base^((2^i*e_i))) = prod((base^(2^i))^e_i)
-    ll ans = 1;
-    while(expo > 0){
-        if(expo%2) ans = ans * base; // ans = mulmod(ans, base, mod)
-        expo >>= 1;
-        base = base * base; // base = mulmod(base, base, mod)
-    }
-    return ans;
+// a^(m-1) ≡ 1 (mod m), m prime
+// a^(-1) ≡ a^(m-2) (mod m)
+// a inverse is a^(m-2)
+int inverse(int a){
+  return fastexp(a, MOD - 2);
 }
 
-ll inverso( ll a, ll pmod ){
-    // a^(m-1) ≡ 1 (mod m), m primo
-    // a^(-1) ≡ a^(m-2) (mod m)
-    // o inverso de a eh a^(m-2)
-    return fastexp( a, pmod - 2 );
+// compute all modular inverses, m prime
+void compute_invs(){
+  inv[1] = 1;
+  for(int i = 2; i < m; ++i)
+    inv[i] = m - (m / i) * inv[m % i] % m;
 }
 
-void foo(){
-	r[1] = 1;
-for (int i=2; i<m; ++i)
-	r[i] = (m - (m/i) * r[m%i] % m) % m;
+// modular multiplication
+// a*b = SUM_i((a * 2^i) * b_i)
+// goes through b_i (b bits) while doubling a (a * 2^i)
+int mulmod(int a, int b, int c){ 
+  a %= c;
+  int ans = 0;
+  while(b > 0){
+    if(b & 1) ans = (ans + a) % c;
+    a = (a * 2) % c;
+    b >>= 1;
+  }
+  return ans % c;
 }
-
