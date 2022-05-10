@@ -58,32 +58,22 @@ struct PersSegtree{
     return _rng_query(0, n - 1, time2node[time], lq, rq);
   }
   
-  int update(int pos, ValType x, bool inplace, int time = -1){
+  int update(int pos, ValType x, int time = -1){
     if(time == -1) time = next_time - 1;
-    int node = _update_range(0, n - 1, time2node[time], pos, x, inplace);
-    if(inplace){
-      time2node[time] = node;
-      return time;
-    }else{
-      time2node[next_time] = node;
-      return next_time++;
-    }
+    time2node[next_time] = _update_range(0, n - 1, time2node[time], pos, x);
+    return next_time++;
   }
 
-  int _update_range(int l, int r, int node, int pos, ValType val, bool inplace){
+  int _update_range(int l, int r, int node, int pos, ValType val){
     if(pos > r || l > pos) return node;
     if(pos == r && pos == l){
-      if(inplace){
-        segt[node] = val; return node;
-      }else return build_node(-1, -1, val);
+      return build_node(-1, -1, val);
     }else{
       int mid = (l + r)/2;
-      int left_id = _update_range(l, mid, l_ptr[node], pos, val, inplace);
-      int right_id = _update_range(mid+1, r, r_ptr[node], pos, val, inplace);
+      int left_id = _update_range(l, mid, l_ptr[node], pos, val);
+      int right_id = _update_range(mid+1, r, r_ptr[node], pos, val);
       ValType new_val = BinaryOp(segt[left_id], segt[right_id]);
-      if(inplace){
-        segt[node] = new_val; return node;
-      }else return build_node(left_id, right_id, new_val);
+      return build_node(left_id, right_id, new_val);
     }
   }
 

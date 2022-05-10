@@ -36,12 +36,13 @@ bitset<MAXN> query(bitset<MAXN> &x){
 	}
 	return (x.any()? bitset<MAXN>(0) : ans);
 
-  int getMax(){
-    bitset<MAXN> ans;
-    for(int i = 0; i < MAXN; ++i){
-      int j = MAXN - 1 - i;
-      if(base[i][j] && !ans[j]) ans ^= base[i];
-    }
-    return ans.to_ulong();
-  }
+}
+
+int getMax(){
+	bitset<MAXN> ans;
+	for(int i = 0; i < MAXN; ++i){
+		int j = MAXN - 1 - i;
+		if(base[i][j] && !ans[j]) ans ^= base[i];
+	}
+	return ans.to_ulong();
 }
