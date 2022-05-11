@@ -7,7 +7,7 @@ using namespace std;
 int min_prime_fact[MAXN];
 vector<int> pr;
 
-int sieve(int n){
+void sieve(int n){
   for(int i = 2; i < n; ++i){
     if(min_prime_fact[i] == 0){
       min_prime_fact[i] = i;
