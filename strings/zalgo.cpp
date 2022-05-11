@@ -1,29 +1,18 @@
-struct {
-	// this function returns the Z-vector.
-	// the Z-vector is defined as: Z[i] says that the string s[0..Z[i]] matches the string s[i..i+Z[i]]
-	// the construction of the array is made in O(n)
-	// this code was tested with the problem https://codeforces.com/contest/149/problem/E, martian strings
-	vector<int> build(const string& s) {
-		int n = (int) s.length();
-		vector<int> z(n);
-		for (int i = 1, l = 0, r = 0; i < n; ++i) {
-			if (i <= r)
-				z[i] = min (r - i + 1, z[i - l]);
-			while (i + z[i] < n && s[z[i]] == s[i + z[i]])
-				++z[i];
-			if (i + z[i] - 1 > r)
-				l = i, r = i + z[i] - 1;
-		}
-		return z;
-	}
-	
-	// counts the number of occurrences of p inside s
-	// the algorithm runs in O(n)
-	int countMatches(const string &s, const string &p){
-		vector<int> z = build(p + "$" + s);
-		int ans = 0;
-		for(auto x : z) ans += (x == (int)p.size());
-		return ans;
-	}
+// s[l:r] == s[0:r-l] => s[i:r] == s[0:min(z[i-l], r-i)]
+// uses own function for faster computing
+// not always `r` will be updated, z[i-l] can be really low
+vector<int> compute_z(string &s){
+  int n = s.size();
+  vector<int> z(n);
+  int l = -1, r = -1; // [l;r): rightmost matched interval
+  for(int i = 1; i < n; ++i){
+    if(i >= r) l = i;
+    else z[i] = min(r - i, z[i - l]);
+    while(i + z[i] < n && s[z[i]] == s[i + z[i]]) z[i]++;
+    if(i + z[i] > r){ r = i + z[i], l = i; }
+  }
+  return z;
+}
 
-} zalgo;
+// can be used for pattern matching (Pattern, String): 
+// P+$+S, search for positions in S w/ z[i]=len(P)
