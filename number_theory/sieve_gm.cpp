@@ -14,7 +14,7 @@ void sieve(int n){
       pr.push_back(i);
     }
     for(int j = 0; j < pr.size(); j++){
-      if(i * pr[j] > n) break;
+      if(i * pr[j] >= n) break;
       min_prime_fact[i * pr[j]] = pr[j];
       if(pr[j] == min_prime_fact[i]) break;
     }
