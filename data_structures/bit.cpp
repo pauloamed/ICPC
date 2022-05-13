@@ -1,9 +1,19 @@
-#include<bits/stdc++.h>
-using namespace std;
+struct BIT{
+  int n; vector<int> v;
+  BIT(int m):n(m + 1), v(vector<int>(m + 1)){}
 
-#define MAXN 101
+  int query(int i){ int ans = 0; // neutral
+    for(i++; i > 0; i -= i & (-i)){
+      ans += v[i];
+    }
+    return ans;
+  }
 
-int bit[MAXN];
+  void update(int i, int val){
+    for(i++; i < n; i += i & (-i)) 
+      v[i] += val;
+  }
+};
 
 /*
  - bit menos significativo de x (bmi(a)) = a & (-a)
@@ -17,7 +27,7 @@ int bit[MAXN];
         - o irmao a esq de x pode ser acessado retirando seu bit menos significativo
         - irm_esq_x = x - bmi(x)
 */
-
+int bit[MAXN];
 //////////////////////////////////////////////////////////////////////////////////
 //              Query numa range e Update num ponto especifico                  //
 //////////////////////////////////////////////////////////////////////////////////
