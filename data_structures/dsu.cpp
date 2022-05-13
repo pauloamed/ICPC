@@ -4,56 +4,50 @@ using namespace std;
 #define MAXN 100010
 
 struct DSU{
+  int sizes[MAXN];
+  int parents[MAXN];
+  
   int numComponents;
-  int sizes[MAXN]; // vetor com tamanhos
-  int parents[MAXN]; // vetor com pai de cada no
   stack<pair<int,int>> lastPar, lastSize;
   vector<int> checkpoints;
 
   DSU(int n){
+    for(int i = 0; i < n; ++i){
+      sizes[i] = 1;
+      parents[i] = i;
+    }
     checkpoints.push_back(0);
     numComponents = n;
-      for(int i = 0; i < n; ++i){
-          sizes[i] = 1; // tamanho inicial
-          parents[i] = i; // valor padrao: cada um eh seu pai
-      }
   }
 
   int find(int current){
-      int newRoot = current; // variavel para guardar nova raiz
-      while(newRoot != parents[newRoot]) // enquanto nao encontro no raiz
-          newRoot = parents[newRoot]; // subo na arvore
+    int newRoot = current;
+    while(newRoot != parents[newRoot]) newRoot = parents[newRoot];
 
-      // compressao de caminho (*) REMOVER SE FOR ROLLBACK
-      int next; // backup do pai
-      while(parents[current] != newRoot){ // enquanto nao acho a nova raiz
-          next = parents[current]; // faco o backup do pai
-          parents[current] = newRoot; // digo que o pai eh a raiz achada (*)
-      }
-        
-      return newRoot; // retornamo a raiz da arvore
+    // rmv if using rollback
+    int next;
+    while(parents[current] != newRoot){
+      next = parents[current];
+      parents[current] = newRoot;
+    }
+    return newRoot;
   }
 
   void onion(int a, int b){
-      a = find(a); b = find(b); // unimos uma raiz a outra
+    a = find(a); b = find(b);
+    if(a == b) return;
+    if(sizes[a] < sizes[b]) swap(a,b);
 
-      if(a == b) return; // se for a mesma raiz, nao tenho o que unir
+    checkpoints.back()++;
+    lastSize.push({a, sizes[a]});
+    lastPar.push({b, parents[b]});
+    numComponents--;
 
-      // uniao por tamanho
-      if(sizes[a] < sizes[b]) swap(a,b); // quero unir "b" a "a"
-
-      checkpoints.back()++;
-      lastSize.push({a, sizes[a]});
-      lastPar.push({b, parents[b]});
-
-      sizes[a] += sizes[b]; // atualizando tamanho de "a"
-      parents[b] = a; // pai de "b" eh "a"
-      numComponents--;
+    sizes[a] += sizes[b];
+    parents[b] = a;
   }
 
-  void check(){
-    checkpoints.push_back(0);
-  }
+  void check(){ checkpoints.push_back(0); }
 
   void rollback(){
     int x = checkpoints.back();
