@@ -27,11 +27,15 @@ int inverse(int a){
   return fastexp(a, MOD - 2);
 }
 
-// compute all modular inverses, m prime
-void compute_invs(){
-  inv[1] = 1;
-  for(int i = 2; i < m; ++i)
-    inv[i] = m - (m / i) * inv[m % i] % m;
+int fat[MAXN], inv[MAXN], invfat[MAXN];
+ 
+void precalc(){
+  inv[1] = invfat[0] = invfat[1] = fat[0] = fat[1] = 1;
+  for(int i = 2; i < MAXN; ++i){
+    inv[i] = MOD - (MOD / i) * inv[MOD % i] % MOD;
+    invfat[i] = (invfat[i - 1] * inv[i]) % MOD;
+    fat[i] = (fat[i - 1] * i) % MOD;
+  }
 }
 
 // modular multiplication
