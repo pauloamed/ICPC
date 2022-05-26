@@ -44,7 +44,7 @@ struct pv{
     T orient(pv a, pv b){ return (a-(*this)).cross(b-(*this)); }
 
     // normas (operacoes unarias)
-    T sq(void){return x*x+y*y;} //
+    T sq(){return x*x+y*y;} //
     T norml0(){ return (x!=0)+(y!=0);} // quantos elementos nao nulos
     T norml1(){ return abs(x)+abs(y);} // distancia de manhattan
     double norml2(){ return sqrt(sq());} // norma euclidiana
@@ -163,42 +163,39 @@ int pointInConvexPolygon(vector<pv> &seq, pv leftmost, pv point){
     else return 0;
 }
 
-vector<pv> graham_scan(vector<pv>& pontos){
-  int n = pontos.size();
-  int pivot_id = 0;
+vector<pv> graham_scan(vector<pv>& pts){
+  int n = pts.size(), pivot_id = 0;
   for(int i = 1; i < n; ++i){
-    if(pontos[i].y > pontos[pivot_id].y) continue;
-    else if(pontos[i].y < pontos[pivot_id].y) pivot_id = i;
-    else if(pontos[i].x < pontos[pivot_id].x) pivot_id = i;
+    if(pts[i].y > pts[pivot_id].y) continue;
+    else if(pts[i].y < pts[pivot_id].y) pivot_id = i;
+    else if(pts[i].x < pts[pivot_id].x) pivot_id = i;
   }
 
-  swap(pontos[0], pontos[pivot_id]);
-  pv pivot = pontos[0];
-  sort(pontos.begin() + 1, pontos.end(),
-  [&](pv &a, pv &b) -> bool{
+  swap(pts[0], pts[pivot_id]);
+  pv pivot = pts[0];
+  sort(pts.begin() + 1, pts.end(), [pivot](pv &a, pv &b) -> bool{
     int temp = pivot.orient(a, b);
     if(temp != 0) return temp > 0;
-    return (a - pivot).sq() < (b - pivot).sq();
+    return (a - pivot).sq() < (b - pivot).sq(); // colinear?
   });
 
   int i = 0;
-  vector<pv> ans;
-  for(; ans.size() < 2 && i < n; ++i){
-    if(i == 0) ans.push_back(pontos[i]);
-    else if(pontos[i] != pontos[i - 1]) ans.push_back(pontos[i]);
+  vector<pv> ans; ans.push_back(pivot);
+  for(i = 1; ans.size() < 2 && i < n; ++i){
+    if(pts[i] != pts[i - 1]) ans.push_back(pts[i]);
   }
 
-
-  for(; i <= n; ++i){
-    if(i == n){
-      while(ans.size() > 2 && ans[ans.size() - 2].orient(pontos[0], ans.back()) >= 0)
-        ans.pop_back();
-    }else{
-      while(ans.size() >= 2 && ans[ans.size() - 2].orient(pontos[i], ans.back()) >= 0)
-        ans.pop_back();
-      ans.push_back(pontos[i]);
+  for(; i < n; ++i){
+    while(ans.size() >= 2){
+      if(ans[ans.size() - 2].orient(pts[i], ans.back()) >= 0) ans.pop_back();
+      else break;
     }
+    ans.push_back(pts[i]);
   }
 
+  while(ans.size() > 2){
+    if(ans[ans.size() - 2].orient(pts[0], ans.back()) >= 0) ans.pop_back();
+    else break;
+  }
   return ans;
 }
