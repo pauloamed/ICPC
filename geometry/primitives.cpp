@@ -10,7 +10,7 @@ void logger(string vars, Args&&... values) {
     cout<<endl;
 }
 
-#define T double
+#define T long double
 #define EPS 1e-7
 #define INF 1e18
 
@@ -26,29 +26,24 @@ bool is_int(T a){
   return eq(a, (long long) a, EPS);
 }
 
-void shuffle(vector<pv> &v, int k){
-	for(int i = k-1; i >= 1; i--){
-		swap(v[i], v[rand()%i]);
-	}
-}
 
 // point or vector
 struct pv{
   T x,y;
   pv(T _x=0, T _y=0):x(_x),y(_y){}
 
-  pv operator+(pv p){ return {x+p.x, y+p.y};}
-  pv operator-(pv p){ return {x-p.x, y-p.y};}
-  pv operator*(T k){ return {x*k, y*k};}
-  pv operator/(T k){ return {x/k, y/k};}
+  inline pv operator+(pv p){ return {x+p.x, y+p.y};}
+  inline pv operator-(pv p){ return {x-p.x, y-p.y};}
+  inline pv operator*(T k){ return {x*k, y*k};}
+  inline pv operator/(T k){ return {x/k, y/k};}
 
-  T dot(pv v){ return x*v.x + y*v.y;}
-  T cross(pv v){return {x*v.y - y*v.x};}
-  T cross(pv & a, pv & b) { return (a - *this).cross(b - *this); }
+  inline T dot(pv v){ return x*v.x + y*v.y;}
+  inline T cross(pv v){return x*v.y - y*v.x;}
+  inline T cross(pv & a, pv & b) { return (a - *this).cross(b - *this); }
 
   bool operator==(pv &p){ return eq(x, p.x, EPS) && eq(y, p.y, EPS);}
 
-  bool operator<(const pv &p) const{
+  inline bool operator<(const pv &p) const{
     if(!eq(x, p.x, EPS)) return x < p.x;
     else if(!eq(y, p.y, EPS)) return y < p.y;
     else return false;
@@ -58,7 +53,7 @@ struct pv{
   // <0: clockwise
   // =0: colinear
   // >0: ccw
-  T orient(pv a, pv b){ 
+  inline T orient(pv a, pv b){ 
     return (a-(*this)).cross(b-(*this)); 
   }
 
@@ -138,9 +133,17 @@ struct line{
   }
 };
 
+void shuffle(vector<pv> &v, int k){
+	for(int i = k-1; i >= 1; i--){
+		swap(v[i], v[rand()%i]);
+	}
+}
+
 struct circle{
 	pv c; T r;
 	inline bool contains(pv p) { return (p - this->c).norml2() <= r; }
+
+  circle(pv _c, T _r):c(_c),r(_r){}
 
 	circle(pv a, pv b) : 
 		c({(a.x+b.x)/2.0, (a.y+b.y)/2.0}), 
@@ -207,14 +210,6 @@ bool in_angle(pv a, pv b, pv c, pv p){
   return (a.orient(b,p) >= 0) && (a.orient(c,p) <= 0);
 }
 
-// point in ABC triangle
-// (area of APB) + (area of BPC) + (area of CPA) must be equal to area of ABC
-bool point_in_tri(pv a, pv b, pv c, pv point){
-  T a1 = abs(a.cross(b, c));
-  T a2 = abs(point.cross(a, b)) + abs(point.cross(b, c)) + abs(point.cross(c, a));
-  return eq(a1, a2, EPS);
-}
-
 // checks if point p is inside of minimum enclosing disk from a and b
 bool point_in_disk(pv a, pv b, pv p){
   if((a == p) || (b == p)) return true;
@@ -224,6 +219,22 @@ bool point_in_disk(pv a, pv b, pv p){
 // point p is in AB segment
 bool point_in_seg(pv sa, pv sb, pv p){
   return sa.orient(sb,p) == 0 && point_in_disk(sa, sb, p);
+}
+
+// 0: outside
+// 1: on a edge
+// 2: inside
+// point in ABC triangle
+// (area of APB) + (area of BPC) + (area of CPA) must be equal to area of ABC
+int point_in_tri(pv a, pv b, pv c, pv p){
+  if(point_in_seg(a, b, p)) return 1;
+  else if(point_in_seg(a, c, p)) return 1;
+  else if(point_in_seg(b, c, p)) return 1;
+  else{
+    T a1 = abs(a.cross(b, c));
+    T a2 = abs(p.cross(a, b)) + abs(p.cross(b, c)) + abs(p.cross(c, a));
+    return eq(a1, a2, EPS)? 2 : 0;
+  }
 }
 
 // point p is in AB ray
@@ -453,7 +464,14 @@ circle mec(vector<pv> &v){
 	return c;
 }
 
-
-////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////
+// incircle of a triangle abc
+circle incircle(pv a, pv b, pv c){
+  T ea = (b - c).norml2();
+  T eb = (a - c).norml2();
+  T ec = (a - b).norml2();
+  
+  pv center = (a * ea + b * eb + c * ec) / (ea + eb + ec);
+  T s = (ea + eb + ec) / 2;
+  T r = sqrt(((s - ea)*(s - eb)*(s - ec))/s);
+  return circle{center, r};
+}
