@@ -1,17 +1,24 @@
 struct BIT{
   int n; vector<int> v;
-  BIT(int m):n(m + 1), v(vector<int>(m + 1)){}
+  BIT(int m = 0):n(m + 2), v(vector<int>(n)){}
 
-  int query(int i){ int ans = 0; // neutral
-    for(i++; i > 0; i -= i & (-i)){
+  int query(int i){ int ans = 0;
+    for(i++; i > 0; i -= i & (-i))
       ans += v[i];
-    }
     return ans;
   }
 
-  void update(int i, int val){
+  void point_update(int i, int val){
     for(i++; i < n; i += i & (-i)) 
       v[i] += val;
+  }
+
+  // point query i < l doesnt has val
+  // point query l <= i <= r has val
+  // point query r < i has val and -val
+  void range_update(int l, int r, int val){
+    point_update(l, val);
+    point_update(r + 1, -val);
   }
 };
 
@@ -27,28 +34,6 @@ struct BIT{
         - o irmao a esq de x pode ser acessado retirando seu bit menos significativo
         - irm_esq_x = x - bmi(x)
 */
-int bit[MAXN];
-//////////////////////////////////////////////////////////////////////////////////
-//              Query numa range e Update num ponto especifico                  //
-//////////////////////////////////////////////////////////////////////////////////
-
-int query( int index ){
-    int ans(0); // acumulado
-    index++; // bit eh 1-indexada, tem q ser feito se index for 0-indexado
-    while(index > 0){ // enquanto posso ir pra esquerda
-        ans += bit[index]; // atualizando o acumulado
-        index -= index & (-index); // indo pro irmao a esquerda
-    }
-    return ans; // ret acumulado
-}
-
-void update( int index, int val ){
-    index++; // bit eh 1-indexada
-    while(index <= MAXN){ // enquanto eu puder subir na BIT
-        bit[index] += val; // atualizando valores dos ancestrais
-        index += index & (-index); // subindo pro pai
-    }
-}
 
 int find(int val){ // funcao que retorna a primeira posicao do acumulado maior que val
     // essa funcao vai tentando ativar os bits de ret enquanto percorre a BIT
@@ -84,46 +69,4 @@ int first_zero(){
         if(bit[maybe_ans] == (1 << i)) ans = maybe_ans;
     }
     return ans;
-}
-
-//////////////////////////////////////////////////////////////////////////////////
-//              Query num ponto especifico e Update numa range                  //
-//////////////////////////////////////////////////////////////////////////////////
-
-/*
- - nessa bit, eu marco com +val onde comeca um invervalo (l) e com -val onde termina (r)
-    - uma query a esq de (l) nao tem val
-    - uma query entre (l) e (r) tem +val e nao tem -val
-    - uma query apos (r) tem (+val e -val = 0)
-*/
-
-
-void update(int l, int r, int val){
-    if(l > r) return; // intervalo invalido de update
-
-    // formato do intevalo: [l;r]
-    r++; // aumento o intervalo em r, pra ficar aberto a direita
-
-
-    l++; // bit eh 1-indexada
-    while(l < MAXN){ // enquanto posso subir
-        bit[l] += val; // atualizo os ancestrais (a partir de l, tem mais val)
-        l += l & (-l); // subindo pro pai
-    }
-
-    r++; // bit eh 1-indexada
-    while(r < MAXN){ // enquanto posso subir
-        bit[r] -= val; // atualizo os ancenstrais (a partir de r, nao tem esse val)
-        r += r & (-r); // subindo pro pai
-    }
-}
-
-int query(int index){
-    int ans(0); // acumulado
-    index++; // bit eh 1-indexada
-    while(index > 0){ // enquanto posso ir pra esquerda
-        ans += bit_v[index]; // atualizo o acumulado
-        index -= index & (-index); // ando pra esquerda
-    }
-    return ans; // ret acumulado
 }
