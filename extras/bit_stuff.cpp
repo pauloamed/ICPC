@@ -1,5 +1,5 @@
 // enumerating submasks
-  for(int msk = 1; msk < masks; ++msk){
+  for(int msk = 0; msk < masks; ++msk){
     for(int smsk = msk; smsk; smsk = (smsk - 1) & msk){
       // smsk is submsk of msk
     }
