@@ -85,6 +85,7 @@ bool poly_is_convex(vector<pv> &pts){
   return true;
 }
 
+
 struct ConvexPoly{
   vector<pv> pts;
   vector<pv> up, down;
@@ -227,4 +228,3 @@ struct ConvexPoly{
     return ConvexPoly(output);
   }
 };
-

@@ -10,9 +10,11 @@ void logger(string vars, Args&&... values) {
     cout<<endl;
 }
 
-#define T long double
-#define EPS 1e-7
+#define T long long
+#define EPS 1e-9
 #define INF 1e18
+
+const T ZERO = 0;
 
 int sgn(T val){
   return val > 0 ? 1 : (val == 0 ? 0 : -1);
@@ -62,6 +64,10 @@ struct pv{
 
   // pv rotate(double a){ return {((double) x)*cos(a) - y*sin(a), (T) x*sin(a) + y*cos(a)}; }
   pv perp(){ return {this->y, -this->x}; }
+
+  T angle_pe(pv v){
+    return acos(dot(v) / norml2() / v.norml2());
+  }
 };
 
 struct line{
@@ -77,12 +83,18 @@ struct line{
     }return false;
   }
 
+  bool parallel(line l){
+    return eq(v.cross(l.v), 0, EPS);
+  }
+
   // from dir vec and c
   line(pv _v, T _c):v(_v), c(_c){
     if(v.y == 0) pt = {0, c / -v.x}; // horizontal line
     else pt = {c / v.y, 0};
   }
 
+  // from equation
+  line(T a, T b, T c): v({b,-a}), c(c){} 
 
   // from 2 dif points
   line(pv a, pv b):v(a-b), c(a.cross(b)), pt(b){} 
@@ -107,7 +119,7 @@ struct line{
   int inter(line l, pv &out) {
     if(*this==l) return 2;
     T d = v.cross(l.v);
-    if (d == 0) return 0;
+    if (eq(d, 0, EPS)) return 0;
     out = (l.v*c - v*l.c) / d;
     return 1;
   }
@@ -126,12 +138,18 @@ struct line{
 
   pv get_big(T s){ return pt + v * s; }
 
+  line translate(pv t) {return {v, c + v.cross(t)};}
+
   // cmp func for sorting points (projections) through line
   // points dont need to lie on the line
-  bool cmp_proj(pv a, pv b){ 
-    return v.dot(a) < v.dot(b); 
-  }
+  bool cmp_proj(pv a, pv b){ return v.dot(a) < v.dot(b); }
+
 };
+
+std::ostream & operator<<(std::ostream & os, const line &l){
+  os << "(" << -l.v.y << "x+" << l.v.x << "y=" << l.c << ")";
+  return os;
+}
 
 void shuffle(vector<pv> &v, int k){
 	for(int i = k-1; i >= 1; i--){
@@ -141,13 +159,13 @@ void shuffle(vector<pv> &v, int k){
 
 struct circle{
 	pv c; T r;
-	inline bool contains(pv p) { return (p - this->c).norml2() <= r; }
 
-  circle(pv _c, T _r):c(_c),r(_r){}
+  circle(pv _c={0, 0}, T _r=0):c(_c),r(_r){}
 
 	circle(pv a, pv b) : 
 		c({(a.x+b.x)/2.0, (a.y+b.y)/2.0}), 
 		r((a-b).norml2()/2.0) {}
+
 		
 	circle(pv a, pv b, pv c) : c({0,0}), r(0) {
 		
@@ -186,18 +204,14 @@ struct circle{
     this->c = {h, k};
     this->r = (a - pv{h, k}).norml2();
 	}
+
+  bool operator==(circle x){ return (c == x.c && eq(r, x.r, EPS)); }
+
+	inline bool contains(pv p) { return (p - this->c).norml2() <= r; }
+
+  // in radians
+  T get_circunference(T ang){ return r * ang; }
 };
-
-// // angulo
-// double angle_pe(pv v){ // angulo usando a definicao de produto escalar
-//     double cosa = max(min( (double) dot(v) / norml2() / v.norml2(), 1.0), -1.0);
-//     return acos(cosa);
-// }
-// double angle_pv(pv v){ // angulo usando a definicao de produto vetorial
-//     double sena = max(min( (double) cross(v) / norml2() / v.norml2(), 1.0), -1.0);
-//     return asin(sena);
-// }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////                  INSIDE                  ////////////////////////////
@@ -213,12 +227,12 @@ bool in_angle(pv a, pv b, pv c, pv p){
 // checks if point p is inside of minimum enclosing disk from a and b
 bool point_in_disk(pv a, pv b, pv p){
   if((a == p) || (b == p)) return true;
-  return (a-p).dot(b-p) <= 0;
+  return (a-p).dot(b-p) < 0 || eq((a-p).dot(b-p), 0, EPS);
 }
 
 // point p is in AB segment
 bool point_in_seg(pv sa, pv sb, pv p){
-  return sa.orient(sb,p) == 0 && point_in_disk(sa, sb, p);
+  return eq(sa.orient(sb,p), 0, EPS) && point_in_disk(sa, sb, p);
 }
 
 // 0: outside
@@ -364,6 +378,47 @@ vector<pv> seg_ray_inter(pv sa, pv sb, pv ra, pv rb){
   return {};
 }
 
+vector<pv> circle_line_inter(circle circ, line l){
+  l = l.translate(circ.c * -1);
+  T a = -l.v.y, b = l.v.x, c = -l.c;
+  T r = circ.r;
+  vector<pv> ret;
+  T x0 = -a*c/(a*a+b*b), y0 = -b*c/(a*a+b*b);
+  if (c*c > r*r*(a*a+b*b)+EPS) return {};
+  else if (abs (c*c - r*r*(a*a+b*b)) < EPS) ret = {pv{x0, y0}};
+  else {
+    T d = r*r - c*c/(a*a+b*b);
+    T mult = sqrt (d / (a*a+b*b));
+    T ax, ay, bx, by;
+    ax = x0 + b * mult;
+    bx = x0 - b * mult;
+    ay = y0 - a * mult;
+    by = y0 + a * mult;
+    ret = {{ax, ay}, {bx, by}};
+  }
+  for(auto &x : ret) x = x + circ.c;
+  return ret;
+}
+
+vector<pv> circle_seg_inter(circle c, pv sa, pv sb){
+  line l(sb, sa);
+  auto inters = circle_line_inter(c, l);
+  vector<pv> in_seg;
+  for(auto x : inters){
+    if(point_in_seg(sa, sb, x)) in_seg.push_back(x);
+  }
+  return in_seg;
+}
+
+vector<pv> circle_circle_inter(circle a, circle b){
+  pv origin = a.c;
+  a.c = a.c - origin; b.c = b.c - origin;
+  T c = b.c.sq() + a.r * a.r - b.r * b.r;
+  auto inter = circle_line_inter(a, line(-2*b.c.x, -2*b.c.y, -c));
+  for(auto &x : inter) x = x + origin;
+  return inter;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////                  DISTANCE                  ///////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -474,4 +529,29 @@ circle incircle(pv a, pv b, pv c){
   T s = (ea + eb + ec) / 2;
   T r = sqrt(((s - ea)*(s - eb)*(s - ec))/s);
   return circle{center, r};
+}
+
+vector<line> circle_circle_tangents(circle a, circle b){
+  auto tangents = [](pv c, T r1, T r2, vector<line> &ans){
+    T r = r2 - r1;
+    T z = c.sq();
+    T d = z - r * r;
+    if (d < -EPS) return;
+    d = sqrt(max(ZERO, d));
+    line l(
+      (c.x * r + c.y * d) / z,
+      (c.y * r - c.x * d) / z,
+      -r1
+    );
+    ans.push_back(l);
+  };
+  
+  vector<line> ans;
+  for(int i = -1; i <= 1; i += 2) for(int j = -1; j <= 1; j += 2)
+    tangents(b.c - a.c, a.r*i, b.r*j, ans);
+  
+  for(int i = 0; i < ans.size(); ++i){
+    ans[i] = ans[i].translate(a.c);
+  }
+  return ans;
 }
