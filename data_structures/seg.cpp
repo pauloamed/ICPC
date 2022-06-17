@@ -1,117 +1,92 @@
-#include<bits/stdc++.h>
-using namespace std;
+// https://github.com/brunomaletta/Biblioteca/blob/master/Codigo/Estruturas/SegTree/SegTree.cpp
+// SegTree
+//
+// Recursiva com Lazy Propagation
+// Query: soma do range [a, b]
+// Update: soma x em cada elemento do range [a, b]
+// Pode usar a seguinte funcao para indexar os nohs:
+// f(l, r) = (l+r)|(l!=r), usando 2N de memoria
+//
+// Complexidades:
+// build - O(n)
+// query - O(log(n))
+// update - O(log(n))
 
+namespace seg {
+	ll seg[4*MAX], lazy[4*MAX];
+	int n, *v;
 
-template<int N, class T, T (*BinaryOp)(T,T)>
-struct SegTreeLazy{
-  T segt[4*N]; // segtree
-  T lp[4*N]; // lazy prop
-  
-  T NEUTRAL_LP;
-  T NEUTRAL_VAL;
-  int n;
-  
-  
-  void init(int _n, T neutralVal, T neutralLp, vector<T>* vals=NULL){
-    n = _n;
-    NEUTRAL_VAL = neutralVal;
-    NEUTRAL_LP = neutralLp;
-    build(0, n - 1, 0, vals);
-  }
-  
-  void lazyProp(int node, T val, int l, int r){
-    assert(l == r);
-    if(l == r){
-    segt[node] = val; // ATTENTION
-    }else{
-      lp[(node<<1)+1] = val;  // ATTENTION
-      lp[(node<<1)+2] = val;  // ATTENTION
-    }
-  }
-  
-  
-  void maybeUpdtLazy(int l, int r, int node){
-    if(lp[node] != NEUTRAL_LP){
-      lazyProp(node, lp[node], l, r);
-      lp[node] = NEUTRAL_LP;
-    }
-  }
-  
-  
-  void build(int l, int r, int node, vector<T> *initVals){
-    lp[node] = NEUTRAL_LP;
-    if(l == r){
-      if(initVals) segt[node] = (*initVals)[l];
-      else segt[node] = NEUTRAL_VAL;
-    }else{
-      int mid = (l + r)/2;
-      build(l, mid, (node<<1) + 1, initVals);
-      build(mid + 1, r, (node<<1) + 2, initVals);
-      segt[node] = BinaryOp(segt[(node<<1)+1], segt[(node<<1)+2]);
-    }
-  }
-  
-  void _updateRange(int l, int r, int node, int lu, int ru, T val){
-    // maybeUpdtLazy(l,r,node);
-    if(lu > r || l > ru) return;
-    if(lu <= l && r <= ru){
-      lazyProp(node, val, l, r);
-    }else{
-      int mid = (l + r)/2;
-      _updateRange(l, mid, (node<<1)+1, lu, ru, val);
-      _updateRange(mid+1, r, (node<<1)+2, lu, ru, val);
-      segt[node] = BinaryOp(segt[(node<<1)+1], segt[(node<<1)+2]);
-    }
-  }
-  
-  void update(int lu, int ru, T val){
-    _updateRange(0, n - 1, 0, lu, ru, val);
-  }
-  
-  
-  T _queryRange(int l, int r, int node, int lq, int rq){
-    // maybeUpdtLazy(l, r, node);
-    if(rq < l || lq > r) return NEUTRAL_VAL;
-    else if(l >= lq && r <= rq) return segt[node];
-    else{
-      int mid = (l + r)/2; // mid
-      return BinaryOp(
-        _queryRange(l, mid, (node<<1) + 1, lq, rq),
-        _queryRange(mid+1, r, (node<<1) + 2, lq, rq)
-      );
-    }
-  }
-  
-  T query(int lq, int rq){
-    return _queryRange(0, n - 1, 0, lq, rq);
-  }
+	ll build(int p=1, int l=0, int r=n-1) {
+		lazy[p] = 0;
+		if (l == r) return seg[p] = v[l];
+		int m = (l+r)/2;
+		return seg[p] = build(2*p, l, m) + build(2*p+1, m+1, r);
+	}
+	void build(int n2, int* v2) {
+		n = n2, v = v2;
+		build();
+	}
+	void prop(int p, int l, int r) {
+		seg[p] += lazy[p]*(r-l+1);
+		if (l != r) lazy[2*p] += lazy[p], lazy[2*p+1] += lazy[p];
+		lazy[p] = 0;
+	}
+	ll query(int a, int b, int p=1, int l=0, int r=n-1) {
+		prop(p, l, r);
+		if (a <= l and r <= b) return seg[p];
+		if (b < l or r < a) return 0;
+		int m = (l+r)/2;
+		return query(a, b, 2*p, l, m) + query(a, b, 2*p+1, m+1, r);
+	}
+	ll update(int a, int b, int x, int p=1, int l=0, int r=n-1) {
+		prop(p, l, r);
+		if (a <= l and r <= b) {
+			lazy[p] += x;
+			prop(p, l, r);
+			return seg[p];
+		}
+		if (b < l or r < a) return seg[p];
+		int m = (l+r)/2;
+		return seg[p] = update(a, b, x, 2*p, l, m) +
+			update(a, b, x, 2*p+1, m+1, r);
+	}
 };
 
-pair<int,int> mergeFunc(pair<int,int> a, pair<int,int> b){
-  if(a.first == b.first){
-    return make_pair(a.first, b.second + a.second);
-  }else{
-    if(b.first < a.first) return b;
-    else return a;
-  }
+
+// Se tiver uma seg de max, da pra descobrir em O(log(n))
+// o primeiro e ultimo elemento >= val numa range:
+
+// primeira posicao >= val em [a, b] (ou -1 se nao tem)
+int get_left(int a, int b, int val, int p=1, int l=0, int r=n-1) {
+	if (b < l or r < a or seg[p] < val) return -1;
+	if (r == l) return l;
+	int m = (l+r)/2;
+	int x = get_left(a, b, val, 2*p, l, m);
+	if (x != -1) return x;
+	return get_left(a, b, val, 2*p+1, m+1, r);
+}
+// ultima posicao >= val em [a, b] (ou -1 se nao tem)
+int get_right(int a, int b, int val, int p=1, int l=0, int r=n-1) {
+	if (b < l or r < a or seg[p] < val) return -1;
+	if (r == l) return l;
+	int m = (l+r)/2;
+	int x = get_right(a, b, val, 2*p+1, m+1, r);
+	if (x != -1) return x;
+	return get_right(a, b, val, 2*p, l, m);
 }
 
-int main(){
-  SegTreeLazy<100000, pair<int,int>, mergeFunc> segtree;
-  int n, q; cin >> n >> q;
-  vector<pair<int,int>> v(n);
-  for(auto &x : v){
-    cin >> x.first;
-    x.second = 1;
-  }
-  segtree.init(n, {INT_MAX, 0}, {0, 0}, &v);
-  while(q--){
-    int a, b, c; cin >> a >> b >> c;
-    if(a == 1){
-      segtree.update(b, b, make_pair(c, 1));
-    }else{
-      auto x = segtree.query(b, c - 1);
-      cout << x.first << " " << x.second << endl;
-    }
-  }
+// Se tiver uma seg de soma sobre um array nao negativo v, da pra
+// descobrir em O(log(n)) o maior j tal que v[i]+v[i+1]+...+v[j-1] < val
+
+int lower_bound(int i, ll& val, int p, int l, int r) {
+	if (r < i) return n;
+	if (i <= l and seg[p] < val) {
+		val -= seg[p];
+		return n;
+	}
+	if (l == r) return l;
+	int m = (l+r)/2;
+	int x = lower_bound(i, val, 2*p, l, m);
+	if (x != n) return x;
+	return lower_bound(i, val, 2*p+1, m+1, r);
 }
