@@ -12,43 +12,55 @@
 // query - O(log(n))
 // update - O(log(n))
 
-namespace seg {
-	ll seg[4*MAX], lazy[4*MAX];
-	int n, *v;
+#define MAXN 100010
+#define int long long
 
-	ll build(int p=1, int l=0, int r=n-1) {
+struct Node{
+  int x;
+  Node(int y=0):x(y){}
+  Node operator+(Node n){
+    return {x + n.x};
+  }
+};
+
+namespace seg {
+	Node seg[4*MAXN];
+  int lazy[4*MAXN];
+	int n, *v;
+  const Node NEUTRAL;
+
+	Node build(int p=1, int l=0, int r=n-1) {
 		lazy[p] = 0;
-		if (l == r) return seg[p] = v[l];
+		if (l == r) return seg[p] = (v? v[l] : NEUTRAL);
 		int m = (l+r)/2;
 		return seg[p] = build(2*p, l, m) + build(2*p+1, m+1, r);
 	}
-	void build(int n2, int* v2) {
+	void init(int n2, int* v2=nullptr) {
 		n = n2, v = v2;
 		build();
 	}
 	void prop(int p, int l, int r) {
-		seg[p] += lazy[p]*(r-l+1);
+		seg[p].x += lazy[p]*(r-l+1);
 		if (l != r) lazy[2*p] += lazy[p], lazy[2*p+1] += lazy[p];
 		lazy[p] = 0;
 	}
-	ll query(int a, int b, int p=1, int l=0, int r=n-1) {
+	Node query(int lq, int rq, int p=1, int l=0, int r=n-1) {
 		prop(p, l, r);
-		if (a <= l and r <= b) return seg[p];
-		if (b < l or r < a) return 0;
+		if (lq <= l && r <= rq) return seg[p];
+		if (rq < l || r < lq) return NEUTRAL;
 		int m = (l+r)/2;
-		return query(a, b, 2*p, l, m) + query(a, b, 2*p+1, m+1, r);
+		return query(lq, rq, 2*p, l, m) + query(lq, rq, 2*p+1, m+1, r);
 	}
-	ll update(int a, int b, int x, int p=1, int l=0, int r=n-1) {
+	void update(int lu, int ru, int x, int p=1, int l=0, int r=n-1) {
 		prop(p, l, r);
-		if (a <= l and r <= b) {
+		if(lu <= l && r <= ru){
 			lazy[p] += x;
 			prop(p, l, r);
-			return seg[p];
-		}
-		if (b < l or r < a) return seg[p];
-		int m = (l+r)/2;
-		return seg[p] = update(a, b, x, 2*p, l, m) +
-			update(a, b, x, 2*p+1, m+1, r);
+		}else if(ru >= l && r >= lu){
+      int m = (l+r)/2;
+      update(lu, ru, x, 2*p, l, m); update(lu, ru, x, 2*p+1, m+1, r);
+      seg[p] = seg[2*p] +	seg[2*p+1];
+    }
 	}
 };
 
