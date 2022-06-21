@@ -1,6 +1,6 @@
 namespace color_updt{
   struct Interv{
-    mutable int l, r, val;
+    mutable int l, r, val; // [l;r]
     Interv(int _l=-1, int _r=-1, int _v=0):
     l(_l), r(_r), val(_v){}
     bool operator<(const Interv& x) const{ return l < x.l; }
