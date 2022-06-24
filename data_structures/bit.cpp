@@ -8,10 +8,12 @@ struct BIT{
     return ans;
   }
 
-  void point_update(int i, int val){
+  void update(int i, int val){
     for(i++; i < n; i += i & (-i)) 
       v[i] += val;
   }
+};
+
 
   // point query i < l doesnt has val
   // point query l <= i <= r has val
@@ -20,7 +22,6 @@ struct BIT{
     point_update(l, val);
     point_update(r + 1, -val);
   }
-};
 
 /*
  - bit menos significativo de x (bmi(a)) = a & (-a)
