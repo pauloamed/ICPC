@@ -19,8 +19,8 @@ struct BIT{
   // point query l <= i <= r has val
   // point query r < i has val and -val
   void range_update(int l, int r, int val){
-    point_update(l, val);
-    point_update(r + 1, -val);
+    update(l, val);
+    update(r + 1, -val);
   }
 
 /*
