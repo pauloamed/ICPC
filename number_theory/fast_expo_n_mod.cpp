@@ -28,13 +28,23 @@ int inverse(int a){
 }
 
 int fat[MAXN], inv[MAXN], invfat[MAXN];
- 
 void precalc(){
   inv[1] = invfat[0] = invfat[1] = fat[0] = fat[1] = 1;
   for(int i = 2; i < MAXN; ++i){
     inv[i] = MOD - (MOD / i) * inv[MOD % i] % MOD;
     invfat[i] = (invfat[i - 1] * inv[i]) % MOD;
     fat[i] = (fat[i - 1] * i) % MOD;
+  }
+}
+
+int comb[MAXN][MAXN]; // i chooses j
+void precalc(){
+  for(int i = 0; i < MAXN; ++i)
+    comb[i][0] = comb[i][i] = 1;
+  for(int i = 1; i < MAXN; ++i){
+    for(int j = 1; j < i; ++j){
+      comb[i][j] = (comb[i - 1][j] + comb[i - 1][j - 1]) % MOD;
+    }
   }
 }
 
