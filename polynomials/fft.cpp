@@ -1,70 +1,65 @@
-// 100783C
-
-#include <bits/stdc++.h>
-#define rep(i, a, b) for(int i = (a); i < (b); i++)
-using namespace std;
-
-typedef complex<long double> cld;
-typedef vector<int> vi;
-typedef long long ll;
-typedef long double ld;
-
-void FFT(vector<cld > &a, bool invert){
-	int n = (int)a.size();
-	for (int i = 1, j = 0; i < n; i++) {
-		int bit = n >> 1;
-		for (; j >= bit; bit >>= 1)
-			j -= bit;
-		j += bit;
-		if (i < j) swap(a[i], a[j]);
-	}
-	for (int len = 2; len <= n; len <<= 1) {
-		ld ang = 2 * acos((ld)-1) / len * (invert? -1: 1);
-		cld wlen(cos(ang), sin(ang));
-		for (int i = 0; i < n; i += len) {
-			cld w(1);
-			for (int j = 0; j < len / 2; j++) {
-				cld u = a[i + j], v = a[i + j + len / 2] * w;
-				a[i + j] = u + v;
-				a[i + j + len / 2] = u - v;
-				w *= wlen;
-			}
-		}
-	}
-	if (invert)
-		rep(i,0,n) a[i] /= n;
+namespace FFT{
+  typedef long long ll;
+  typedef complex<double> C;
+ 
+  void fft(vector<C>& a) {
+    int n = a.size(), L = 31 - __builtin_clz(n);
+    static vector<complex<long double>> R(2, 1);
+    static vector<C> rt(2, 1);  // (^ 10% faster if double)
+    for (static int k = 2; k < n; k *= 2) {
+      R.resize(n); rt.resize(n);
+      auto x = polar(1.0L, acos(-1.0L) / k);
+      for(int i=k;i<2*k;i++) rt[i] = R[i] = i&1 ? R[i/2] * x : R[i/2];
+    }
+    vector<int> rev(n);
+    for(int i=0;i<n;i++) rev[i] = (rev[i / 2] | (i & 1) << L) / 2;
+    for(int i=0;i<n;i++) if (i < rev[i]) swap(a[i], a[rev[i]]);
+    for (int k = 1; k < n; k *= 2)
+      for (int i = 0; i < n; i += 2 * k) for(int j=0;j<k;j++) {
+        // C z = rt[j+k] * a[i+j+k]; // (25% faster if hand-rolled)  /// include-line
+        auto x = (double *)&rt[j+k], y = (double *)&a[i+j+k];        /// exclude-line
+        C z(x[0]*y[0] - x[1]*y[1], x[0]*y[1] + x[1]*y[0]);           /// exclude-line
+        a[i + j + k] = a[i + j] - z;
+        a[i + j] += z;
+      }
+  }
+ 
+  template<int M> 
+  vector<ll> convMod(const vector<ll> &a, const vector<ll> &b) {
+    if (a.empty() || b.empty()) return {};
+    vector<ll> res(((int) a.size() + b.size()) - 1);
+    int B=32-__builtin_clz(res.size()), n=1<<B, cut=int(sqrt(M));
+    vector<C> L(n), R(n), outs(n), outl(n);
+    for(int i=0;i<a.size();i++) L[i] = C((int)a[i] / cut, (int)a[i] % cut);
+    for(int i=0;i<b.size();i++) R[i] = C((int)b[i] / cut, (int)b[i] % cut);
+    fft(L), fft(R);
+    for(int i=0;i<n;i++){
+      int j = -i & (n - 1);
+      outl[j] = (L[i] + conj(L[j])) * R[i] / (2.0 * n);
+      outs[j] = (L[i] - conj(L[j])) * R[i] / (2.0 * n) / 1i;
+    }
+    fft(outl), fft(outs);
+    for(int i=0;i<res.size();i++){
+      ll av = (ll)(real(outl[i])+.5), cv = (ll)(imag(outs[i])+.5);
+      ll bv = (ll)(imag(outl[i])+.5) + (ll)(real(outs[i])+.5);
+      res[i] = ((av % M * cut + bv) % M * cut + cv) % M;
+    }
+    return res;
+  }
 }
 
-void Multiply(const vi &a, const vi &b, vector<ll> &res){
-	vector<cld> fa(a.begin(), a.end()), fb(b.begin(), b.end());
-	int n = 1;
-	while(n < (int)a.size() || n < (int)b.size()) n <<= 1;
-	n <<= 1;
-	fa.resize(n); fb.resize(n);
-	FFT(fa, false); FFT(fb, false);
-	rep(i,0,n) fa[i] *= fb[i];
-	FFT(fa, true);
-	res.resize(n);
-	rep(i,0,n)
-		res[i] = (ll)(fa[i].real() + 0.5);
-}
 
-int main(){
-  ios_base::sync_with_stdio(false); cin.tie(NULL);
+// DIVIDE AND CONQUER
+{
+  vector<vector<ll>> pols;
+  // pols[i]: polynomial from computing transition at state i 
 
-  int n, m; cin >> n;
-  vi v(200000, 0);
-  vector<ll> ans;
-  rep(i, 0, n){
-    int x; cin >> x; v[x] = 1;
+  while(pols.size() >= 2){
+    vector<vector<ll>> nxt;
+    for(int i = 0; i + 1 < pols.size(); i += 2){
+      nxt.push_back(convMod<MOD>(pols[i], pols[i + 1]));
+    }
+    if(pols.size() % 2) nxt.push_back(pols.back());
+    swap(nxt, pols);
   }
-  Multiply(v, v, ans);
-
-  cin >> m;
-  int resp = 0;
-  rep(i, 0, m){
-    int x; cin >> x;
-    if(v[x] > 0 || ans[x] > 0) resp++;
-  }
-  cout << resp << endl;
 }
