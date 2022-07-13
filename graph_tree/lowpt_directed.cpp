@@ -1,76 +1,55 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-#define MAXN 1000
-
+#define MAXN 5010
+ 
 /*
-Dois vértices i e j estão fortemente conectados em um grafo direcionado G, se
-existe caminho direcionado de i para j e de j para i em G.
+two vertices `i`, `j` are strongly connected in a directed graph G iff 
+there exists a direct path from `i` to `j` and from `j` to `i`.
 
-PE: posicao de entrada  PS: posicao de saida
-(v,w) é aresta da árvore ou avanço se e somente se PE(v) < PE(w)
-(v,w) é aresta de retorno se e somente se PE(v) > PE(w) e PS(v) < PS(w)
-(v,w) é aresta de cruzamento se e somente se PE(v) > PE(w) e PS(v) > PS(w)
+(v,w) is an advance edge iff in_time(v) < in_time(w)
+(v,w) is a return edge iff in_time(v) > in_time(w) AND out_time(v) < out_time(w)
+(v,w) is a cross edge iff in_time(v) > in_time(w) AND out_time(v) > out_time(w)
 
-low(v) = min{v, PE(z)}, onde z é o vértice de menor profundidade de entrada
-localizado no mesmo componente conexo de v, que pode ser alcançado a partir de v,
-através de zero ou mais arestas de arvore seguidas por, no máximo, uma aresta de
-retorno ou cruzamento.
-
-
+low(v) = min{v, in_time(z)}, s.t. z is the vertex w/ lowest in_time in the same SCC as v.
+it can be reached using 0 or more consecutive advance edges followed by at most one return or cross edge.
 */
+ 
+vector<int> v[MAXN];
 
-size_t idx[MAXN]; // vetor com id de cada vertice (posicao de entrada)
-size_t low[MAXN]; // vetor com lowpt
-bool active[MAXN]; // vetor indicando se o no ta na ativo na arvore de recursao
-vector<size_t> v[MAXN]; // lista de adjacencia
-vector<size_t> temp; // vetor temporario para impressao, pilha de recursao
+namespace scc{
+  int t = 0;
+  int in_time[MAXN];
 
-int ans = 0;
-void dfs(int x, int _root, int &t){
-    low[x] = idx[x] = ++t; // att low e id
-    active[x] = true; // att raiz
-    temp.push_back(x); // ad na pilha de recur
-    // printf(">> %d: %d %d\n", x, low[x], idx[x]);
+  int low[MAXN];
+  bool active[MAXN];
+  stack<int> curr_comp;
 
-    for(int i = 0; i < v[x].size(); ++i){
-        if(!idx[v[x][i]]){ // se o adj nao foi vis ainda (aresta de arvore)
-            dfs(v[x][i], _root, t); // passo recursivo
-            low[x] = min(low[x], low[v[x][i]]); // tento atualizar lowpt do atual
-        }else{ // eh de avanco, retorno ou cruzamento
-            if(active[v[x][i]] && idx[v[x][i]] < idx[x]){
-                // primeira condicao: estao na msm arvore
-                // segunda condicao: eh aresta de retorno ou cruzamento
-                low[x] = min(low[x], idx[v[x][i]]); // tenta atualizar lowpt de x
-            }
-        }
+  int scc_cnt = 0;
+  int scc[MAXN];
+  
+  void dfs(int x, int _root){
+    low[x] = in_time[x] = ++t;
+    active[x] = true;
+    curr_comp.push(x);
+
+    for(auto y : v[x]){
+      if(in_time[y] == 0){ 
+        // advance edge
+        dfs(y, _root);
+        low[x] = min(low[x], low[y]);
+      }else if(active[y] && in_time[y] < in_time[x]){      
+        // return or cross edge
+        low[x] = min(low[x], in_time[y]);
+      }
     }
 
-    // printf("<< %d: %d %d\n", x, low[x], idx[x]);
-    if(low[x] == idx[x]){ // x raiz de arvore (eh forte)
-        // printf("Componente fortemente conexa: ");
-        ans++;
-        while(true){
-            // printf("%d ", temp.back());
-            active[temp.back()] = false;
-            if(temp.back() == x){ // se cheguei na arvore
-                temp.pop_back(); break; // tiro raiz e paro de tirar
-            }else temp.pop_back(); // vou consumindo a lista
-        }
-        // printf("\n");
-    }
-}
+    if(low[x] == in_time[x]){
+      while(true){
+        int y = curr_comp.top(); 
+        curr_comp.pop();
 
-int main(){
-    int n, m; cin >> n >> m;
-    for(int i = 0; i < m; ++i){
-        int a, b; cin >> a >> b;
-        v[a].push_back(b);
+        scc[y] = scc_cnt;
+        active[y] = false;
+        if(y == x) break;
+      }scc_cnt++;
     }
-
-    int t = 0;
-    for(int i = 1; i <= n; ++i){
-        if(!idx[i]) dfs(i, i, t); // se nao foi visitado ainda, visite
-    }
-    cout << ans << endl;
+  }
 }
