@@ -43,7 +43,7 @@ struct AhoCorasickAutomaton{
     for(int i = 0; i < n; ++i) memset(to[i], 0, sizeof to[i]);
   }
 
-	int add(string &s, vector<int> &pts){ // string and string_id
+	int add(string &s, vector<int> &pts){ // ATTENTION
 		int curr = START_STATE;
 		
 		for(int i = 0; i < s.size(); i++){
@@ -54,23 +54,21 @@ struct AhoCorasickAutomaton{
       }
       curr = to[curr][ch];
 
-      // adding all prefixes
+      // ATTENTION (adding all prefixes here)
       acc[curr].occur++;
       acc[curr].pts = max(acc[curr].pts, pts[i]);
 		}
 
-		// acc[curr] = s.size(); // may add only the whole string also
+		// acc[curr] = s.size(); // ATTENTION (adding the whole string here)
 		return curr;
 	}
 
   vector<int> sl_tree[N];
   void traverse_tree(int x){
-    // cout << x << " " << acc[x].pts << endl;
     for(auto y : sl_tree[x]){
       traverse_tree(y);
       acc[x].pts = max(acc[x].pts, acc[y].pts);
     }
-    // cout << x << " " << acc[x].pts << endl;
   }
 
 	void init(){
@@ -83,16 +81,19 @@ struct AhoCorasickAutomaton{
 		while(!q.empty()){
 			int u = q.front(); q.pop();
 			for(int i = 0; i < ALPHA_SIZE; i++){
-				if(to[u][i]){ // existent transition from `u` using `i`
+				if(to[u][i]){ 
+          // existent transition from `u` using `i`
 					int v = to[u][i]; q.push(v);
           
 					if(u != START_STATE){
 						// just as in KMP construction in success case
-						suffixLink[v] = to[suffixLink[u]][i]; // since s[i-suffixLink[v]:i] = string(suffixLink[v])
+            // since s[i-suffixLink[v]:i] = string(suffixLink[v])
+						suffixLink[v] = to[suffixLink[u]][i]; 
             // do some suffix link stuff
 					}
           sl_tree[suffixLink[v]].push_back(v);
-				}else{ // inexistent transition from `u` using `i`, if theres a suffixlink, uses it
+				}else{ 
+          // inexistent transition from `u` using `i`, if theres a suffixlink, uses it
           if(u != START_STATE) to[u][i] = to[suffixLink[u]][i];
           else to[u][i] = START_STATE;
         }
