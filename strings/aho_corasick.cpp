@@ -13,7 +13,8 @@ struct AhoCorasick{
   
   // trie transition, avoiding allocating too much memory and using the alphabet size
   // cost: log(SIGMA), we assume thats negligible.
-  map<int,int> to[N]; // (A, B): goes to B using A
+  // (A, B): goes to B using A
+  map<int,int> to[N]; 
 
   // next node to be added to the trie
   int next_node = 1;
@@ -40,20 +41,27 @@ struct AhoCorasick{
   // node X in the sl subtree of a accepted node Y, we are on a accepted string position
   vector<int> sl_tree[N]; 
 
-  void compute_suffix_links(){ // similar to calculation of preffix function
-    const int P = -1; // placeholder 
+  // similar to calculation of preffix function
+  void compute_suffix_links(){ 
+    const int P = -1;
     sl[ROOT] = P;
     queue<int> q; q.push(ROOT);
     while(q.size()){
       int x = q.front(); q.pop();
       for(auto [c, child] : to[x]){
-        int child_sl = sl[x]; // trying to match a prefsufix, starts with parents suffixlink
+        // trying to match a prefsufix, starts with parents suffixlink
+        int child_sl = sl[x]; 
         while(child_sl != P){
           if(to[child_sl].count(c)) break;
           else child_sl = sl[child_sl];
         }
-        if(child_sl == P) sl[child] = ROOT; // couldnt match a prefsufix+c
-        else sl[child] = to[child_sl][c]; // found match (prefsufix+c)
+        if(child_sl == P){
+          // couldnt match a prefsufix+c
+          sl[child] = ROOT; 
+        }else{
+          // found match (prefsufix+c)
+          sl[child] = to[child_sl][c]; 
+        } 
         
         q.push(child);
         sl_tree[sl[child]].push_back(child);
