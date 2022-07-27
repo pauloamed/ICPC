@@ -3,7 +3,13 @@
 #include<ext/pb_ds/tree_policy.hpp>
 using namespace __gnu_pbds;
 using namespace std;
-typedef tree<int, null_type/*int para map*/, less<int>, rb_tree_tag, tree_order_statistics_node_update> Tree;
+typedef tree<
+  int, 
+  null_type/*int para map*/, 
+  less<int>, 
+  rb_tree_tag, 
+  tree_order_statistics_node_update
+  > Tree;
 
 int main(){
 	Tree s;
