@@ -46,7 +46,7 @@ void sieve(int n){
     }
     // for all primes less than or eq i, fill their product by i into min_prime_fact
     for(int j = 0; j < pr.size(); j++){
-      if(i * pr[j] > n) break; // out of range
+      if(i * pr[j] >= n) break; // out of range
       min_prime_fact[i * pr[j]] = pr[j];
 
       if(pr[j] == min_prime_fact[i]){
