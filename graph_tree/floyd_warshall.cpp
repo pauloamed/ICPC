@@ -27,15 +27,13 @@ bool v[MAXN][MAXN];
 Warshall - Fechamento transitivo em O(n^3)
 */
 
-void warshall(size_t n){
-    for(size_t i = 0; i < n; ++i){
-        for(size_t j = 0; j < n; ++j){
-            if(v[i][j]){ // se i chega em j
-                for(size_t k = 0; k < n; ++k){
-                    // se k chega a i, k chega a j
-                    v[k][j] = max(v[k][j], v[k][i]);
-                }
-            }
-        }
+void warshall(int n){
+  for(int i = 0; i < n; ++i){ // i ta no meio
+    for(int j = 0; j < n; ++j){ // j eh o inicio
+      for(int k = 0; k < n; ++k){ // k eh o final
+         // se j->i e i->k, entao j->k
+        to[j][k] |= (to[j][i] && to[i][k]);
+      }
     }
+  }
 }
