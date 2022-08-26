@@ -11,7 +11,7 @@ struct Edge{
   int to, rev;
   int cap; //
   bool is_rev;
-  Edge(int t, int c, int r, bool rev):to{t},cap{c},rev{r},is_rev{rev}
+  Edge(int t, int c, int r, bool irev):to{t},rev{r},cap{c},is_rev{irev}
   {}
 };
  
@@ -27,10 +27,10 @@ struct Flow{
   vector<int> lastPos;
  
   // constructor
-  Flow(int n, int s, int t){
-    this->n = n;
-    this->s = s;
-    this->t = t;
+  Flow(int N, int src, int snk){
+    this->n = N;
+    this->s = src;
+    this->t = snk;
     v = vector<vector<Edge>>(n, vector<Edge>());
   }
  
@@ -83,7 +83,6 @@ struct Flow{
   // main funct
   int run(){
     int flow = 0; // initial flow
-    int last = -1;
     while(true){
       getLvls(); // builds lvl graph
       // if the sink cant be reached, the max flow has been found
@@ -91,7 +90,7 @@ struct Flow{
       // get a blocking flow for the current lvl graph
       int blocking = -1;
       lastPos.assign(n,0);
-      while(blocking = dfs(s)) flow += blocking;
+      while((blocking = dfs(s))) flow += blocking;
     }
     return flow;
   }
