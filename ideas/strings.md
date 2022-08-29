@@ -40,7 +40,7 @@ This is a nice exercise for understanding 2 things about KMP:
 -- Building preffix function is basically trying to match `S` to itself. Note that `S` may well be seen as the concatenation of 2 strings.
 - Complexity: 
 -- It is amortized. Remember that there are 2 pointers: `pref` and `suf`. `pref:` current preffix-func value and `suf:` pointer to current char.
-It is linear because `pref` and `suf` increment together and `pref` decresal is bounded by their value. However, amortization (?) can fail if you reuse a preffix computation on different suffixes. That is, imagine that for every new suffix we decrement `pref` that is `O(n)`. This leads to `O(n*q)`.
+It is linear because `pref` and `suf` increment together and `pref` decresal is bounded by their value. However, amortization (?) can fail if you reuse a preffix computation on different suffixes. That is, imagine that for every new suffix we decrement `pref` that is `O(n)`. This leads to `O(n*q)`.  
 -- For solving this, just use the idea of KMP Automaton (just precomputation / dynamic programming).
 
 
