@@ -39,9 +39,9 @@ This is a nice exercise for understanding 2 things about KMP:
 - Matching `S` to `S`
 -- Building preffix function is basically trying to match `S` to itself. Note that `S` may well be seen as the concatenation of 2 strings.
 - Complexity: 
--- It is amortized. Remember that there are 2 pointers: `pref` and `suf`. `pref:` current preffix-func value and `suf:` pointer to current char.
+  - It is amortized. Remember that there are 2 pointers: `pref` and `suf`. `pref:` current preffix-func value and `suf:` pointer to current char.
 It is linear because `pref` and `suf` increment together and `pref` decresal is bounded by their value. However, amortization (?) can fail if you reuse a preffix computation on different suffixes. That is, imagine that for every new suffix we decrement `pref` that is `O(n)`. This leads to `O(n*q)`.  
--- For solving this, just use the idea of KMP Automaton (just precomputation / dynamic programming).
+  - For solving this, just use the idea of KMP Automaton (just precomputation / dynamic programming).
 
 
 Check: https://codeforces.com/contest/1721/problem/E  
@@ -54,7 +54,7 @@ You can choose to precompute transitions or not when using Aho.
 
 If you choose to precompute it, Aho will be seen as an Automaton in which all transitions are already computed. On the build phase, since all alphabet needs to be visited, a cost of `O(N*ALPHA_SIZE)` will incur.  
   
-If you choose to not precompute it, processing a transition might search for a valid search link before advancing (what amortizes to `O(n)` on a input string, *but not on a input trie*).
+If you choose to not precompute it, processing a transition might search for a valid search link before advancing (what amortizes to `O(n)` on a input string, *but not on a input trie*). 
 
 ### Online or offline
 You can solve a multi-pattern matching problem with Aho either online or offline.
