@@ -34,6 +34,18 @@ Given two strings, KMP can solve in `O(n+m)`:
 ### Put automaton on segtree
 Read `segtree.md`.
 
+### Compute KMP for common preffix and multiple suffixes
+This is a nice exercise for understanding 2 things about KMP:
+- Matching `S` to `S`
+-- Building preffix function is basically trying to match `S` to itself. Note that `S` may well be seen as the concatenation of 2 strings.
+- Complexity: 
+-- It is amortized. Remember that there are 2 pointers: `pref` and `suf`. `pref:` current preffix-func value and `suf:` pointer to current char.
+It is linear because `pref` and `suf` increment together and `pref` decresal is bounded by their value. However, amortization (?) can fail if you reuse a preffix computation on different suffixes. That is, imagine that for every new suffix we decrement `pref` that is `O(n)`. This leads to `O(n*q)`.
+-- For solving this, just use the idea of KMP Automaton (just precomputation / dynamic programming).
+
+
+Check: https://codeforces.com/contest/1721/problem/E  
+
 ## Aho-chorasik
 A Trie with fail/suffix links that resemble the prefix function.
 
@@ -65,5 +77,8 @@ A timestep that enters a node will advance on the Aho and create push to the sta
 ## Trie are graphs/tree, solve graph/tree problems
 In a typing context, you can think of a trie as a graph and run graph algorithms in it (eg. shortest path).
   
-Check: https://codeforces.com/gym/101550/attachments/download/6031/20162017-acmicpc-nordic-collegiate-programming-contest-ncpc-2016-en.pdf - B  
+Check: https://codeforces.com/gym/101550/attachments/download/6031/20162017-acmicpc-nordic-collegiate-programming-contest-ncpc-2016-en.pdf - B 
+  
+Also, use euler tour decomposition and query/update efficiently on nodes of a trie.
+
 Check: https://codeforces.com/contest/1207/problem/G
