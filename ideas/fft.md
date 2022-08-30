@@ -34,6 +34,11 @@ Check: https://atcoder.jp/contests/abc247/tasks/abc247_h
 Check: https://codeforces.com/problemset/problem/1613/F
 Check: https://codeforces.com/contest/1251/problem/F
 
+### Reorder arrays aiminig minimization of dot product
+The minimal dot product between `k` elements of 2 arrays can be found efficiently for each `k` using FFT.
+  
+Check: https://codeforces.com/gym/103640/problem/B
+
 ### Solving quadratic summation using FFT
 Some summations are of the form:
 ```
