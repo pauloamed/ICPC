@@ -15,11 +15,13 @@ If the **edges are non-negative**, one can use a greedy approach on the push met
 Note that an approximation of node `x` in **Dijkstra** is actually a path to node `x`. We are mainly generating all minimum paths to each node and taking the shortest one. It is thus guaranteed the shortest path for each node. Also, this doesn't become exponential since we stop generating paths from a node once its shortest path has been found.
   
 Note that Dijkstra can also be used in DAGs. While Dijkstra will solve states in incresing order of `f(.)`, the direct method will solve them in topological order.  
+  
+Check: https://codeforces.com/gym/101201/problem/B
 
 #### DP with states
 Since it is DP, you can create new states for each node and solve these as the shortest path problem.
 
-Check: https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1297
+Check: https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1297  
 Check: https://www.hackerrank.com/contests/w20/challenges/synchronous-shopping  
 Check: https://community.topcoder.com/stat?c=problem_statement&pm=12468  
 Check: https://community.topcoder.com/stat?c=problem_statement&pm=13596
@@ -29,7 +31,8 @@ Check: https://codeforces.com/gym/101512/problem/H
 
 #### Some problems don't look like shortest path
 Because it isn't obivious:  
-Check: https://szkopul.edu.pl/problemset/problem/ROXsaseQWYR11jbNvCgM19Er/site/?key=statement  
+Check: https://szkopul.edu.pl/problemset/problem/ROXsaseQWYR11jbNvCgM19Er/site/?key=statement   
+(here the "minimum distance" is actually the minimum number reachabel for a mod `k`)
   
 Or because the functional equation is somehow different:  
 Check: https://codeforces.com/gym/101620/problem/G  
