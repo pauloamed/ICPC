@@ -80,9 +80,13 @@ Check: https://codeforces.com/gym/101615/problem/H
 
 ## Optimization
 
-### Knapsack bounded by `N`, keeping only one version (best, being greedy) for each `x \in [1;N]`
+### Maximum independent set, mapping sets to `x` and taking it w/ `y` if `x<y`
+For each `i` in `[1;N]`, keep `best[i]: ` smallest `x` s.t. a set of `i` items is mapped to `x`  
   
 Check: https://codeforces.com/gym/101519/problem/I  
+Here each element is an interval and we are mapping sets to the smallest right endpoint of the intervals inside this set.  
+Keep building sets from left to right and join `[l;r]` w/ `best[i]`, creating a `i+1`-sized set if possible.  
+`best[]` let us do this greedy approach, trying to match to the smallest point.
 
 ### Transition querying range of elements
 Approach solving the transitions using a RMQ/segment query structure.  
