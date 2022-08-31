@@ -80,6 +80,10 @@ Check: https://codeforces.com/gym/101615/problem/H
 
 ## Optimization
 
+### Knapsack bounded by `N`, keeping only one version (best, being greedy) for each `x \in [1;N]`
+  
+Check: https://codeforces.com/gym/101519/problem/I  
+
 ### Transition querying range of elements
 Approach solving the transitions using a RMQ/segment query structure.  
   
