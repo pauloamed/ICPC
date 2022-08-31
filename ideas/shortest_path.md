@@ -57,6 +57,18 @@ You can do this since they only need to be added once into the queue given that 
 Check: https://codeforces.com/contest/1662/problem/F  
 Check: https://codeforces.com/contest/59/problem/E
 
+#### Dijkstra complexity
+Dijkstra complexity can be analyzed using two operations:
+- `D:decrease-key`: update `dist[x]` for a node `x`
+  - `D` occurs at most `O(m)` times, since each visited edge may update a cost 
+- `E:extract-min`: get `x` with min `dist[x]`
+  - `E` occurs `O(n)` times, since we are solving one node each iteration
+  
+Using sets/binary heaps with lazy delete/segtree: `cost(D) = cost(E) = log(n)`. Resulting in `(m+n)*log(n) = mlog(n)`  
+Using naive list: `cost(D) = O(1)` and `cost(E)=O(n)`. Resulting in `O(m*1+n*n)=O(n*n)`  
+
+Thus, if `m > n*n / log(n)`, it will be better to use Dijkstra with naive list.
+
 #### Dijkstra with buckets `O(N*K+E)`, `K`: max edge weight (`0-K` BFS) (Dial's algorithm)
 Suppose that our graph has edge weights at most `K` and that we are running a BFS from `src`.  
 When visiting a node `v` with distance `d[v]` from `src`, all other nodes `x` in the queue will have `d[x] <= d[v] + K`, since `K` is the max distance.
