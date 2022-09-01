@@ -88,6 +88,8 @@ Also, we can then solve `[A;K*A)` if we index/cluster using `floor(d[x]/A)`.
 First, run a Dijkstra from `s` and other from `t`, which will compute, for each node `x`, its minimum distance to `s` (`d_s[x]`) and to `t` (`d_t[x]`).  
 If an edge `(u,v)` with weight `w` is in the shortest path from `s` to `t`, then, it must be that `d_s[u] + w + d_t[v] = d_s[t] = d_t[s]`.  
 Every edge `(u,v)` in the shortest path is responsible for an interval `[d_s[u], d_s[v]]` in the shortest path. If an edge is irreplaceable, it must be the only responsible for such interval i.e. doesn't intersect w/ other edge intervals.
+  
+Check: https://codeforces.com/contest/567/problem/E  
 
 #### `K`-th shortest path
 Use priority queue instead of set.  
