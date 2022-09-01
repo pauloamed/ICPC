@@ -17,7 +17,7 @@ If modifying values kept in a structure by subtracting/adding `x` at each iterat
   
 Check: https://atcoder.jp/contests/agc024/submissions/33929120
 
-### Paint small grid with squares
+### Paint grid with squares in `O(W*H)`
 Let's say we are painting the whole grid from bottom to top, left to right. Then, the bottom-left corner of each square of side `L` will keep a latent painting `L`. 
 When you visit a point w/ latent painting `X`, paint the square of the current point and set a latent painting of `X-1` at upper and right. 
 This set is actually a `max` since a point can be visited by multiple other points.
@@ -156,6 +156,13 @@ Lets say we have sets `A` and `B` and we are assigning elements from `B` to `A`.
 If `cost(a) = sz(b) + cost(b)`, i.e. the cost of assiging `b \subset B` to element `a` equals to a `cost(b)` plus `sz(b)`,
 - Then we can update values in `B` with `-1` since this value will always be accounted in the final result.
 - It is like every element has a contribution to `sz(b)` and, since element will be used **exactly** once, we can compute this contribution beforehand.
+
+### Inverting bits of subarrays
+If you have a bit-array `a` and do operations of subarrays bit inversion, there is a bijection to it:
+- use the transformed array `b[i] = a[i - 1] ^ a[i]`
+- inverting `[l:r]` in `a` is equivalent to inverting `b[l]` and `b[r+1]`
+  
+Check: https://codeforces.com/gym/101519/problem/D  
 
 ## Structures
 
