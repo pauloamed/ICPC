@@ -31,65 +31,6 @@ Iterate through all `T` set of nodes forming a connected graph, `g(S) = sum_T[f(
 Like, `1->2, 1->3, 2->4, 2->4` and `4` should only be counted once for 1.
 This can only be solved using brute-froce.
 
-## Bipartite matching
-
-### Merging nodes
-Suppose a graph with sides A and B for bipartite matching and that the size of A is really small (`<15?`). Nodes from B may be merged if they connect to the same nodes from A. The number of condensed nodes will be at most `2^sz(A)`, what might be smaller than `B`. 
-
-### Hall's theorem on contiguous intervals
-Notation:
-- `f(S)` is the set of adjacent nodes of `S`
-- An `X`-perfect matching (`X` saturation) is a matching which covers every vertex in `X` with an edge
-- Hall's: There is a`X`-perfect matching iff for every subset `W` of `X`, `|W| <= |f(W)|`.
-
-We have a bipartite (`L` and `R` sets) matching problem. 
-In order to find a `L`-perfect matching, Hall's condition is thus sufficient and necessary. 
-
-TODO
-
-Check: https://szkopul.edu.pl/problemset/problem/EwpbJWZPly_zZ5i4ytg_8fDE/site/?key=statement  
-
-
-### Greedy on contiguos intervals `[TODO]`
-- Lex smallest?
-  - Yes: https://atcoder.jp/contests/arc144/submissions/33347474
-  - No: https://codeforces.com/contest/1701/submission/166136085
-- Numer of intervals per element:
-  - 1:  https://codeforces.com/contest/1701/submission/166136085
-  - 2: https://atcoder.jp/contests/arc144/submissions/33347474
-
-### Saturating `A` when `A` has `deg(x) >= k` and `B` has `deg(x) <= k`
-If we have a bipartite graph `(A,B)` s.t. 
-- every `a` in `A` has **at least `k`** edges to `B` and
-- every `b` in `B` has **at most `k`** edges to `A`
-
-Then there is `A`-perfect matching  (`A` saturates) if `k >= 1`.
-
-##### Proof (by contradiction)
-Suppose that there is a subset that violates Hall.
-That is, there is a subset `X` of `A` s.t. `|X| > |f(X)|`.
-Define `S = sum_X(deg(x))` and `T = sum_f(X)(deg(x))`.
-We have that
-- `S >= k|X|`
-  - Since every element in `A` has at least `k` edges
-- `T <= k|f(X)|`
-  - Since every element in `B` has at most `k` edges
-- `S <= T`
-  - Since
-    - every edge of the matching between `X` and `f(X)` belongs to both `X` and `f(X)`
-    - every edge from `X` belongs to the matching
-    - there may be a edge in `f(X)` not going to `X`
-  
-Thus, we have that `k|X| <= S <= T <= k|f(X)|`
-  
-##### (Particular case) `A` has `deg(x) \in 0,1,2` and `B` has `deg(x) <= 2`
-We want to know if it is possible to saturate `A`. Note that
-- If there is a node `x` s.t. `deg(x) = 0`, it is impossible to saturate `A`
-- If there is a node `x` s.t. `deg(x) = 1`, be greedy remove `x` from `A` and `f(x)` and it other edge from `B`
-
-In the end, either there the matching is impossible, or every node `a` from `A` has `deg(a)>=2`.
-
-
 ## 2SAT
 Build an implication graph: nodes are propositions (`x`) and their negations (`~x`) and there is a **direct** edge `(p,q)` if `p => q`. Also, if `(p,q)` exists, so does `(~q,~p)` (contraposition). 
   
