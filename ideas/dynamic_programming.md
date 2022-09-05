@@ -37,6 +37,9 @@ Pushing and pulling in the same implementation: https://atcoder.jp/contests/abc2
 
 ## Modellings
 
+### Independent set on layered graph
+Use bitmasks: `dp[i][mask]`: at layer `i` used `mask` from this layer
+
 ### `2^n`: find the best permutation if we can build from left to right (linearly)
 `dp[i][mask]:` solved `i` first positions of the permutation and used `mask&j=1` elements.
 
@@ -77,6 +80,15 @@ If a transition has a time for querying and another for updating, one needs to k
 One way of solving this is keeping in a priority queue sorted by time the transitions to be published. Once we reach a `query_time` that is able to access the top transition from this pq, we may publish it.
   
 Check: https://codeforces.com/gym/101615/problem/H
+
+### Chance of getting to accepted state using optimal strategy, maximizing probability on mid states (greedy)
+I find these problems kinda tricky because the base state of the recursion may be a state with a built structure (the accepted state).
+
+- Base case: accepted states
+- Transitions: for each possible choice in the current state, choose the one that maximizes the probability of the current state
+  
+Check: https://codeforces.com/contest/678/problem/E  
+Check: https://codeforces.com/gym/100625/problem/B  
 
 ## Optimization
 
