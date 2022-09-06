@@ -27,6 +27,9 @@ If `x` reaches `y` (run the transitive closure), create an edge in the bipartite
 The maximum matching *~equals* to the minimum path cover node-disjoint (if edge `out(x)->in(y)` is active, it means that there is a path from `x` to `y`). 
 The number of paths is `n - sz(max_matching)` (since each used edge unites 2 paths).
 
+Check: https://codeforces.com/gym/100820/problem/A  
+Check: https://vjudge.net/contest/478250#problem/I  
+
 ### Dilworth's theorem
 **Anti-chain of a graph:** Set of nodes s.t. there is no path between them (if seeing graph as an order, set of elements that are not comparable).  
 **Chain:** Set of nodes s.t. there is a path between every pair of nodes (if order, every pair is comparable)
