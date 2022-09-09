@@ -20,6 +20,22 @@ The Manhattan distance between points `X` and `Y` is "equivalent" to the Chebysh
 - `(x,y,z)` => `(x+y+z,x+y-z,x-y+z,x-y-z)`  
 Check: https://www.spoj.com/problems/DISTANCE/
 
+### Place the largest non-overlapping polygon without touching other already placed
+The optimal largest non-overlapping polygon will touch **at least two** that are already placed. If it touches less than two, it can be expanded.  
+A special case is when figures are circles and lines. In this case, the places circle will touch at least three other figures (circle/line).
+  
+Check: https://codeforces.com/gym/101078/problem/E
+
+### Getting through
+Getting through a corridor where figures may block the passage if they intersect or touch each other.  
+Can be solved using DSU for checking if parallel walls are connected, blocking the passage.  
+  
+The maximum circle that can go through without being blocked is bounded by one of the `n^2` distances.  
+Testing if circle with radius `r` goes through: unite all pair of elements with distance `<= 2*r` in order to simulate a blockage.
+Solve using binary search of simple brute force on all sorted distances.
+  
+Check: https://codeforces.com/gym/100625/problem/G
+
 ### Virtual images for reflection/bouncing
 Some problems ask for you to reflect/bounce (angle in equals angle out) a line until it reaches a point or crosses some segments. 
 For handling this complex operation, you can create virtual images of the original input. 
