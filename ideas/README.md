@@ -25,6 +25,11 @@ This set is actually a `max` since a point can be visited by multiple other poin
 ### RMQ query on slinding window
 Min (or max) heap with lazy delete; keep adding while you slide through.
 
+### Maximize active variables with clauses `NAND`
+`A NAND B`: `A` or `B` but not both. This reduces to maximum independent set where edges are such clauses.
+  
+Check: https://codeforces.com/gym/101666/problem/E
+
 ### Quadratic functions in linear models
 **TODO** (https://codeforces.com/gym/102644/problem/G)
 In linear contexts (linear recurrences, min cost max flow), the quadratic function `i^2` can be modelled as the sum of the `i` first odd numbers.
