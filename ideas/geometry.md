@@ -51,8 +51,8 @@ Check: https://codeforces.com/gym/101519/problem/F
 ### Side of polygon
 A polygon has every side smaller ~or equal~ to the sum of all other sides.
 
-### 3 colinear points
-For each point `p`, do polar sort of all the points using `p` as center. If there are colinear points, there will be adjacent in this sorting.
+### 3 colinear points / Bad point between good points
+For each (good) point `p`, do polar sort of all the points using `p` as center. If there are colinear points, they will be adjacent in this sorting (bad will be adjacent to good).
 
 ### Perimeter and area of convex polygons
 - Given a fixed perimeter, approximating the polygon to a circle will maximize its area
