@@ -137,25 +137,6 @@ What happens to `sum` when you switch paths? What happens to its parity? Is the 
 ### Don't put `x` and `y` in the same set (there are 2 sets)
 Create a graph `G` such that if `x` and `y` can't be together, there is an edge `(x,y)` in it. We thus want to check if this graph is bipartite.
 
-### Tree + inversible operations
-First, compute the euler tour of the tree s.t.
-- `beg[x]`: time subtree of `x` was entered
-- `end[x]`: time subtree of `x` was left
-  
-When refering to a value `v`, `-v` is it's inverse.
-  
-**Updtate subtree `x`, query node `y`**
-- Update `v` to `beg[x]` and `-v` to `end[x]`
-- Query `beg[y]`
-
-**Update node `x`, query path `y-z`**
-- Update `v` to `beg[x]` and `-v` to `end[x]`
-- Query `beg[y] + beg[z] - beg[LCA(y,z)]`
-
-**Update path `x-y`, query node `z`**
-- Update `v` to `beg[x]`, `v` to `beg[y]` and `-v` to `beg[LCA(x,y)]` **2x**
-- Query from `beg[y]` to `end[z]`
-
 ### Matchings and sums
 Lets say we have sets `A` and `B` and we are assigning elements from `B` to `A`. Each element from `B` can only be assigned to one in `A`.  
 If `cost(a) = sz(b) + cost(b)`, i.e. the cost of assiging `b \subset B` to element `a` equals to a `cost(b)` plus `sz(b)`,
