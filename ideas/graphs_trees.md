@@ -1,4 +1,4 @@
-# Graph ideas
+# Graphs and trees
 
 ### Query: walk 10^9 steps from a node
 Binary lifting or cycle detection may be used. This is probably a graph in which every outdegree is `1`.
@@ -7,6 +7,24 @@ Binary lifting: Precompute `bf[x][i]`: where will I stop if start from `x` and w
 Cycle detection: find a cycle of length `L` in `O(n)`, use this cycle `K/L` times and walk `L` naively. Since `L` is `O(n)`, the total cost is `O(n)`.
 
 If there are multiple queries, binary lifting might be better. If there are updates, binary lifting might have a drawback since it's idea is to be a precomputed structure.
+
+### Trees: fixing the minimum distance of 2 nodes
+It is given a tree, you choose a pair of nodes and set their distance `D` as the minimum distance.  
+The other pairs which distance is `<= D` must follow:
+```
+D=dist(a,e)
+X, X': nodes w/ distance at most 1 to b
+Y, Y': nodes w/ distance at most 2 to c
+Z, Z': nodes w/ distance at most 1 to d
+
+               X  Y  Z
+               |  |  |            
+Subtree(a)--a--b--c--d--e--Subtree(e)
+               |  |  |
+               X' Y' Z'
+               
+(u,v), s.t. dist(u,v) <= D: u,v \in {a,b,c,d,e,X,Y,Z,X',Y',Z'}
+```
 
 ### Number of spanning trees of a graph in `O(N^3)`
 Kirchhoff theorem states that the number of spanning trees of a graph (allows multiple edges) is equal to the determinant of any submatrix of the laplacian matrix of such graph.  
@@ -30,6 +48,25 @@ Iterate through all `T` set of nodes forming a connected graph, `g(S) = sum_T[f(
 ### Sum on DAG not repeating nodes
 Like, `1->2, 1->3, 2->4, 2->4` and `4` should only be counted once for 1.
 This can only be solved using brute-froce.
+
+### Tree + inversible operations
+First, compute the euler tour of the tree s.t.
+- `beg[x]`: time subtree of `x` was entered
+- `end[x]`: time subtree of `x` was left
+  
+When refering to a value `v`, `-v` is it's inverse.
+  
+**Updtate subtree `x`, query node `y`**
+- Update `v` to `beg[x]` and `-v` to `end[x]`
+- Query `beg[y]`
+
+**Update node `x`, query path `y-z`**
+- Update `v` to `beg[x]` and `-v` to `end[x]`
+- Query `beg[y] + beg[z] - beg[LCA(y,z)]`
+
+**Update path `x-y`, query node `z`**
+- Update `v` to `beg[x]`, `v` to `beg[y]` and `-v` to `beg[LCA(x,y)]` **2x**
+- Query from `beg[y]` to `end[z]`
 
 ## 2SAT
 Build an implication graph: nodes are propositions (`x`) and their negations (`~x`) and there is a **direct** edge `(p,q)` if `p => q`. Also, if `(p,q)` exists, so does `(~q,~p)` (contraposition). 
