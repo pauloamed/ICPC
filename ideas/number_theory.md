@@ -41,6 +41,17 @@ Further reduced to, given `x` balls of color `a`, `y` balls of color `b`, `z` ba
 
 ## Permutations
 
+### Recover permutation from inversion
+Given a list of inversions `(i,j)` (there is an inversion between positions `i` and `j`),
+recover the original permutation.  
+  
+Let `g(i):` number of inversions `(i,x)` (element at `i` is greater than `g(i)` elements after it)    
+Let `s(i):` number of inversions `(x,i)` (element at `i` is smaller than `s(i)` elements before it)
+
+Than, it must be that `value_i = i + g(i) - s(i)`
+  
+Check: https://codeforces.com/gym/101964/problem/I  
+
 ### Permutation graphs are the union of simple cycles
 They just are. Every node has outdegree `= 1`.
 
