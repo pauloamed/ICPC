@@ -14,6 +14,20 @@ While traversing the X axis, we want to count how many times each interval occur
 Even if a interval is counted multiple times, it only contributes once to our area. 
 Every time we process an event in out line sweep (addition or removal of a y-aligned edge i.e. contiguous interval in our segtree), we can query the whole segtree and increment the answer.
 
+### Keeping maximals intervals sizes (powers of 2) with a certain property
+Let's say we have predicate `pred` over segtree nodes (intervals) s.t. if it is true for a node `[l:r]`, it is also true for both of its childrens (`[l:m]` and `[m+1:r]`) i.e. `pred(X) => pred(l(X)) AND pred(r(X))`.   
+We want to keep which of these nodes are maximals i.e. `pred(X)` but not `pred(parent(X))`.  
+  
+Note that there can be `O(N)` maximals nodes.
+  
+For example, each leaf holds a color and `pred(X) = X's interval has only 1 active color`. Depending on how we modify our array, maximals may change. Since there may be `O(N)` of these, probably we will compress this info somehow (eg. count sizes of maximals).
+
+How to keep this info (point update, don't know how to handle range update):
+- only change maximals in the `update` function 
+- divide top-down from bottom-up
+  - top-down: if `X` is maximal, unset it as maximal and set `l(X)` and `r(X)` as maximals
+  - bottom-up: if `pred(X)`, it must be that `pred(l(X))` and `pred(r(X))` and that `l(X)` and `r(X)` are maximals. Unset them as maximals and set `X` as maximal. 
+
 ### "Best" interval after some updates for easily mergeble intervals
 A node `X` with interval `[l;r]` can keep 3 infos: the best interval, preffix and suffix totally inside it.
 When merging `X` to `Y` (`X` left and `Y` right) into `Z`:  
@@ -38,7 +52,9 @@ Note that, if a segtree `B` is a *subhistogram* (`B_i <= A_i` for all `i`) of an
 
 ## Linear recurrences on consecutive positions on Segtrees
 
-Linear recurrences for DP when expressed over adjacent positions can be used in segtrees since matrixes can encode such transitions. Since matrix multiplication (or other operation in question) is associative, segtree can be used.
+Linear recurrences for DP when expressed over adjacent positions (`a_i = f(a_(i-1)`) can be used in segtrees since matrixes can encode such transitions. Since matrix multiplication (or other operation in question) is associative, segtrees can be used.
+  
+Note that `seg[i]` is a node encoding a transition. Querying `seg[l:r]` means computing the transition between `l` and `r`. Once computed, you will need to apply that to the base case.  
 
 Check: https://atcoder.jp/contests/abc246/tasks/abc246_h  
 Check: https://codeforces.com/gym/102644/problem/H  
