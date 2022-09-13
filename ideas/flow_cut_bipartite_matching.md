@@ -61,15 +61,6 @@ TODO
 
 Check: https://szkopul.edu.pl/problemset/problem/EwpbJWZPly_zZ5i4ytg_8fDE/site/?key=statement  
 
-
-### Greedy on contiguos intervals `[TODO]`
-- Lex smallest?
-  - Yes: https://atcoder.jp/contests/arc144/submissions/33347474
-  - No: https://codeforces.com/contest/1701/submission/166136085
-- Numer of intervals per element:
-  - 1:  https://codeforces.com/contest/1701/submission/166136085
-  - 2: https://atcoder.jp/contests/arc144/submissions/33347474
-
 ### Saturating `A` when `A` has `deg(x) >= k` and `B` has `deg(x) <= k`
 If we have a bipartite graph `(A,B)` s.t. 
 - every `a` in `A` has **at least `k`** edges to `B` and
@@ -100,3 +91,27 @@ We want to know if it is possible to saturate `A`. Note that
 - If there is a node `x` s.t. `deg(x) = 1`, be greedy remove `x` from `A` and `f(x)` and it other edge from `B`
 
 In the end, either there the matching is impossible, or every node `a` from `A` has `deg(a)>=2`.
+
+
+## Greedys
+
+### Complete bipartite matching where edge are intervals `[TODO]`
+- Lex smallest?
+  - Yes: https://atcoder.jp/contests/arc144/submissions/33347474
+  - No: https://codeforces.com/contest/1701/submission/166136085
+- Numer of intervals per element:
+  - 1:  https://codeforces.com/contest/1701/submission/166136085
+  - 2: https://atcoder.jp/contests/arc144/submissions/33347474
+
+### Bipartite MaxCMF: edges are suffixes : cost at right side of bipartite
+Let's say we have a bipartite graph `(A,B), |A|=|B|=N` and `A_i` can income `in_i` and `B_i` can outcome `out_i` with cost `c_i`.
+Edges are `A_i` can send to `B_j`, `j>=i`.  
+  
+Iterate from `i:0...N` and keep a dict `f[x]`: number of elements w/ cost `x`.  
+Elements from `A_i` have to be taken care right now and `B_i` can handle them. Taken all possible elements from `f` w/ `cost < c_i` and assign them to `B_i`, prefer to take elements w/ lower cost.  
+Each iteration can remove at most `ON` elements and adds `1` element to `f`. This amortizes to `O(N)` (ignoring the dict cost).  
+
+  
+Probably can be extended to `|A| != |B|` if a complete order (line sweep) exists.
+  
+Check: https://codeforces.com/gym/100506/problem/J
