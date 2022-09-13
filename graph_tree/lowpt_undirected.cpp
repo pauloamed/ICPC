@@ -1,67 +1,143 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define MAXN 100000
+#define MAXN 200010
 
-vector<int> v[MAXN]; // lista de adjacencia
-
-int lowpt[MAXN]; // vetor auxiliar com o lowpt de cada vertice
-int lvl[MAXN]; // vetor auxiliar com o level de cada vertice
+// https://codeforces.com/gym/102835/problem/I
 
 
 /*
- - O(m+n)
-Componentes biconexas de um grafo nao direcionado
- - Numa DFS, podemos formar dois tipos de arestas:
-     - Aresta da arvore: aresta conectando um vertice ja visitado a um ainda nao visitado
-     - Aresta de retorno: aresta conectando um vertice ja visitado a um ja visitado. ARESTAS DE RETORNO CONECTA UM VERTICE A UM ANCESTRAL.
- - Lowpt(v) é igual ao vértice mais próximo da raiz da arvore de recursao (T) que pode
-   ser alcançado a partir de v, caminhando-se em T para baixo através de zero ou mais
-   arestas na árvore e, em seguida, para cima utilizando no máximo uma aresta de retorno.
- - Demarcador – vértice v com lowpt(v) = v ou w, sendo w pai de v em T.
- - Articulação – Vértice pai de um ou mais demarcadores.
+Block-cut tree and biconnected components O(M+N)
+ 
+Two edge types:
+- Tree/span edge: connects to a still not visited node
+- Back edge: connects to an already visited node. This node will be an ancestral in non-directed graphs.
+- lowpt(v): node closest to the root in the recursion tree that can be reached from v by using 
+  one or more tree edge followed by only one back edge
+ - Marker – node v s.t. lowpt(v) = v or w and w is parent of v in recursion tree
+ - Articulations – Parent node of a marker. If it is root, needs to have more than one span edge.
 */
 
-vector<int> temp;
+namespace biconn{
+  vector<int> v[MAXN];
 
-void dfs(int x, int last){ // x: atual, adj que o invocou
-    temp.push_back(x);
-    lvl[x] = lvl[last] + 1; // calculando level do atual
-    lowpt[x] = x; // nao ha arestas partindo de x (AINDA). logo, lowpt(x) = x
-    for(int i = 0; i < v[x].size(); ++i){
-        if(lvl[v[x][i]] == 0){ // se o vertice nao foi visitado ainda (aresta de arvore)
-            dfs(v[x][i], x); // passo recursivo (calcula lvl)
+  int lowpt[MAXN], depth[MAXN]; 
 
-            // ve se o lowpt de algum filho de x eh mais proximo da raiz pra
-            // sobrescrever o lowpt atual de x (meio que uma PD aqui)
-            if(lvl[lowpt[v[x][i]]] < lvl[lowpt[x]]) lowpt[x] = lowpt[v[x][i]];
+  int arts;
+  bool is_art[MAXN];
 
-            //checando se v[x][i] eh um demarcador -> x eh articulacao
-            if(lowpt[v[x][i]] == v[x][i] || lowpt[v[x][i]] == x){
-                printf("Mais uma comp biconexa\n");
-                while(true){ // subarvore em questao: raiz em v[x][i]
-                    printf("%d ", temp.back()); // toda vetice da subarvore eh do componente
-                    if(temp.back() == x) break; // nao retiro a articulacao
-                    else temp.pop_back(); // se nao eh a articulacao (subarvore propria), retiro
-                }
-                printf("\n");
-            }
-        }else{ // vertice ja foi visitado, aresta de retorno
-            // se lvl adj por essa aresta de retorno eh melhor q o meu lowpt, att lowpt
-            if(lvl[v[x][i]] < lvl[lowpt[x]]) lowpt[x] = v[x][i];
+  vector<vector<int>> comps;
+  vector<int> bridges;
+  vector<vector<pair<int,int>>> edge_comps;
+
+  stack<int> comp;
+  stack<pair<int,int>> edges;
+  void dfs(int x, int par, int d){
+    depth[x] = d, lowpt[x] = x;
+
+    int cnt_tree_edge = 0;
+    bool has_marker = false;
+
+    for(auto y : v[x]){
+      if(depth[y] == 0){ cnt_tree_edge++; // tree edge
+
+        comp.push(y); edges.push({x, y});
+        dfs(y, x, d + 1);
+
+        if(depth[lowpt[y]] < depth[lowpt[x]]) 
+          lowpt[x] = lowpt[y];
+
+        if(lowpt[y] == y || lowpt[y] == x){ has_marker = true;
+          
+          // nodes
+          comps.push_back({x});
+          while(true){
+            int z = comp.top(); comp.pop();
+            comps.back().push_back(z);
+            if(z == y) break;
+          }
+          if(comps.back().size() == 2)
+            bridges.push_back(comps.size() - 1);
+
+          // /* edges remove if not needed
+          edge_comps.push_back({});
+          while(true){
+            auto z = edges.top(); edges.pop();
+            edge_comps.back().push_back(z);
+            if(z == make_pair(x,y)) break;
+          }
+          // */
         }
+      }else{ // back edge
+        if(depth[y] < depth[lowpt[x]]) lowpt[x] = y;
+        if(depth[y] < depth[x] && y != par) edges.push({x, y});
+      }
     }
+
+    if(has_marker && (d != 1 || cnt_tree_edge > 1))
+      arts += (is_art[x] = true);
+  }
+
+  void run(int n){
+    comps.clear();
+    bridges.clear();
+    edge_comps.clear(); // remove if not needed
+
+    memset(is_art, false, sizeof is_art);
+    arts = 0;
+
+    memset(lowpt, -1, sizeof lowpt);
+    memset(depth, 0, sizeof depth);
+    for(int i = 0; i < n; ++i) if(depth[i] == 0)
+       dfs(i, -1, 1);
+  }
 }
 
+
+
+
 int main(){
-    int n, m; cin >> n >> m;
-    for(int i = 0; i < m; ++i){
-        // 1 indexado
-        int a, b; cin >> a >> b;
-        v[a].push_back(b);
-        v[b].push_back(a);
+  cin.tie(NULL)->sync_with_stdio(false);
+  int _t; 
+  cin >> _t;
+  while(_t--){
+    int n, m, k; cin >> n >> m;
+    // cin >> k;
+
+    for(int i = 0; i < n; ++i){
+      biconn::v[i].clear();
     }
 
-    dfs(1, 0); // 1 indexado, pai eh valor nulo: 0
+    for(int i = 0; i < m; ++i){
+      int a, b; cin >> a >> b;
+      a--; b--;
+      if(a == b) continue;
+      biconn::v[a].push_back(b);
+      biconn::v[b].push_back(a);
+    }
 
+    biconn::run(n);
+
+
+    int x = biconn::comps.size();
+    int maxs = 0;
+    for(auto x : biconn::edge_comps) maxs = max(maxs, (int)x.size());
+    // cout << maxs << " " << x << endl;
+
+    // cout << " :: " << biconn::comps.size()  << " " << biconn::bridges.size() << endl;
+
+    int gg = __gcd(x, maxs);
+    cout << biconn::arts << " " << biconn::bridges.size() << " ";
+    cout << x / gg << " " << maxs / gg << endl;
+
+    // int cnt_non_triv = 0;
+    // for(auto &x : comps) cnt_non_triv += x.size() > 2;
+
+    // cout << cnt_non_triv << "\n";
+    // for(auto x : comps) if(x.size() > 2){
+    //   cout << x.size() << " ";
+    //   for(auto y : x) cout << y - 1 << " ";
+    //   cout << endl;
+    // }
+  }
 }
