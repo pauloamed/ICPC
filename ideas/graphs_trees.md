@@ -26,6 +26,15 @@ Subtree(a)--a--b--c--d--e--Subtree(e)
 (u,v), s.t. dist(u,v) <= D: u,v \in {a,b,c,d,e,X,Y,Z,X',Y',Z'}
 ```
 
+### Trees: iterativelly: find deepest node `X` from root -> destroy nodes in path from `X` to root -> solve created trees
+Run an euler tour in your tree and also compute the depths. Label each node to it's order in the euler tour. Keep a segtree for RMQ and sum update using the created indexes.  
+  
+Note that depths will only decrease in the process. Also, subtrees have their roots fixed. Thus, the original tree structure can be used and the euler tour indexes are fixed.
+  
+In the current root, query the deepest node. Mark all nodes in the path from the root to it (use `in` and `out` for guiding). For each newly marked node, search for unmarked adjacent nodes. Solve each of these: subtract the current (query the segtree) depth from it in order to simulate it as the root.
+  
+Check: https://codeforces.com/gym/101512/problem/F
+
 ### Number of spanning trees of a graph in `O(N^3)`
 Kirchhoff theorem states that the number of spanning trees of a graph (allows multiple edges) is equal to the determinant of any submatrix of the laplacian matrix of such graph.  
 Laplacian matrix, `Lij`:
