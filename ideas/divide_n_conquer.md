@@ -13,7 +13,7 @@ Max, min and coprimes work as segments partitioners. I mean:
 Check: https://codeforces.com/contest/1156/problem/E
 Check: https://codeforces.com/gym/101623/problem/F
 
-### Count good subarrays `(L, R1, R2)` inside query `[Lq;Rq;]`
+### Count good subarrays `(L, R1, R2)` inside query `[Lq;Rq]`
 Count good subarrays inside `[L;R]` given that:
 - it is given a list of good subarrays in the format `(L, R1, R2)` s.t. every subarray `[L;r]`, `R1 <= r <= R2` is good
 - a subarray of a good subarray is also good
@@ -33,7 +33,7 @@ Solve this as follows:
   
 Check: https://codeforces.com/gym/101991/problem/G
 
-### Find minimal good interval containing query `[Lq;Rq;]`, good intervals are decomposable
+### Find minimal good interval containing query `[Lq;Rq]`, good intervals are decomposable
 
 There are good intervals w/ the following properties:
 - if two good intervals have a intersection, their union is also a good interval. 
@@ -80,7 +80,7 @@ Thus, for a query `[Lq;Rq]` being processed in `[L;R]`:
   
 Check: https://codeforces.com/gym/101620/problem/I
 
-### CDQ `[TODO]`
+### CDQ
 Divide and Conquer CDQ; que é na vdd D&C com um merge ordenando ponto e fazendo query/update on the fly; que é na vdd D&C offline;
 .
 Tuto: https://robert1003.github.io/2020/01/31/cdq-divide-and-conquer.html

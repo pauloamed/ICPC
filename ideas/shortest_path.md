@@ -107,14 +107,15 @@ Concerning optimization (as in vanilla Dijkstra):
 Some problems need for you to keep for the same node the `K` shortests paths since some of these may be blocked and then you would need to ignore the blocked path and consider the following one.  
 If the blockage happens because of a condition (source or time mod `P`), the shortest paths need to be unique concerning such condition i.e. there is no need in keeping `K` different shortest paths if all of them will be blocked. Thus, keep the shortest path for each source or time mod `P`.
 
-
 Check: https://codeforces.com/gym/102006/problem/E  
 Check: https://atcoder.jp/contests/abc245/tasks/abc245_g  
 Check: https://www.hackerearth.com/challenges/competitive/september-clash-15/algorithm/dangerous-dungeon/description/  
 
 
 #### Edges with timestamps
-If it is the case that an edge will only be avaiable at a specific timestamp, a sort of line sweep on the edges can be performed. [TODO]
+If it is the case that an edge will only be avaiable at a specific timestamp, a sort of line sweep on the edges can be performed.
+[TODO]
+Check: https://codeforces.com/gym/101615/problem/H
 
 #### Negative edges - Potential
 Graph has negative edges but we want to use Dijkstra.  

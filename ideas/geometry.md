@@ -5,7 +5,7 @@
 - Avoid doing too much comparisons w/ floating points
 - Avoid using floating points with big magnitude. This implies a greater error.
 
-##### *Catastrophic cancelletion*
+##### Catastrophic cancelletion
 Assume that the relative error is `10^-6`. 
 Lets say we cancel out `A=10^6` and `B=10^6`, their erros are `10^0`. `A-B` is now `10^0` with error `10^0`.
 We don't want this to happen.
@@ -67,12 +67,13 @@ s: semiperimeter
 - If `d=0`, this is a triangle (Heron's formula)
 - A convex quadrilateral ABCD is cyclic iff its opposite angles are equal `180deg` => `cos(...) = 0` (Brahmagupta's formula)
 ```
-### Helly's theorem
+
+### Helly's theorem (intersection between convex polygons)
 Let `C` be a finite family of convex polygons in `R^n` such that, for `k ≤ n + 1`, any `k` members of `C` have a nonempty intersection. 
 Then the intersection of all members of `C` is nonempty.
 Eg.: In the plane (2d), if, for every triple (3) of convex polygons, there is a non-empty intersection, the intersention of all polygons is non-empty.
 
-### Pick's theorem
+### Pick's theorem (area, integer points)
 Let `P` be a polygon with integer coordinates for its vertices.
 Let:
 ```

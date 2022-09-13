@@ -17,3 +17,5 @@ There are several modellings for this since this is quite generic. One of such m
   - Expected number of moves for leaving this partition
   - Note: There can't be cycles between different partitions
   - We are then finding the answer not aiming a final state but counting the number of steps non-final states take until leaving the current partition
+
+Check: https://atcoder.jp/contests/abc242/tasks/abc242_h

@@ -17,7 +17,10 @@ Since `ex` is the number of sums `a+b=s`, if we create polynomial `A` with `a_i 
 Check: https://codeforces.com/gym/103643/problem/J
 
 ### Binary pattern matching 
-Want to know if a binary pattern `P` fits a binary text `T`. Reverse text .. TODO
+Want to know if a binary pattern `P` fits a binary text `T`. Reverse text ... TODO
+
+Check: Laboratorio-maratona
+Check: https://codeforces.com/contest/528/problem/D
 
 ### Solving `O(n^2)`DP using FFT in `O(n*log^2)`
 Given is a functional equation of the form `f(i,j) = cx_i * f(i-1,j-c) + dx_i * f(i-1,j-d) + ...` where `c,d,...` are non-negative integers. This can be solved using divide-and-conquer on FFT.  

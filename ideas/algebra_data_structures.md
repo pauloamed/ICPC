@@ -1,7 +1,5 @@
 # Algebra of data structures
 
-
-
 ## Some definitions
 ```
 Neutral/Identity element I of a binary operation F: F(I,x) = F(x,I) = x

@@ -54,6 +54,9 @@ Iterate through all `T` set of nodes spanning a tree, `g(S) = sum_T[f(T)*g(S-T)]
 Note that we can partition the graphs on `S` by the connected components that contain `v`.
 Iterate through all `T` set of nodes forming a connected graph, `g(S) = sum_T[f(T)*g(S-T)]`
 
+Check: https://atcoder.jp/contests/abc253/tasks/abc253_h  
+Check: https://atcoder.jp/contests/abc213/tasks/abc213_g  
+
 ### Sum on DAG not repeating nodes
 Like, `1->2, 1->3, 2->4, 2->4` and `4` should only be counted once for 1.
 This can only be solved using brute-froce.

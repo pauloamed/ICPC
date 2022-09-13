@@ -43,7 +43,7 @@ Use bitmasks: `dp[i][mask]`: at layer `i` used `mask` from this layer
 ### `2^n`: find the best permutation if we can build from left to right (linearly)
 `dp[i][mask]:` solved `i` first positions of the permutation and used `mask&j=1` elements.
 
-### Knapsack - biggest subset with bounded cost 
+### Knapsack with value_i=1: biggest subset with bounded cost
 DP where you maintain `A[x]: minimum cost of using x elements` and iterate through elements, minimizing `A[x]` when possible
 
 ### Game: Random vs. Greedy strategy / Black vs. white balls
@@ -100,7 +100,7 @@ Here each element is an interval and we are mapping sets to the smallest right e
 Keep building sets from left to right and join `[l;r]` w/ `best[i]`, creating a `i+1`-sized set if possible.  
 `best[]` let us do this greedy approach, trying to match to the smallest point.
 
-### Transition querying range of elements
+### Transition looks at an interval (range query : pull dp) / Element is looked by range (range update : push dp)
 Approach solving the transitions using a RMQ/segment query structure.  
   
 For instance, `f(i) = true, iff for any i in [l;r], f(i + 1) is true`, one can solve `f(i)` by range querying `[l+1;r+1]`.
@@ -109,7 +109,7 @@ Check: https://codeforces.com/contest/985/problem/E
 
 ### Linear recurrences
 Can be expressed in term of matrixes. Matrix exponentiation is associative, what enables us to solve a linear DP using:
-- Segtree, BIT
+- Segtree (check segtree page), BIT
 - Matrix exponentation
 
 ### Matrix and tensor exponentiation
