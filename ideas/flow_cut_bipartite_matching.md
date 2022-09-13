@@ -108,10 +108,9 @@ Let's say we have a bipartite graph `(A,B), |A|=|B|=N` and `A_i` can income `in_
 Edges are `A_i` can send to `B_j`, `j>=i`.  
   
 Iterate from `i:0...N` and keep a dict `f[x]`: number of elements w/ cost `x`.  
-Elements from `A_i` have to be taken care right now and `B_i` can handle them. Taken all possible elements from `f` w/ `cost < c_i` and assign them to `B_i`, prefer to take elements w/ lower cost.  
+Add elements from `A_i` to `f`: `f[0] += in_i`.  Then, check which elements `B_i` can take care of: take all possible elements (`num<=out_i`) from `f` w/ `cost < c_i` and assign them to `B_i`, prefer to take elements w/ lower cost.  
 Each iteration can remove at most `ON` elements and adds `1` element to `f`. This amortizes to `O(N)` (ignoring the dict cost).  
-
+  
+Check: https://codeforces.com/gym/100506/problem/J  
   
 Probably can be extended to `|A| != |B|` if a complete order (line sweep) exists.
-  
-Check: https://codeforces.com/gym/100506/problem/J
