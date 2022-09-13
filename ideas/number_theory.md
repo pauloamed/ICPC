@@ -8,16 +8,16 @@
 5- If x+y is prime, either (x=y=1) or (x and y have different parity)
 ```
 
-#### Arithmetic progressions with same sum
+### Arithmetic progressions with same sum
 Between perfect squares X^2 and (X+1)^2, intervals [X^2;X^2+X] and [X^2+X+1;(X+1)^2-1] have the same sum. First interval w/ size X+1 and second w/ size X. 
 
-#### LCM of sequence
+### LCM of sequence
 The LMC of `a_0, a_1, ..., a_n` is the productory of `p^max_e` for each prime `p` that occurs in the factorization of `a_i` where `max_e` is the maximum exponent `p` has between all `a_i`.
 
-#### GCD of `X+A_i`
+### GCD of `X+A_i`
 By `(1)`, `GCD(X+A_i,X+A_j)=GCD(X+A_i, A_i-A_j)` and now by associativity and idempotency, `GCD(X+A_0, X+A_1, X+A_2, ...) = GCD(X+A_0, A_1-A_0, A_2-A_1, ...)`
 
-#### Number of pairs `(x,y)` in `[L;R]` s.t. `gcd(x,y)=k`
+### Number of pairs `(x,y)` in `[L;R]` s.t. `gcd(x,y)=k`
 This can be done using inclusion-exclusion.  
 Note that:
 - Number of pairs `(x,y)` s.t. `gcd(x,y)` is a **multiple** can be computed using the number of multiples of `k` in `[L;R]`
@@ -25,19 +25,42 @@ Note that:
   - Number of pairs s.t. gcd is a **multiple** of `k` equals to `mult*mult`
 - Number of pairs `(x,y)` s.t. `gcd(x,y)` is **exactly** `k` equals to pairs `(x,y)` ... TODO ai depois subtrai
 
-#### `A ^ (B ^ C) % P` (`P` prime)
+### `A ^ (B ^ C) % P` (`P` prime)
 We can solve `(X^Y) % P` using fast expo (1).
   
 We want `(A ^ (B ^ C)) % P`, that is the remainder of `A ^ (B ^ C)` when divided by `P`. 
 - If `A` is a multiple of `P`, answer is 0
 - Else, note that, by Fermats Little Theorem, `A^(P-1) = 1 (MOD P)`. So, we only care about `x=(B^C) % (P-1)` which can be solved by `(1)`. Finally solve `A^x % P`
 
-#### Number of `N`-length sequences ending at `X` with `A_i | A_(i+1)`
+### Number of `n`-length sequences ending at `X` with `A_i | A_(i+1)`
 First, factorize `X = a^x * b^y * c^z * ...` .
 This can be solved by choosing which of the `N` numbers will activate which primes from the factorization.  
 Further reduced to, given `x` balls of color `a`, `y` balls of color `b`, `z` balls of color `c`, ..., how many ways can I distribute these balls over the boxes?
 - Balls are independent from each other (multiply ans for each). Solve each using *bars and starts*: `C(N+x-1, x)`
 
+### Schur's theorem and Frobenius: linear combination of elements w/ gcd=1
+**Linear combination**: every weight is non-negative  
+
+For every set of numbers w/ `gcd(A_i)=1` there exists a arbitrary large number that can be expressed as a linear combination of `A_i`
+
+#### Frobenius / Coin problem
+The largest number that cannot be expressed as a linear combination of a set of numbers w/ `gcd(A_i)=1` is called the **Frobenius number** of this set.  
+If `n=2`, `f(A) = a_0 * a_1 - a_0 - a_1`
+
+### Bezout's identity and diofantine equations
+Let `gcd(a,b)=d`, then there are `x,y` integers s.t. `ax + by = d`.  
+
+Given a solution `(x,y)`, all other solutions have the form:
+```
+(x - k * b/d , y + k * a/d)
+```
+
+#### 3 or more variables
+If `gcd(A_0, A_1, ... A_n)=d`, then there is a solution for
+```
+d = x_0 * A_0 + x_1 * A_1 + ... + x_n * A_n
+```
+where `d` is the smallest positive integer of this form
 
 ## Permutations
 
