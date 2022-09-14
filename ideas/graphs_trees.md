@@ -110,10 +110,11 @@ Graph resulted after collapsing SCCs into a single node. This graph is acyclic.
 
 ### Euler identity to planar graphs
 ```
-v - e + f = 2
+v - e + f = 1 + c
 f: number of faces (including outside)
 v: number of vertices
 e: number of edges
+c: number of components
 ```
 It is ok to have colinear edges.
 
