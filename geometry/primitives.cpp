@@ -496,6 +496,7 @@ T seg_ray_dist(pv sa, pv sb, pv ra, pv rb){
 
 // minimum enclosing circle
 // runs in O(n) where n is the amount of points
+// BORDER: n=1, doesnt work
 circle mec(vector<pv> &v){
 	shuffle(v, v.size()-1);
 	circle c = circle(v[0], v[1]);
