@@ -83,6 +83,17 @@ Let:
 Then, A = i + (b/2) - 1
 ```
 
+### Range of points inside trapezoidal defined by segment `AB` and query point `Q`
+![Ancient Towers. Thanks kobus!](/assets/ancient_towers.png)
+
+Note that we can decompose the range into two prefixes if we keep points polar sorted using `A` and `B` as pivots in lists `X` and `Y` respectively.
+  
+The desired points are `prefix_i(X) - prefix_j(Y)`, `i` and `j` can be found by querying `BÂQ` angle in `X` and `A^BQ` angle in `Y`.
+  
+This is a special case of the "contribution" techinique in which we decompose a complex update into simpler ones and solve the final result at the end of all updates.
+  
+Check: https://codeforces.com/gym/103640/problem/A  
+
 ### Convex closures
 (http://www.cs.cmu.edu/afs/cs/academic/class/15456-s10/ClassNotes/lecture2.pdf)  
 A convex combination of a set of points is a linear combination that is both non-negative and affine i.e. a weighted sum of such points s.t. their coefficients sum up to 1 and all are >= 0.
