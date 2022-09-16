@@ -57,6 +57,9 @@ You can do this since they only need to be added once into the queue given that 
 Check: https://codeforces.com/contest/1662/problem/F  
 Check: https://codeforces.com/contest/59/problem/E
 
+#### Minimum coins problem (allowing negative edges)
+Check: https://codeforces.com/gym/101512/problem/B
+
 #### Dijkstra complexity
 Dijkstra complexity can be analyzed using two operations:
 - `D:decrease-key`: update `dist[x]` for a node `x`
