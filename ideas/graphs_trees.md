@@ -35,6 +35,12 @@ In the current root, query the deepest node. Mark all nodes in the path from the
   
 Check: https://codeforces.com/gym/101512/problem/F
 
+### Trees: Rerooting
+
+Check: https://codeforces.com/gym/102433/problem/A  
+Check: https://codeforces.com/gym/101472/problem/I  
+Check: https://codeforces.com/gym/102134/problem/E  
+
 ### Number of spanning trees of a graph in `O(N^3)`
 Kirchhoff theorem states that the number of spanning trees of a graph (allows multiple edges) is equal to the determinant of any submatrix of the laplacian matrix of such graph.  
 Laplacian matrix, `Lij`:
