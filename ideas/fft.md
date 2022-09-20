@@ -34,7 +34,7 @@ Finally, since polynomial multiplication is associative, divide-and-conquer can 
 Note that polynomial multiplication is associative but **not commutative**. Don't swap positions.
 
 Check: https://atcoder.jp/contests/abc247/tasks/abc247_h  
-Check: https://codeforces.com/problemset/problem/1613/F
+Check: https://codeforces.com/problemset/problem/1613/F  
 Check: https://codeforces.com/contest/1251/problem/F
 
 ### Reorder arrays aiminig minimization of dot product
