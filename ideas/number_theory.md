@@ -6,7 +6,14 @@
 3- floor(floor(A/B)/C) = floor(A/(B*C))
 4- ceil(ceil(A/B)/C) = ceil(A/(B*C))
 5- If x+y is prime, either (x=y=1) or (x and y have different parity)
+6- First multiple of `x >= L`: `ceil(L/x)*x`
 ```
+
+### Finding primes in `[L;R]`: find primes until `sqrt(R)` : mark as sieve
+Note that `x \in [L;R]` is prime iff it is not divisible by any prime `p <= sqrt(R)`.
+- Find all primes smaller than `sqrt(R)`
+- For each found prime, mark elements inside such range divisible by it
+  - Harmonic series, `O(NlogN)`
 
 ### Arithmetic progressions with same sum
 Between perfect squares X^2 and (X+1)^2, intervals [X^2;X^2+X] and [X^2+X+1;(X+1)^2-1] have the same sum. First interval w/ size X+1 and second w/ size X. 
