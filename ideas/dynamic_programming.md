@@ -115,6 +115,9 @@ Check: https://codeforces.com/contest/985/problem/E
 Can be expressed in term of matrixes. Matrix exponentiation is associative, what enables us to solve a linear DP using:
 - Segtree (check segtree page), BIT
 - Matrix exponentation
+A polynomial approach is also feasible:
+- Divide and conquer on FFT
+- Exponentiation by squaring (if the a (transition) polynomial is recurrent)
 
 ### Matrix and tensor exponentiation
 Let's say we want to compute the number of paths of size `k` on a graph of size `N`. This can be solved by exponentiating `Adj_matrix`.  
