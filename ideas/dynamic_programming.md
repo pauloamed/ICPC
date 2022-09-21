@@ -72,14 +72,17 @@ For instance, if we are computing the number of paths of size `k` that don't use
 - `g(x) = Adj_matrix * x`: creating **all** paths, some might fail restrictions
 - `h(x) = Diag - Id`: creating 2-sized paths that use that goes forth and back at the same edge
 
-### DPs w/ transitions in timestamps (and different query/updt timestamps)
-Let's say we are dealing w/ a DP in which a transition `f(i) = ...f(j)...` has a time to be processed.  
-This yields a line sweep algorithm on the timestamps of these transitions and probably a **successive approximation** approach.  
+### DPs w/ different query/updt timestamps
   
 If a transition has a time for querying and another for updating, one needs to keep these latent updates and only publish them in the appropriate moment. That is, if a transition `x` has `query_time_x=10` and `update_time_x=15` and another transition `y` has `query_time_y=11` and `update_time_y=13`, transition `y` must not access updates from transition `x`.  
-One way of solving this is keeping in a priority queue sorted by time the transitions to be published. Once we reach a `query_time` that is able to access the top transition from this pq, we may publish it.
+  
+One way of solving this is keeping in a priority queue sorted by time the transitions to be published. 
+Once we reach a `query_time` that is able to access the top transition from this pq, we may publish it.  
+  
+Also, the usual line-sweep approach where we add at `v[t]` all events that happen in time `t`. There will be 2 event types: update and query.
   
 Check: https://codeforces.com/gym/101615/problem/H
+Check: https://codeforces.com/gym/100819/problem/S
 
 ### Chance of getting to accepted state using optimal strategy, maximizing probability on mid states (greedy)
 I find these problems kinda tricky because the base state of the recursion may be a state with a built structure (the accepted state).
