@@ -73,7 +73,8 @@ For instance, if we are computing the number of paths of size `k` that don't use
 - `h(x) = Diag - Id`: creating 2-sized paths that use that goes forth and back at the same edge
 
 ### DPs w/ different query/updt timestamps
-  
+A state can have one or more transitions to be processed in a line sweep. If it has more than one, each new transtion may (or not) update the current value of the state. This yields a successive approaximation approach.
+
 If a transition has a time for querying and another for updating, one needs to keep these latent updates and only publish them in the appropriate moment. That is, if a transition `x` has `query_time_x=10` and `update_time_x=15` and another transition `y` has `query_time_y=11` and `update_time_y=13`, transition `y` must not access updates from transition `x`.  
   
 One way of solving this is keeping in a priority queue sorted by time the transitions to be published. 
