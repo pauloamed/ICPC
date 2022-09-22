@@ -22,6 +22,17 @@ Let's say we are painting the whole grid from bottom to top, left to right. Then
 When you visit a point w/ latent painting `X`, paint the square of the current point and set a latent painting of `X-1` at upper and right. 
 This set is actually a `max` since a point can be visited by multiple other points.
 
+### Make array `A` equal to `B`: change `a[j], j \in [l;r]` into `a[i]`, `i \n [l;r]`
+Operation: Substitute each element inside a range `[l;r]` with an element (which element? depends on the problem dur) from this range.
+Compressed values: elements in the order they appear, without duplicates: 1 1 2 4 2 2 5 5 3 => 1 2 4 2 5 3
+
+A necessary (but not sufficient) condition is that (i.e. there is only a solution if) compressed values from `B` are a subsequence from `A`.  
+The operation can only delete elements from the compressed values of `A`; no new element is created.
+  
+Moreover, depending on the operation, the range each value can occupy can be freely modified, turning the transformation feasible.
+  
+Check: https://codeforces.com/gym/101964/problem/F
+
 ### RMQ query on slinding window
 Min (or max) heap with lazy delete; keep adding while you slide through.
 
