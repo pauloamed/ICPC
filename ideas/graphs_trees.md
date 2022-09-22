@@ -8,6 +8,19 @@ Cycle detection: find a cycle of length `L` in `O(n)`, use this cycle `K/L` time
 
 If there are multiple queries, binary lifting might be better. If there are updates, binary lifting might have a drawback since it's idea is to be a precomputed structure.
 
+### Is list of degrees graphical (exists a graph w/ such degrees?)
+**Erdos Galai**: `O(N)` but only predicate
+Conditions:
+- Sum of degrees is even
+- For every `k` in `[1;N]` it holds that `SUM_i_1_K(d_i) <= k * (k - 1) + SUM_K+1_N(min(d_i, k)`
+
+**Havel-Haikimi**: `O(NlogN)` but builds answer
+- Recursive approach
+- Given a list of degrees sorted non-increasing
+ - Take the 0th degree and match it with the `1 ... d_0` other elements (other top degrees)
+ - Decrease the degrees of used nodes by 1. Resort. Recurse.
+ - Base case: is feasible iff entry is list of 0 degrees. No negative degree is allowed.
+
 ### Trees: fixing the minimum distance of 2 nodes
 It is given a tree, you choose a pair of nodes and set their distance `D` as the minimum distance.  
 The other pairs which distance is `<= D` must follow:
