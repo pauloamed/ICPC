@@ -89,7 +89,7 @@ Once we reach a `query_time` that is able to access the top transition from this
   
 Also, the usual line-sweep approach where we add at `v[t]` all events that happen in time `t`. There will be 2 event types: update and query.
   
-Check: https://codeforces.com/gym/101615/problem/H
+Check: https://codeforces.com/gym/101615/problem/H  
 Check: https://codeforces.com/gym/100819/problem/S
 
 ### Chance of getting to accepted state using optimal strategy, maximizing probability on mid states (greedy)
