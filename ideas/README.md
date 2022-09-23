@@ -183,11 +183,6 @@ Every visited segment is either updated or deleted. One can only delete inserted
 Check: https://atcoder.jp/contests/abc256/tasks/abc256_h
 
 
-## Randomized
-
-### Blogewoosh 6
-Given `n` numbers in a random order, the expected times that the maximum seen value changes is `O(log(n))` while processing such numbers.
-
 # Game theory
 
 ### Last to play wins/unwanted positions
