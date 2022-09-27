@@ -43,6 +43,19 @@ The **minimal chain decomposition** is equivalent to the **general path cover**.
 ## Cut
 See cut as a "choice" problem where you have to choose which edges disconnect the source from the sink while minimizing the total cost
 
+### Given `N` elements, color each one, gain `A[i]` or `B[i]` and `C[i][j]` is colour `i` and `j` the same
+Given are `N` elements, color each one either blue or red. 
+If it becomes blue, you will gain `A[i]`. Else, `B[i]`. If both `i` and `j` end up with the same color, you gain `C[i][j]`.
+  
+Create cut graph with `src`, `snk` and `N` nodes. 
+Add the following edges:
+```
+src->i (cap A[i])
+i->snk (cap B[i])
+i->j and j->i (cap C[i][j])
+```
+Compute the total but incorrect gain: `sum A + sum B + sum C(i>j)`. The min cut will turn the graph feasible with minimum possible cost. `ans: tot - mincut`.
+
 ## Bipartite matching
 
 ### Merging nodes
