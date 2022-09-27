@@ -1,78 +1,56 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-const int MAXN = 1000100;
+/*
+There are 2 choices to be made
 
-struct BIT{
-  int n; vector<int> v;
-  BIT(int m = 0):n(m + 2), v(vector<int>(n)){}
+acc[x]: marker for accpeted nodes; initialized at `add`
 
-  int query(int i){ int ans = 0;
-    for(i++; i > 0; i -= i & (-i))
-      ans += v[i];
-    return ans;
-  }
+Precomputing transitions:
+	- Needed (performance) if input is not string (eg. tree, trie, dag)
+	- Meanwhile, consumes N*SIGMA memory
 
-  void update(int i, int val){
-    for(i++; i < n; i += i & (-i)) 
-      v[i] += val;
-  }
-};
+Online/Offline
+	- Online: using as automaton; `acc` will have all info pushed down in trie after build; 
+		process matches online
+	
+	- Offline: first mark visited positions; then process those using the suffix link tree 
+	positions in the subtree of an accepted position is also accepted
 
-BIT bit(MAXN);
-int ans[MAXN];
+*/
 
-// init -> add -> build
-// ONLINE: go
-// OFFLINE: process, solve
-
-namespace AhoCorasick{
-  const int N = 200000;
-  const int SIGMA = 30;
-  const char FIRST_CHAR = 'a';
+template <int N, int SIGMA, char FIRST_CHAR>
+struct AhoCorasick{
   const int ROOT = 0;
   
-  // IF PRECOMPUTING TRANSITIONS
-  int to[N][SIGMA]; 
-  // IF NOT PRECOMPUTING TRANSITIONS
-  // map<int,int> to;
+  int to[N][SIGMA]; // IF PRECOMPUTING TRANSITIONS
+  // map<int,int> to[N]; // IF NOT PRECOMPUTING TRANSITIONS
+  
+  int acc[N];
 
-  // next node to be added to the trie
-  int next_node = 1;
-
-  void init(int n){
-    next_node = 1;
-    for(int i = 0; i < n; ++i) 
-      memset(to[i], 0, sizeof to[i]);
-  }
-
-  // marker for accepted nodes
-  vector<pair<int,int>> acc[N]; // ATTENTION: may change depending on application
-
-  void add(const string &s, int query_pos, int query_id){
-    int curr = ROOT;
-    for(auto c : s){ c -= FIRST_CHAR;
-      // ATTENTION: precomputing transitions?
-      if(to[curr][c] == 0) curr = to[curr][c] = next_node++;
-      else curr = to[curr][c];
-
-      // ATTENTION: add prefixes as patterns?
-    }
-    acc[curr].push_back({query_pos, query_id}); // ATTENTION
-  }
-
-  // preffix function on trie nodes
   // suffix_link[x] points to greatest proper prefsufix of x
   int sl[N];
   
-  // reversed edges of sl (DFS/sack). note that if, when processing T, we visit a
-  // node X in the sl subtree of a accepted node Y, we are on a accepted string position
+	// a match in node `x` is a match in its whole subtree
   vector<int> sl_tree[N]; 
 
-  // similar to calculation of preffix function
-  // compute suffix links and transitions
-  void build(){
-    // IF PRECOMPUTING TRANSITIONS
+  int next_node = 1; // to add to trie
+
+  void init(){
+    next_node = 1;
+		// init `to` to 0 if reusing
+  }
+
+  void add(const string &s){
+    int curr = ROOT;
+    for(auto c : s){ c -= FIRST_CHAR;
+      if(to[curr][c] == 0) curr = to[curr][c] = next_node++;
+      else curr = to[curr][c];
+    }
+    acc[curr]++;
+  }
+
+	void build_precompute(){
 		for(int i = 0; i < next_node; i++){
       sl[i] = ROOT;
       sl_tree[i].clear();
@@ -99,10 +77,12 @@ namespace AhoCorasick{
         }
 			}
 		}
+	}
 
-    /* IF NOT PRECOMPUTING TRANSITIONS
+	void build_non_precompute(){
     const int P = -1;
     sl[ROOT] = P;
+		queue<int> q; q.push(ROOT);
     while(q.size()){
       int x = q.front(); q.pop();
       for(auto [c, child] : to[x]){
@@ -112,60 +92,102 @@ namespace AhoCorasick{
           if(to[child_sl].count(c)) break;
           else child_sl = sl[child_sl];
         }
-        if(child_sl == P){
-          // couldnt match a prefsufix+c
-          sl[child] = ROOT; 
-        }else{
-          // found match (prefsufix+c)
-          sl[child] = to[child_sl][c]; 
-        } 
-        
+
+				// couldnt match a prefsufix+c
+        if(child_sl == P) sl[child] = ROOT; 
+        else // found match (prefsufix+c)
+					sl[child] = to[child_sl][c];
+
         q.push(child);
         sl_tree[sl[child]].push_back(child);
       }
     }
     sl[ROOT] = ROOT;
-    */
+	}
 
-    /* IF ONLINE,
-    run collapse_accs(ROOT);
+  void build(){
+		build_precompute();
+		// build_non_precompute();
 
-    something like:
-    void collapse_accs(int x){
+		/* IF ONLINE, bottom up for merging accs
+    function<void(int)> merge_accs = [&](int x){
       for(auto y : sl_tree[x]){
-        collapse_accs(y);
-        acc[x].pts = max(acc[x].pts, acc[y].pts);
+        acc[y] = max(acc[x], acc[y]);
+        merge_accs(y);
       }
-    }
-    */
+    };
+    merge_accs(ROOT); */
   }
 
   // ONLINE
-	int go(int x, char c){
-    // ATTENTION: precomputing transitions?
-		return to[x][c - FIRST_CHAR];
+	int go(int curr, char c){ c = c - FIRST_CHAR;
+		// IF PRECOMPUTED TRANSITIONS
+		return to[curr][c];
+
+		/* IF NOT PRECOMPUTED TRANSITIONS
+		while(true){
+			if(to[curr].count(c)) return to[curr][c];
+			else if(curr == ROOT) return ROOT;
+			else curr = sl[curr];
+		}*/
 	}
 
-
   // OFFLINE
-  // marker for visited nodes when processing T string
-  set<int> vis[N]; // ATTENTION
-  void process(string &t){ // ATTENTION (args)
+	vector<int> vis[N]; // OFFLINE
+  // node X was visited by positions vis[x] from T
+  void process(string &t){
     int curr = ROOT;
     for(int i = 0; i < t.size(); ++i){
-      // ATTENTION: precomputing transitions?
-      curr = to[curr][t[i] - FIRST_CHAR];
-      vis[curr].insert(i); // ATTENTION
+			curr = go(curr, t[i]);
+			vis[curr].push_back(i);
     }
   }
 
-  /* IF OFFLINE,
-  void solve(int x=ROOT){
+  map<int,int> ans;
+  void solve(int x, int curr_on = 0){ // ATTENTION
+    curr_on += acc[x];
     for(auto y : sl_tree[x]){
-      for(auto x : vis[x]){
-        ...
-      }
+      solve(y, curr_on);
+    }
+ 
+    for(auto y : vis[x]){
+      ans[y] += curr_on;
     }
   }
-  */
 };
+
+const int MAXN = 200100;
+AhoCorasick<MAXN, 30, 'a'> aho_end, aho_start;
+ 
+int main(){
+  string s; cin >> s;
+  string rs = s; reverse(rs.begin(), rs.end());
+  int m = s.size();
+ 
+	aho_end.init();
+	aho_start.init();
+  
+  int n; cin >> n;
+  for(int i = 0; i < n; ++i){
+    string t; cin >> t;
+    aho_end.add(t);
+    reverse(t.begin(), t.end()); aho_start.add(t);
+  }
+ 
+  aho_end.build();
+  aho_start.build();
+ 
+  aho_end.process(s);
+  aho_start.process(rs);
+ 
+  aho_end.solve(aho_end.ROOT);
+  aho_start.solve(aho_start.ROOT);
+ 
+  long long ans = 0;
+  for(int i = 0; i < m - 1; ++i){
+    int orig_pos = i;
+    int rev_pos = (m - 1 - (i + 1));
+    ans += (1LL * aho_end.ans[orig_pos] * aho_start.ans[rev_pos]);
+  }
+  cout << ans << endl;
+}
