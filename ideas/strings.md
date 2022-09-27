@@ -3,20 +3,21 @@
 ## KMP
 
 ### KMP with ordered patterns
-KMP can also be used for ranked sequence matching i.e. find matchings of a `P_0 P_1 ... P_k` pattern in which, if `P_i > P_j` then `S_pi > S_pj` (`S_pi` char in substring matched to `P_i`). For this, we need to generalize the exact char matching (`P[i]==P[j]?`) of the original prefix function to a *can I fit `P[0:i]` into `P[j-i:j]`?* predicate. Such predicate .:
+KMP can also be used for ranked sequence matching i.e. find matchings of a `P_0 P_1 ... P_k` pattern in which, if `P_i > P_j` then `S_(k+i) > S_(k+j)`. For this, we need to generalize the exact char matching (`P[i]==P[j]?`) of the original prefix function to a *can I fit `P[0:i]` into `P[j-i:j]`?* predicate:
 ```
 Given P[0:i] (pattern prefix I'm trying to fit) and P[j-i:j] (suffix for the current char),
-If, for every distance D<i, the order relation (<,=,>) between (P_(j-D) and P_j) and (P_(i-D) and P_i)
+If, for every distance D<i, the order relation (<,= or >) between (P_(j-D) and P_j) and (P_(i-D) and P_i)
 (note that P_(j-D) is correspondent to P_(i-D)) are the same, then, the prefix can be fitted.
 
 That is, in both prefix and suffix,
 the last char which we are trying to add have the same order relation to the other chars positions.    
 
-Note that, when trying to match to P[0:i], this same predicate was asserted for all char positions < i.    
+Note that, when trying to match to P[0:i], this same predicate was asserted for all char positions < i.
 Thus, only this new position needed to be checked.
 ```
-Such formulation is however `O(n)`. Some optimizations can lead this to `O(1)`:
-- `=> O(alphabet)`: for each possible value, we only need to check its last position. Suppose that our pattern has two occurrences of the same value, the second occourence has already accepted the first one, so we don't need to do this again.
+Such formulation costs `O(n)` for checking the predicate. Some optimizations can lead this to `O(1)`:
+- `=> O(alphabet)`: when adding `x`, for each possible value `y \in ALPHA`, we only need to check last position of `y`. 
+Suppose that our pattern has two occurrences of the same value `y`, the second occourence has already accepted the first one, so we don't need to do this again.
 - `=> O(1)`: it we are trying to fit value `v`, we only need to check the last potions of `prev(v)` and `next(v)` (not necessarily adjacent). Due to transitivity.
 
 
@@ -46,8 +47,15 @@ It is linear because `pref` and `suf` increment together and `pref` decresal is 
 
 Check: https://codeforces.com/contest/1721/problem/E  
 
+
+
 ## Aho-chorasik
 A Trie with fail/suffix links that resemble the prefix function.
+
+### Reverse patterns and input for finding starting positions
+Instead of finding the ending positions, one can find the starting positions by reversing both input and patterns.
+  
+Check: https://www.beecrowd.com.br/judge/pt/challenges/view/683/7
 
 ### Precompute transitions?
 You can choose to precompute transitions or not when using Aho.  
@@ -69,15 +77,17 @@ Vertex `p` is parent of `v` if there is a fail link from `v` to `p`, that is, `p
 Thus, every match that occur in the subtree of `p`, occur also for `p`. This yields a tree subproblem:  
 Traverse the tree, gathering matches in a structure so, when visiting `v`, you have access to all matches from its subtree. You which patterns were added to `v`, so these can be handled as queries in `v`.
 
-### Process trie instead of string
-One can search for patterns in a trie instead of in a string. 
+### Process DAG/trie instead of string
+One can search for patterns in a DAG/trie instead of in a string. 
 For this, run a euler tour on the Trie in order to flatten it (treat it as a string); also keep a stack while processing the flattened string in the Aho. 
 A timestep that enters a node will advance on the Aho and create push to the stack; a timestep that leaves will pop the stack.
+  
+Check: https://www.beecrowd.com.br/judge/pt/challenges/view/683/7
 
 ## Trie are graphs/tree, solve graph/tree problems
 In a typing context, you can think of a trie as a graph and run graph algorithms in it (eg. shortest path).
   
-Check: https://codeforces.com/gym/101550/attachments/download/6031/20162017-acmicpc-nordic-collegiate-programming-contest-ncpc-2016-en.pdf - B 
+Check: https://codeforces.com/gym/101550/B 
   
 Also, use euler tour decomposition and query/update efficiently on nodes of a trie.
 
