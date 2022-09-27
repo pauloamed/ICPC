@@ -5,10 +5,11 @@ using namespace std;
 There are 2 choices to be made
 
 acc[x]: marker for accpeted nodes; initialized at `add`
+vis[x]: used at offline, string positions visiting node `x` will update `vis[x]`
 
 Precomputing transitions:
 	- Needed (performance) if input is not string (eg. tree, trie, dag)
-	- Meanwhile, consumes N*SIGMA memory
+	- Meanwhile, consumes N*SIGMA time and memory
 
 Online/Offline
 	- Online: using as automaton; `acc` will have all info pushed down in trie after build; 
