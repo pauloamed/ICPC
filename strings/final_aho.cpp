@@ -5,7 +5,9 @@ using namespace std;
 There are 2 choices to be made
 
 acc[x]: marker for accpeted nodes; initialized at `add`
+
 vis[x]: used at offline, string positions visiting node `x` will update `vis[x]`
+when visiting a node `x` with valid `acc[x]`, `vis[y]` for all y in x subtree should be processed
 
 Precomputing transitions:
 	- Needed (performance) if input is not string (eg. tree, trie, dag)
