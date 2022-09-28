@@ -60,24 +60,25 @@ If you choose to not precompute it, processing a transition might search for a v
 You can solve a multi-pattern matching problem with Aho either online or offline.
 
 **Online**
-You will solve while consuming string `S`. That is, if you visited node `v` of the Aho Trie, `v` needs to know all possible accepted states in it's subtree. Compute this in the `build` phase.
+You will solve while consuming string `S`. That is, if you visited node `v` of the Aho Trie, `v` needs to keep info from accepted states that are ancestors. Compute this in the `build` phase.
 
 **Offline**
 First process the input string, then solve the suffix-link tree problem.  In this tree, a vertex is a node in the Trie and edges are the fail links.  
-Vertex `p` is parent of `v` if there is a fail link from `v` to `p`, that is, `p` is the max prefix that is also a suffix from `v`. Since `p` is a suffix from `v`, all matches that occur in `v` also occur in `p`.  
+Vertex `p` is parent of `v` if there is a fail link from `v` to `p`, that is, `p` is the max prefix that is also a suffix from `v`. 
+Since `p` is a suffix from `v`, all matches that occur in `p` also occur in `v`.
   
 Thus, every match that occur in the subtree of `p`, occur also for `p`. This yields a tree subproblem:  
-Traverse the tree, gathering matches in a structure so, when visiting `v`, you have access to all matches from its subtree. You which patterns were added to `v`, so these can be handled as queries in `v`.
+Traverse the tree, gathering matches in a structure so, when visiting `v`, you have access to all matches from its subtree.
+You which patterns were added to `v`, so these can be handled as queries in `v`.
 
-### Process trie instead of string
-One can search for patterns in a trie instead of in a string. 
-For this, run a euler tour on the Trie in order to flatten it (treat it as a string); also keep a stack while processing the flattened string in the Aho. 
-A timestep that enters a node will advance on the Aho and create push to the stack; a timestep that leaves will pop the stack.
+### Process graph (Trie, DAG) instead of string
+One can search for patterns in graphs (Trie, DAGs) instead of only in strings.
+Traverse the graph, keeping a stack of the visited Trie nodes.
 
 ## Trie are graphs/tree, solve graph/tree problems
 In a typing context, you can think of a trie as a graph and run graph algorithms in it (eg. shortest path).
   
-Check: https://codeforces.com/gym/101550/attachments/download/6031/20162017-acmicpc-nordic-collegiate-programming-contest-ncpc-2016-en.pdf - B 
+Check: https://codeforces.com/gym/101550/B 
   
 Also, use euler tour decomposition and query/update efficiently on nodes of a trie.
 
