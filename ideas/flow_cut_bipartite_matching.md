@@ -60,13 +60,13 @@ src->i (cap A[i])
 i->snk (cap B[i])
 i->j and j->i (cap C[i][j])
 ```
-
-Path: `src -> i -> snk` : a node is both blue and red
-Path: `src -> i -> j -> snk` : a blue node has the same color as a red node
-Path: `src -> i -> ... -> k -> snk` : a blue node has the same color as ... as a red node
-
+  
+Path: `src -> i -> snk` : a node is both blue and red  
+Path: `src -> i -> j -> snk` : a blue node has the same color as a red node  
+Path: `src -> i -> ... -> k -> snk` : a blue node has the same color as ... as a red node  
+  
 Compute the total but incorrect gain: `sum A + sum B + sum C(i>j)*`.
-
+  
 `*`: Why only `i>j`? Note that there is not the case in which we cut both `i->j` and `j->i`.
 Suppose that there is. It must be that `i` is blue and `j` red (or vice versa). Indeed, `i->j` needs to be cut. 
 But cutting `j->i` is useless and invalidates `min` cut. 
@@ -84,7 +84,7 @@ src->i (cap A[i])
 i->snk (cap B[i])
 in(i)->out(j) (cap C[i][j])
 ```
-Path: `src -> in(i) -> out(j) -> snk` : we are not paiting neither `i` nor `j` but gain `C[i][j]`
+Path: `src -> in(i) -> out(j) -> snk` : we are not paiting neither `i` nor `j` but gain `C[i][j]`  
   
 Compute the total but incorrect gain: `sum C[][]` and then `ans: tot - mincut`
   
