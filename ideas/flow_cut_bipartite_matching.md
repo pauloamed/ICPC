@@ -41,20 +41,54 @@ The **minimal chain decomposition** is equivalent to the **general path cover**.
 
 
 ## Cut
-See cut as a "choice" problem where you have to choose which edges disconnect the source from the sink while minimizing the total cost
 
-### Given `N` elements, color each one, gain `A[i]` or `B[i]` and `C[i][j]` is colour `i` and `j` the same
+### Cut red/blue starting from unfeasible
+
+Can see cut as a "choice" problem-solver where you have to choose which edges disconnect.  
+That is, starting from a full-profit but unfeasible configuration, find choices with minimal cost to be applied in order to maximize `profit - cost`.
+  
+Paths from the src to the sink need to comprise invalid characteristics to be removed. The min cut will turn the graph feasible with minimum possible cost of removal. Compute this total gain and then `ans: tot - mincut`.
+
+#### Given `N` elements, color each one, gaining either `A[i]` or `B[i]`, and `C[i][j]` if colour `i` and `j` the same
 Given are `N` elements, color each one either blue or red. 
 If it becomes blue, you will gain `A[i]`. Else, `B[i]`. If both `i` and `j` end up with the same color, you gain `C[i][j]`.
   
-Create cut graph with `src`, `snk` and `N` nodes. 
+Create cut graph with `src` (blue), `snk` (red) and `N` nodes. 
 Add the following edges:
 ```
 src->i (cap A[i])
 i->snk (cap B[i])
 i->j and j->i (cap C[i][j])
 ```
-Compute the total but incorrect gain: `sum A + sum B + sum C(i>j)`. The min cut will turn the graph feasible with minimum possible cost. `ans: tot - mincut`.
+
+Path: `src -> i -> snk` : a node is both blue and red
+Path: `src -> i -> j -> snk` : a blue node has the same color as a red node
+Path: `src -> i -> ... -> k -> snk` : a blue node has the same color as ... as a red node
+
+Compute the total but incorrect gain: `sum A + sum B + sum C(i>j)*`.
+
+`*`: Why only `i>j`? Note that there is not the case in which we cut both `i->j` and `j->i`.
+Suppose that there is. It must be that `i` is blue and `j` red (or vice versa). Indeed, `i->j` needs to be cut. 
+But cutting `j->i` is useless and invalidates `min` cut. 
+
+Check: https://codeforces.com/gym/101484/problem/H
+
+#### Given `N` elements, if color, color red and/or blue, losing `A[i]` and/or `B[i]`; `C[i][j]` is gained if `i` is blue or `j` red
+Given are `N` elements, each can be coloured blue, red, blue and red, or not colored. Coloring `i` blue costs `A[i]`; coloring red costs `B[i]`.
+`C[i][j]` is gained if `i` is blue or `j` red.
+  
+Crete cut graph with `src` (not blue), `snk` (not red) and `N*2` nodes. Each node has a `in` (in edge) and `out` (out edge) version.
+Add the following edges:
+```
+src->i (cap A[i])
+i->snk (cap B[i])
+in(i)->out(j) (cap C[i][j])
+```
+Path: `src -> in(i) -> out(j) -> snk` : we are not paiting neither `i` nor `j` but gain `C[i][j]`
+  
+Compute the total but incorrect gain: `sum C[][]` and then `ans: tot - mincut`
+  
+Check: https://codeforces.com/gym/101484/problem/H
 
 ## Bipartite matching
 
