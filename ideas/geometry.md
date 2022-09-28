@@ -5,7 +5,14 @@
 - Avoid doing too much comparisons w/ floating points
 - Avoid using floating points with big magnitude. This implies a greater error.
 
-##### Catastrophic cancelletion
+### Convex Hull
+Fun facts:
+- Set of points s.t. there exists a half-plane for each point that doesnt contain any other point
+- If coordinates are `[0;C]`, there are at most `O(C^(2/3))` points inside the convex hull
+  - https://codeforces.com/blog/entry/62183
+
+
+#### Catastrophic cancelletion
 Assume that the relative error is `10^-6`. 
 Lets say we cancel out `A=10^6` and `B=10^6`, their erros are `10^0`. `A-B` is now `10^0` with error `10^0`.
 We don't want this to happen.

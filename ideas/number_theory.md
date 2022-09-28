@@ -6,7 +6,14 @@
 3- floor(floor(A/B)/C) = floor(A/(B*C))
 4- ceil(ceil(A/B)/C) = ceil(A/(B*C))
 5- If x+y is prime, either (x=y=1) or (x and y have different parity)
+6- First multiple of `x >= L`: `ceil(L/x)*x`
 ```
+
+### Finding primes in `[L;R]`: find primes until `sqrt(R)` : mark as sieve
+Note that `x \in [L;R]` is prime iff it is not divisible by any prime `p <= sqrt(R)`.
+- Find all primes smaller than `sqrt(R)`
+- For each found prime, mark elements inside such range divisible by it
+  - Harmonic series, `O(NlogN)`
 
 ### Arithmetic progressions with same sum
 Between perfect squares X^2 and (X+1)^2, intervals [X^2;X^2+X] and [X^2+X+1;(X+1)^2-1] have the same sum. First interval w/ size X+1 and second w/ size X. 
@@ -61,6 +68,32 @@ If `gcd(A_0, A_1, ... A_n)=d`, then there is a solution for
 d = x_0 * A_0 + x_1 * A_1 + ... + x_n * A_n
 ```
 where `d` is the smallest positive integer of this form
+
+### Chinese Remainder Theorem
+
+Given a systems of modular equations, find a solution.
+Solution is of the form `A (MOD M)`.
+That is, `X = M * k + A`, for any integer `k`.
+
+Input can be of the form:
+```
+X = A_0 (MOD M_0)
+X = A_1 (MOD M_1)
+...
+X = A_N (MOD M_N)
+```
+
+Or given as integer line equations:
+```
+X = M_0 * x_0 + A_0
+X = M_1 * x_1 + A_1
+...
+X = M_N * x_N + A_N
+```
+Constraints on `x_i` will be constraints on `k`.
+Eg, if `x_i >= 1`, `N >= M_0 + A_0`; implying that there exists a `k_min` s.t. `k >= k_min` needs to happen.
+
+Check: https://codeforces.com/gym/101472/problem/H
 
 ## Permutations
 

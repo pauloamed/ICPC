@@ -8,6 +8,19 @@ Cycle detection: find a cycle of length `L` in `O(n)`, use this cycle `K/L` time
 
 If there are multiple queries, binary lifting might be better. If there are updates, binary lifting might have a drawback since it's idea is to be a precomputed structure.
 
+### Is list of degrees graphical (exists a graph w/ such degrees?)
+**Erdos Galai**: `O(N)` but only predicate
+Conditions:
+- Sum of degrees is even
+- For every `k` in `[1;N]` it holds that `SUM_i_1_K(d_i) <= k * (k - 1) + SUM_K+1_N(min(d_i, k)`
+
+**Havel-Haikimi**: `O(NlogN)` but builds answer
+- Recursive approach
+- Given a list of degrees sorted non-increasing
+ - Take the 0th degree and match it with the `1 ... d_0` other elements (other top degrees)
+ - Decrease the degrees of used nodes by 1. Resort. Recurse.
+ - Base case: is feasible iff entry is list of 0 degrees. No negative degree is allowed.
+
 ### Trees: fixing the minimum distance of 2 nodes
 It is given a tree, you choose a pair of nodes and set their distance `D` as the minimum distance.  
 The other pairs which distance is `<= D` must follow:
@@ -34,6 +47,12 @@ Note that depths will only decrease in the process. Also, subtrees have their ro
 In the current root, query the deepest node. Mark all nodes in the path from the root to it (use `in` and `out` for guiding). For each newly marked node, search for unmarked adjacent nodes. Solve each of these: subtract the current (query the segtree) depth from it in order to simulate it as the root.
   
 Check: https://codeforces.com/gym/101512/problem/F
+
+### Trees: Rerooting
+
+Check: https://codeforces.com/gym/102433/problem/A  
+Check: https://codeforces.com/gym/101472/problem/I  
+Check: https://codeforces.com/gym/102134/problem/E  
 
 ### Number of spanning trees of a graph in `O(N^3)`
 Kirchhoff theorem states that the number of spanning trees of a graph (allows multiple edges) is equal to the determinant of any submatrix of the laplacian matrix of such graph.  

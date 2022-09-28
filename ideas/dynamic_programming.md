@@ -44,7 +44,14 @@ Use bitmasks: `dp[i][mask]`: at layer `i` used `mask` from this layer
 `dp[i][mask]:` solved `i` first positions of the permutation and used `mask&j=1` elements.
 
 ### Knapsack with value_i=1: biggest subset with bounded cost
-DP where you maintain `A[x]: minimum cost of using x elements` and iterate through elements, minimizing `A[x]` when possible
+DP where you maintain `best[x]: minimum cost of using x elements` and iterate through elements, minimizing `best[x]` when possible
+
+#### Biggest set of non-intersecting intervals : Cost of a set: r_endpoint
+We want to build the biggest set of intervals that dont intersect with each other. The minimal cost of a set of size `i` here (`best[i]`) is not a cost per se, but the greatest `r_endpoint` in the best case of a set of size `i`. Such best case has `r_endpoint` minimal.
+  
+By keeping the best case, we can try to match an interval `[l;r]` to each `i` in `best[]` and try to update (minimize) `best` in some entries. Since it is the best case, if it does not fit, it wouldn't fit in any other case.
+  
+Check: https://codeforces.com/gym/101519/problem/I  
 
 ### Game: Random vs. Greedy strategy / Black vs. white balls
 Two players take elements from an array; one follows a greedy strategy and other a random. Use dynamic programming for computing `dp[i][j]: probability of j-th element be taken by first player given that i elements are laid`
@@ -72,14 +79,18 @@ For instance, if we are computing the number of paths of size `k` that don't use
 - `g(x) = Adj_matrix * x`: creating **all** paths, some might fail restrictions
 - `h(x) = Diag - Id`: creating 2-sized paths that use that goes forth and back at the same edge
 
-### DPs w/ transitions in timestamps (and different query/updt timestamps)
-Let's say we are dealing w/ a DP in which a transition `f(i) = ...f(j)...` has a time to be processed.  
-This yields a line sweep algorithm on the timestamps of these transitions and probably a **successive approximation** approach.  
-  
+### DPs w/ different query/updt timestamps
+A state can have one or more transitions to be processed in a line sweep. If it has more than one, each new transtion may (or not) update the current value of the state. This yields a successive approaximation approach.
+
 If a transition has a time for querying and another for updating, one needs to keep these latent updates and only publish them in the appropriate moment. That is, if a transition `x` has `query_time_x=10` and `update_time_x=15` and another transition `y` has `query_time_y=11` and `update_time_y=13`, transition `y` must not access updates from transition `x`.  
-One way of solving this is keeping in a priority queue sorted by time the transitions to be published. Once we reach a `query_time` that is able to access the top transition from this pq, we may publish it.
   
-Check: https://codeforces.com/gym/101615/problem/H
+One way of solving this is keeping in a priority queue sorted by time the transitions to be published. 
+Once we reach a `query_time` that is able to access the top transition from this pq, we may publish it.  
+  
+Also, the usual line-sweep approach where we add at `v[t]` all events that happen in time `t`. There will be 2 event types: update and query.
+  
+Check: https://codeforces.com/gym/101615/problem/H  
+Check: https://codeforces.com/gym/100819/problem/S
 
 ### Chance of getting to accepted state using optimal strategy, maximizing probability on mid states (greedy)
 I find these problems kinda tricky because the base state of the recursion may be a state with a built structure (the accepted state).
@@ -90,15 +101,22 @@ I find these problems kinda tricky because the base state of the recursion may b
 Check: https://codeforces.com/contest/678/problem/E  
 Check: https://codeforces.com/gym/100625/problem/B  
 
-## Optimization
-
-### Maximum independent set, mapping sets to `x` and taking it w/ `y` if `x<y`
-For each `i` in `[1;N]`, keep `best[i]: ` smallest `x` s.t. a set of `i` items is mapped to `x`  
+### Maximum partition size of a submask into good masks : Maximum chain of good masks
+Suppose that there is a predicate over masks indicanting whether they are good.
+The mask with all elements is guaranteed to be good and the union of two good sets is also good.
   
-Check: https://codeforces.com/gym/101519/problem/I  
-Here each element is an interval and we are mapping sets to the smallest right endpoint of the intervals inside this set.  
-Keep building sets from left to right and join `[l;r]` w/ `best[i]`, creating a `i+1`-sized set if possible.  
-`best[]` let us do this greedy approach, trying to match to the smallest point.
+You want to compute the maximum partition size of all elements: maximum number of masks without intersection and with union equal to all elements.
+Note that this task e equivalent to computing the maximum chain size of good masks if one is submask of other.
+  
+A naive 3^N algorithm is possible but a N2^N is also feasible if we look at the chain idea:
+- think of building the masks with all elements in a bottom-up fashion
+- for each mask, it can be reached be a `O(N)` other masks if we deactivate 1 bit from it (edges)
+- this is like a graph problem with multiple sources and one target and you want to maximize the number of good vertices we go through
+- `dp[mask]:` maximum number of good nodes you passed until reaching `mask`
+  
+Check: https://codeforces.com/gym/101666/problem/G
+  
+## Optimization
 
 ### Transition looks at an interval (range query : pull dp) / Element is looked by range (range update : push dp)
 Approach solving the transitions using a RMQ/segment query structure.  
@@ -111,6 +129,9 @@ Check: https://codeforces.com/contest/985/problem/E
 Can be expressed in term of matrixes. Matrix exponentiation is associative, what enables us to solve a linear DP using:
 - Segtree (check segtree page), BIT
 - Matrix exponentation
+A polynomial approach is also feasible:
+- Divide and conquer on FFT
+- Exponentiation by squaring (if the a (transition) polynomial is recurrent)
 
 ### Matrix and tensor exponentiation
 Let's say we want to compute the number of paths of size `k` on a graph of size `N`. This can be solved by exponentiating `Adj_matrix`.  

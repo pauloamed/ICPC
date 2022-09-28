@@ -57,32 +57,8 @@ You can do this since they only need to be added once into the queue given that 
 Check: https://codeforces.com/contest/1662/problem/F  
 Check: https://codeforces.com/contest/59/problem/E
 
-#### Dijkstra complexity
-Dijkstra complexity can be analyzed using two operations:
-- `D:decrease-key`: update `dist[x]` for a node `x`
-  - `D` occurs at most `O(m)` times, since each visited edge may update a cost 
-- `E:extract-min`: get `x` with min `dist[x]`
-  - `E` occurs `O(n)` times, since we are solving one node each iteration
-  
-Using sets/binary heaps with lazy delete/segtree: `cost(D) = cost(E) = log(n)`. Resulting in `(m+n)*log(n) = mlog(n)`  
-Using naive list: `cost(D) = O(1)` and `cost(E)=O(n)`. Resulting in `O(m*1+n*n)=O(n*n)`  
-
-Thus, if `m > n*n / log(n)`, it will be better to use Dijkstra with naive list.
-
-#### Dijkstra with buckets `O(N*K+E)`, `K`: max edge weight (`0-K` BFS) (Dial's algorithm)
-Suppose that our graph has edge weights at most `K` and that we are running a BFS from `src`.  
-When visiting a node `v` with distance `d[v]` from `src`, all other nodes `x` in the queue will have `d[x] <= d[v] + K`, since `K` is the max distance.
-Because of this, we only need to keep and "horizon" of the `K` next layers in such graph.  
-While using a circular vector of queues of size `K+1`, we can a BFS in `O(N*K+E)`: for each node, we may need to find the next valid queue in `O(K)`.
-
-This works like a Dijkstra but we use an array of queues for sorting and also we don't need to sort inside the same queue.
-
-#### Real-weighted edges on BFS
-Suppose that our graph has edge weights in a **real** range `[1;K)`, Dijkstra is too slow but `K` is small. 
-First, for using BFS instead of Dijkstra, we need something like Dial's algorithm. Secondly, we need to know to which bucket assign vertex distance. Note that inside the same bucket, in order to keep Dial's assympotitcs, vertices can't be sorted i.e. their order must not matter.
-  
-We thus can put all vertices `x` with same `floor(dist[x])` together since every weight is at least `1`.
-Also, we can then solve `[A;K*A)` if we index/cluster using `floor(d[x]/A)`.  
+#### Minimum coins problem (allowing negative edges)
+Check: https://codeforces.com/gym/101512/problem/B
 
 #### (Irreplaceable) Edges in shortest path from `s` to `t`
 First, run a Dijkstra from `s` and other from `t`, which will compute, for each node `x`, its minimum distance to `s` (`d_s[x]`) and to `t` (`d_t[x]`).  
@@ -111,12 +87,6 @@ Check: https://codeforces.com/gym/102006/problem/E
 Check: https://atcoder.jp/contests/abc245/tasks/abc245_g  
 Check: https://www.hackerearth.com/challenges/competitive/september-clash-15/algorithm/dangerous-dungeon/description/  
 
-
-#### Edges with timestamps
-If it is the case that an edge will only be avaiable at a specific timestamp, a sort of line sweep on the edges can be performed.
-[TODO]
-Check: https://codeforces.com/gym/101615/problem/H
-
 #### Negative edges - Potential
 Graph has negative edges but we want to use Dijkstra.  
   
@@ -141,7 +111,8 @@ A potential is valid iff for every edge `u->v`, `w(u->v) + p(u) - p(v) >= 0`.
 Check: https://atcoder.jp/contests/abc237/tasks/abc237_e
 
 #### SPFA - Fast Bellmanford
-Some optimizations can be done by pushing front instead of only back (use a deque).
+Some optimizations can be done by pushing front instead of only back (use a deque).  
+Random shuffle edges.
 
 ##### mcfx
 If it is the `k`-th time you are adding a node to the queue, add it at the front. `k` should be in `[2;sqrt(V)]`. Once `time` reaches `k`, it reset `time=0` and `k` may be recomputed.
@@ -155,3 +126,41 @@ dist(y) < dist(front) / 2 (with mult tolerance)
 ```
 Check: https://atcoder.jp/contests/abc237/submissions/33906552
 	
+## Dijkstra Optimizations
+
+#### Dijkstra complexity
+Dijkstra complexity can be analyzed using two operations:
+- `D:decrease-key`: update `dist[x]` for a node `x`
+  - `D` occurs at most `O(m)` times, since each visited edge may update a cost 
+- `E:extract-min`: get `x` with min `dist[x]`
+  - `E` occurs `O(n)` times, since we are solving one node each iteration
+  
+Using sets/binary heaps with lazy delete/segtree: `cost(D) = cost(E) = log(n)`. Resulting in `(m+n)*log(n) = mlog(n)`  
+Using naive list: `cost(D) = O(1)` and `cost(E)=O(n)`. Resulting in `O(m*1+n*n)=O(n*n)`  
+
+#### If graph is complete `m > n * n / log(n)`
+Use disjktra with naive list
+
+#### If edge weights `\in [0;K]` : Dijkstra with buckets `O(N*K+E)` : Dial's algorithm
+Suppose that our graph has edge weights at most `K` and that we are running a BFS from `src`.  
+When visiting a node `v` with distance `d[v]` from `src`, all other nodes `x` in the queue will have `d[x] <= d[v] + K`, since `K` is the max distance.
+Because of this, we only need to keep and "horizon" of the `K` next layers in such graph.  
+While using a circular vector of queues of size `K+1`, we can a BFS in `O(N*K+E)`: for each node, we may need to find the next valid queue in `O(K)`.
+
+This works like a Dijkstra but we use an array of queues for sorting and also we don't need to sort inside the same queue.
+
+#### If edge weights `\in [A;A*K]` : Dijkstra with real buckets `O(N*K+E)`
+Suppose that our graph has edge weights in a **real** range `[1;K)`, Dijkstra is too slow but `K` is small. 
+First, for using BFS instead of Dijkstra, we need something like Dial's algorithm. Secondly, we need to know to which bucket assign vertex distance. Note that inside the same bucket, in order to keep Dial's assympotitcs, vertices can't be sorted i.e. their order must not matter.
+  
+We thus can put all vertices `x` with same `floor(dist[x])` together since every weight is at least `1`.
+Also, we can then solve `[A;K*A)` if we index/cluster using `floor(d[x]/A)`.
+
+#### If edge weights `\in S`, and `|S| = K` : `O(N*K+E)`
+For each edge value `w`, keep a queue `q_w`.
+If using a edge with cost `w` to update a vertex, add that new entry to `q_w`. 
+    
+`q_w`s will be always sorted inside, so this is querying is like online merging `K` sorted lists.
+ 
+  
+

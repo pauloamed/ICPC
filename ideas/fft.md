@@ -22,7 +22,7 @@ Want to know if a binary pattern `P` fits a binary text `T`. Reverse text ... TO
 Check: Laboratorio-maratona
 Check: https://codeforces.com/contest/528/problem/D
 
-### Solving `O(n^2)`DP using FFT in `O(n*log^2)`
+### Solving `O(n^2)`DP using FFT in `O(n*log^2)` : Divide and Conquer
 Given is a functional equation of the form `f(i,j) = cx_i * f(i-1,j-c) + dx_i * f(i-1,j-d) + ...` where `c,d,...` are non-negative integers. This can be solved using divide-and-conquer on FFT.  
 
 See `f(i-1,...)` and the transitions at `i` as polynomials. Computing `f(i,...)` is thus polynomial multiplication . 
@@ -34,8 +34,14 @@ Finally, since polynomial multiplication is associative, divide-and-conquer can 
 Note that polynomial multiplication is associative but **not commutative**. Don't swap positions.
 
 Check: https://atcoder.jp/contests/abc247/tasks/abc247_h  
-Check: https://codeforces.com/problemset/problem/1613/F
+Check: https://codeforces.com/problemset/problem/1613/F  
 Check: https://codeforces.com/contest/1251/problem/F
+
+#### If all polynomials are the same, exponentiate the base case : Exponentiation by squaring
+You know `f^1`. Create a list `L` s.t. `L[i] = f^i`. Note that `L[i+1] = conv(L[i], L[i])`.  
+Solve query `Q` by looking at binary representation of `Q` and using `L[i]` if `i` is an active bit.
+
+Check: https://neps.academy/br/exercise/811  
 
 ### Reorder arrays aiminig minimization of dot product
 The minimal dot product between `k` elements of 2 arrays can be found efficiently for each `k` using FFT.
