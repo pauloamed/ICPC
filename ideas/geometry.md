@@ -91,7 +91,7 @@ Then, A = i + (b/2) - 1
 ```
 
 ### Range of points inside trapezoidal defined by segment `AB` and query point `Q`
-![Ancient Towers. Thanks kobus!](/assets/ancient_towers.png)
+![Ancient Towers. Thanks kobus!](assets/ancient_towers.png)
 
 Note that we can decompose the range into two prefixes if we keep points polar sorted using `A` and `B` as pivots in lists `X` and `Y` respectively.
   

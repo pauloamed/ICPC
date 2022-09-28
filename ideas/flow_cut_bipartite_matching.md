@@ -40,7 +40,7 @@ The **largest anti-chain** (numer of nodes) has the same size as the **minimal c
 The **minimal chain decomposition** is equivalent to the **general path cover**.
 
 
-## Cut
+## Min Cut
 
 ### Cut red/blue starting from unfeasible
 
@@ -88,6 +88,28 @@ Path: `src -> in(i) -> out(j) -> snk` : we are not paiting neither `i` nor `j` b
 Compute the total but incorrect gain: `sum C[][]` and then `ans: tot - mincut`
   
 Check: https://codeforces.com/gym/101484/problem/H
+
+### Max Cut
+
+Note that maximizing `x` is equivalent to minimizing `C - x`, `C > x`. 
+In contexts in which we know exactly how many variables are in the sum being maximized, we can solve it by:
+```
+MAX SUM_i_1_N(x_i) = N*C - MIN SUM_i_1_N(C - x)
+```
+That is, computing the min cost where choices are expressed as `C - x`.
+
+#### Bootfall
+![Just Bootfall. Thanks kobus!](assets/bootfall.png)
+
+Suppose we need to choose, for each `A,B,C,...` 1 position among `N`.
+The same position can be choosen by multiple elements.
+Cut can be applied by creating a path for each `A,B,C,...` to be cutted. 
+If there is a gain for each position, the MaxCut is desired here.
+  
+The original problem adds a cost that can easily be added to the graph formulation: **cost of `C_ab` for the distance** between `i` and `j`. Add `N` edges for each pair of nodes `A_i` and `B_i` with capacity `C_ab`.
+In a cut where `A` is at `i` and `B` at `j`, `abs(i-j)` edges will need to be cut.
+  
+Check: https://codeforces.com/gym/103388/problem/J
 
 ## Bipartite matching
 
