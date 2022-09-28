@@ -62,8 +62,7 @@ i->j and j->i (cap C[i][j])
 ```
   
 Path: `src -> i -> snk` : a node is both blue and red  
-Path: `src -> i -> j -> snk` : a blue node has the same color as a red node  
-Path: `src -> i -> ... -> k -> snk` : a blue node has the same color as ... as a red node  
+Path: `src -> i -> ... -> j -> snk` : nodes `i, ..., j` are both blue and red  
   
 Compute the total but incorrect gain: `sum A + sum B + sum C(i>j)*`.
   
