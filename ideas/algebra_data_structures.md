@@ -15,6 +15,12 @@ Inverse element of element X in a binary operation F w/ identity element I: the 
 If an op. is associative, one can accumulate it.  
 **Example:** instead of inserting `N` batches of size `1` of balls, one can insert `1` batch of `N` balls
 
+#### Associative operations
+- Sum, gcd, max, min
+- Shortest Path
+- Matrix multiplication
+  - Linear recurrences
+
 ### Structures
 
 #### Non-Idempotent Sparse Table
