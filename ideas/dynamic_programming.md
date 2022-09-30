@@ -53,6 +53,33 @@ By keeping the best case, we can try to match an interval `[l;r]` to each `i` in
   
 Check: https://codeforces.com/gym/101519/problem/I  
 
+### `dp[i+j]:` convolution as transition
+A lot of problems deal with something like:
+```
+C[n] = F(G(A[0], B[n]), G(A[1], B[n - 1]), ...,  G(A[i], B[j = n - i])..., G(A[n], B[0]))
+It can be that A=B
+```
+This is a convolution operation and is quite common when `dp[i]`: stuff about set of size `i`. 
+The transition using `A` and `B` means building a new state by merging all sizes combinations between `A` and `B`.
+  
+Computing this transition for each new size `i` in `C` requires `O(min(|B|, i))` operations:
+for each `0 <= j < i`, take `j` elements from `A` and `i-j` from `B`.  
+Doing this for every position is thus `O(|C|*|B|)`.
+  
+If `F` is a summation and `G` is multiplication, this is polynomial multiplication, and can be done in `O((|A|+|B|)log(|A|+|B|))` using FFT.
+  
+### Inplace relaxation vs. Using new array
+Let's say we have an DP array with current values and we will apply a transition in it.
+There is a difference between and:
+- `f[i] = min(f[i], transition(f[j]))`
+- Creating a new array `g` with INF values and applying `g[i] = min(g[i], transition(f[j]))`.
+
+The same right-min-side value is computed in both.
+However, in the first, we are able to ignore it and maintain the previous value of `f`. 
+But in the second, we are enforcing that only values from this new transition can go into `g`.
+  
+For instance, "choosing which elements to take" would use the first, since we can **maintain the best answer by ignoring**, but "choosing the best way to take" would use the second, since we **need to take**, but in the optimal manner.
+
 ### Game: Random vs. Greedy strategy / Black vs. white balls
 Two players take elements from an array; one follows a greedy strategy and other a random. Use dynamic programming for computing `dp[i][j]: probability of j-th element be taken by first player given that i elements are laid`
 
@@ -117,6 +144,17 @@ A naive 3^N algorithm is possible but a N2^N is also feasible if we look at the 
 Check: https://codeforces.com/gym/101666/problem/G
   
 ## Optimization
+
+### Avoid doing transitions on Big Child in tree
+Let's say a transition costs `O(f(sz(T)))` but initialization of `DP` can process ONE transition in `O(sz(T)))`.
+  
+If `f(x) = n * x`, for instance, it is efficient to, instead of processing the big child, 
+initialize the `DP` for a node with value from the big child over the cost of `O(sz(T)))`.
+  
+When `f(x) = n * x`, this leads to an optimization from `O(n^3)` to `O(n^2)`.
+  
+Check: https://codeforces.com/contest/815/problem/C    
+Check: https://codeforces.com/gym/101964/problem/D
 
 ### Transition looks at an interval (range query : pull dp) / Element is looked by range (range update : push dp)
 Approach solving the transitions using a RMQ/segment query structure.  
