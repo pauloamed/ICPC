@@ -53,6 +53,12 @@ By keeping the best case, we can try to match an interval `[l;r]` to each `i` in
   
 Check: https://codeforces.com/gym/101519/problem/I  
 
+### Try to compress stuff with similar characteristic to fit the state description
+Let's say we can use edges `(x,y)` to join different but all edges have the same cost. 
+  
+Can we compress the info "edge between `x` and `y`" to only the number of edges?  
+How does using an edge affects the function in question to be computed? Does the number of used edges is enough to computed `F` correctly?
+
 ### `dp[i+j]:` convolution as transition
 A lot of problems deal with something like:
 ```
