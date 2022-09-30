@@ -9,6 +9,9 @@ P is sufficient and necessary for Q, (P => Q) and (Q => P)
 
 ## General
 
+### Maximum size with bounded cost
+Can also be solved finding minimum cost for each size and taking the greatest size with cost inside the bounds.
+
 ### Median on sub-arrays `[TODO]`
 https://codeforces.com/blog/entry/18879?#comment-238126
 
