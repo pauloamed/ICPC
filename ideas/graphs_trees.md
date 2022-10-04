@@ -48,6 +48,20 @@ In the current root, query the deepest node. Mark all nodes in the path from the
   
 Check: https://codeforces.com/gym/101512/problem/F
 
+### Online block-cut trees
+Computing block-cut trees can be done offline (using `lowpt`) or online, using DSU.
+  
+Using DSU, the equivalency relation is "belonging to the same biconn component".
+
+First, one needs to compute a spanning tree `T` on the graph.
+An edge `(x,y)` merging two disjoint biconn components will unite all vertices from `x` to `lca(x,y)` and all from `y` to `lca(x,y)`.
+  
+It helps to compute beforehand all depths in the spanning tree `T` and use these to guide the lca algo. Note that we want to reach `depth[dsu.find(lca(x,y))]`.
+  
+Briges are tree edges `(x,y)` of `T` in which `dsu.find(x) != dsu.find(y)`.
+  
+Check: https://codeforces.com/gym/103934/problem/J
+
 ### Trees: Rerooting
 
 Check: https://codeforces.com/gym/102433/problem/A  
