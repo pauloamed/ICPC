@@ -27,10 +27,16 @@ By `(1)`, `GCD(X+A_i,X+A_j)=GCD(X+A_i, A_i-A_j)` and now by associativity and id
 ### Number of pairs `(x,y)` in `[L;R]` s.t. `gcd(x,y)=k`
 This can be done using inclusion-exclusion.  
 Note that:
-- Number of pairs `(x,y)` s.t. `gcd(x,y)` is a **multiple** can be computed using the number of multiples of `k` in `[L;R]`
-  - `mult=` Number of multiples until `X` equals to `X/k`
-  - Number of pairs s.t. gcd is a **multiple** of `k` equals to `mult*mult`
-- Number of pairs `(x,y)` s.t. `gcd(x,y)` is **exactly** `k` equals to pairs `(x,y)` ... TODO ai depois subtrai
+- Number of pairs `(x,y)` s.t. `gcd(x,y)` is a **multiple ok `k`** can be computed using the number of multiples of `k` in `[L;R]`
+  - `mult(A, k):` Number of multiples of `k` until `A` `= A/k`
+  - `mult(L,R,k) = mult(R,k) - mult(L-1,k)`
+  - Number of pairs s.t. gcd is a **multiple of `k`** equals to `mult(L,R,k)*mult(L,R,k)`
+- Number of pairs `(x,y)` s.t. `gcd(x,y)` is **exactly** `k` equals
+  - pairs which `gcd = k`: pairs that are multiple of `k` but not exactly `2k`, `3k`, `4k`
+  - `exact[i]`: number of pairs which gcd is exactly `i`
+  - Go from `R` to `L`, computing `exact[]`, and, when at `i`, `exact[]` will be already computed for all multiples of `i`
+
+Check: https://atcoder.jp/contests/abc206/tasks/abc206_e
 
 ### `A ^ (B ^ C) % P` (`P` prime)
 We can solve `(X^Y) % P` using fast expo (1).
