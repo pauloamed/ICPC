@@ -24,13 +24,36 @@ Suppose that our pattern has two occurrences of the same value `y`, the second o
 Check: https://szkopul.edu.pl/problemset/problem/6b-q_dPI_KRHD3VArapVq7EP/site/?key=statement  
 Check: http://poj.org/problem?id=3167  
 
-### KMP capabilities
-**TODO**
-Given two strings, KMP can solve in `O(n+m)`:  
-1- biggest prefix from A that ends in `B[i]`  
-2- biggest suffix from A that starts in `B[i]`: if a suffix `S` starts in `T[i]`, `S` and `S` suffixes end in `T[i]+len(S)-1`  
-3- biggest substring between A and B  
-4- biggest possibly rotated substring between A and B
+### Size of greatest prefix of A that ends in B[i] : `O(N+M)`
+- `A = yabc`, `B = xabc`
+- Create `A#B: yabc#xabc`
+- `pi[j], j >= len(A) + 1` will keep the graetest prefix from `A#B` (prefix from `A`) that ends in `j` (`j-len(A)-1`-th position from `B`).
+- `#` acts as a separator, not allowing info from `A` get into sufix ending at `B[]`
+
+### Size of greatest suffix from A that starts in B[i] : `O(N+M)`
+- `A = yabc`, `B = xabc`
+- Create `rev(A)#rev(B) : cbay#cbax`
+- `pi[j]`, `j = len(A)+1+i`, is the size of the greatest prefix from `rev(A)` (reversed suffix from `A`) that ends at `j` (at `i` in `rev(B)`)
+- If something ENDS at `i` in a reversed string, it STARTS at `N-i` at the original strings
+
+### Greatest common substring between `A` and `B` : `O(N(N+M))`
+- `A = xabcd`, `B = xabc`
+- Create `A#B: xabcd#xabc`
+- Assume that we are solving the problem: greatest prefix from `A` that happens in `B`. Use "size of greatest prefix of `A` that ends in `B[i]` to solve it.
+- Iterate through all `A[i:N-1]` suffixes from `A`: any substring can be seen as a prefix from a suffix. Solve the greatest prefix problem.
+
+### Greatest possibly rotated substring between `A` and `B`
+- `A = xcdabx`, `B = oabcdo`
+- Let's say that the base form of the substring (to be found) is `abcd`. In `A`, it is splitted in `cd` and `ab`.
+- We will explore all `N` splitting of `A` into preffixes and sufixes. 
+ - Check the `xcd : abx` split.
+ - Run "Size of greatest prefix of A that ends in B[i] : `O(N+M)`" between `abx` and `B=oabcdo`, saving the prefix function of `B` in `P0`
+ - Run "Size of greatest suffix from A that starts in B[i] : `O(N+M)`" between `xcd` and `B=oabcdo`, saving the prefix function of `B` in `P1`
+ - For every pair `i,i+1` positions in `B`
+  - `P0[i]` preffix from `abx` that ends at `i`
+  - `P1[i+1]` sufix from `xcd` that starts at `i+1`
+  - `P0[i]+P1[i+1]` greatest rotated string that contains `i;i+1`
+
 
 ### Put automaton on segtree
 Read `segtree.md`.
