@@ -3,7 +3,41 @@
 - Segtree is divide and conquer with memoization and update.  
 Check: https://neps.academy/br/exercise/1107
 
-### Max/min/coprime in range
+## D&C Optimization
+**Prerequisite: Monge condition**
+```
+For each (a < b <= c < d),
+f(a, c) + f(b, d) <= f(a, d) + f(b, c) [Convex monge]
+f(a, c) + f(b, d) >= f(a, d) + f(b, c) [Concave monge]
+```
+**Suppose we are evaluating**
+```
+f(i) = min_(j<=i) (cost(j, i)) (can also be max)
+```
+Lets call `A_i` the best `j` for `f(i)`.
+It can be that `A_i` is monotone increasing (decreasing for max).
+That is, if `j > i`, `A_j >= A_i`.
+This can be noted by:
+- printing the points, intuiton, pattern
+- Checking that `cost(i,j)` is convex monge (if max, concave monge)
+  
+Having such propery allows us to enhance a `O(N^2)` evaluation into a `O(NlogN)` evaluation. 
+  
+This is done by using D&C: find `A_i` for `i=mid` than recurse on each half. The search points `A_k` for the left part are all `A_k <= A_i` and for the right part all `A_k >= A_i`. These splits create a partition over the search space, having each point being visited at most `O(logN)` times.
+
+**Note:** it can be that `cost(i,j) = C(i,j) + f(i)`. If `C()` is convex/concave monge, so it is `cost`.
+
+Examples of problems:
+- Partition array into `K` contiguos sets. Cost of a `[l;r]` set is `C(l,r)` which is monge.
+  - Check: https://www.hackerrank.com/contests/ioi-2014-practice-contest-2/challenges/guardians-lunatics-ioi14
+  - Check: https://www.codechef.com/problems/CHEFAOR
+  - Check: https://acm.timus.ru/problem.aspx?space=1&num=1167
+- Find best range `[l;r]` for maximizing `f(l,r)` knowing that `best_l()` for `r` is monotone decreasing.
+  - Check: https://atcoder.jp/contests/arc067/tasks/arc067_d
+- Find best pair of elements `(a_i, b_j)`, `a_i \in A` and `b_j \in B`, that maximize a function. Best element `b` for `a` is monotone.
+  - Ex.: Maximal rectangle area given list of bottom-left and list of upper-right corners. Check: https://open.kattis.com/problems/money
+
+## Max/min/coprime in range
 
 Max, min and coprimes work as segments partitioners. I mean:
 - if `a[i]` is max/min in `[l;r]`, only segments not including `i` will have a different max/min value. 
@@ -13,7 +47,7 @@ Max, min and coprimes work as segments partitioners. I mean:
 Check: https://codeforces.com/contest/1156/problem/E
 Check: https://codeforces.com/gym/101623/problem/F
 
-### Count good subarrays `(L, R1, R2)` inside query `[Lq;Rq]`
+## Count good subarrays `(L, R1, R2)` inside query `[Lq;Rq]`
 Count good subarrays inside `[L;R]` given that:
 - it is given a list of good subarrays in the format `(L, R1, R2)` s.t. every subarray `[L;r]`, `R1 <= r <= R2` is good
 - a subarray of a good subarray is also good
@@ -33,7 +67,7 @@ Solve this as follows:
   
 Check: https://codeforces.com/gym/101991/problem/G
 
-### Find minimal good interval containing query `[Lq;Rq]`, good intervals are decomposable
+## Find minimal good interval containing query `[Lq;Rq]`, good intervals are decomposable
 
 There are good intervals w/ the following properties:
 - if two good intervals have a intersection, their union is also a good interval. 
@@ -80,7 +114,7 @@ Thus, for a query `[Lq;Rq]` being processed in `[L;R]`:
   
 Check: https://codeforces.com/gym/101620/problem/I
 
-### CDQ
+## CDQ
 Divide and Conquer CDQ; que é na vdd D&C com um merge ordenando ponto e fazendo query/update on the fly; que é na vdd D&C offline;
 .
 Tuto: https://robert1003.github.io/2020/01/31/cdq-divide-and-conquer.html
