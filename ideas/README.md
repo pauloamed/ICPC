@@ -84,9 +84,6 @@ What can be done is:
 3. Delete the `small` set elements from `all`. Can be done with lazy deleting.
 4. Solve `large`. Use `all` as `large`, orders are preserved after deleting in (3).
  
-### Query interval with different orders
-Check: https://codeforces.com/gym/103640/problem/A
-
 ### D-query offline
 D-query: number of different elements in a given interval
 Sort queries by `r` (1), keep a structure for querying the sum on a range on a binary vector (2) and, for each interval, keep only (3) the greatest position `<= r` active in such vector(4).
