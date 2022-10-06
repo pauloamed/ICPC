@@ -115,31 +115,31 @@ Thus, for a query `[Lq;Rq]` being processed in `[L;R]`:
 Check: https://codeforces.com/gym/101620/problem/I
 
 ## CDQ
-Divide and Conquer CDQ; que é na vdd D&C com um merge ordenando ponto e fazendo query/update on the fly; que é na vdd D&C offline;
-.
-Tuto: https://robert1003.github.io/2020/01/31/cdq-divide-and-conquer.html
-.
-O problema que ela resolve é, dada uma lista de pontos 3d, dizer, para cada ponto, quantos pontos esse domina.
-A gnt diz que um ponto A domina outro ponto B sse todas coordenadas de A são maiores que (ou iguais) às de B.
-.
-A ideia p resolver esse problema modelo eh ordenar os pontos de modo que, se ponto A domina ponto B, index(A) < index(B).
-Então, para cada merge com [l;m] e [m+1;r], vamos calcular a interferência dos pontos em [m+1;r] que dominam os pontos em [l;m].
-A ordenação garante que não existe relação de dominância na ordem contrária.
-.
-Dado que temos os subconjuntos [l;m] e [m+1;r] e que a relação de dominância só acontece da dir pra esq, podemos pensar
-nos pontos de [l;m] como updates e nos de [m+1;r] como queries (queremos saber quantos pontos da esq cada ponto da dir domina).
-.
-Esse subproblema parece com esse mesmo problema de dominância em 2D, que é meio manjado.
-Pra resolver esse, ordenamos os pontos 2D pela primeira coordenada e usamos uma BIT na segunda coordenada.
-A ordem garante que, se um ponto é dominado por mim, ele já foi processado e a BIT permite fazer query em todos valores menores que ou iguais a mim rapidamente.
-Diferentemente, agora, os pontos que fazem queries vem de uma lista e os que fazem update de outra lista (no problema 2D original são a mesma lista).
-E precisamos garantir que, antes de calcular uma query, todos os pontos de update que podem ser dominados pela query foram processados.
-.
-O processar dessas duas listas de forma ordenada nos da (de graça) uma nova lista ordenada. Ou seja, ordenados e processamos as queries e updates num mesmo passo.
-Parece o MergeSort.
-.
-Essa técnica é legal, mas parece ser meio inútil pq podemos usar uma BIT2D comprimida. Ambas precisam ser usadas offline.
-.
-Essa técnica é legal pra problema com query/update em matriz porque usamos o tempo dos eventos (query ou update) como uma dimensão, o que garante o processamento de todos eventos relevantes e anteriores ao atual.
-.
-Q*log(Q)*log(dim)
+Divide and Conquer CDQ; which is actually D&C in which merging also orders points and doing query/update on the fly; which is actually D&C offline;
+  
+The problem it solves is, given a list of 3d points, say, for each point, how many points that point dominates.
+We say that a point A dominates another point B if all coordinates of A are greater (or equal) to those of B.
+  
+The idea is to order the points so that, if point `A` dominates point `B`, `index(A) < index(B)`.
+Then, for each merge with `[l;m]` and `[m+1;r]`, we will compute the interference of the points in `[m+1;r]` that dominate the points in `[l;m]`.
+The ordering ensures that there is no dominance relation in the opposite order.
+  
+Given that we have the subsets `[l;m]` and `[m+1;r]` and that the dominance relation only occurs from right to left, we can think of
+the points of `[l;m]` as updates and those of `[m+1;r]` as queries (we want to know how many left points each right point dominates).
+  
+This subproblem looks like this same problem of dominance in 2D, which is kind of common.
+To solve this one, we order the 2D points by the first coordinate and use a BIT in the second coordinate.
+The order guarantees that if a point is dominated by me, it has already been processed and the BIT allows querying all values less than or equal to me quickly.
+Differently, now, the points for querying come from one list and the ones for updating come from another list (in the original 2D problem they are the same list).
+And we need to make sure that, before computing a query, all the update points that can be dominated by the query have been processed.
+  
+Processing these two lists in an ordered fashion gives us (for free) a new ordered list. That is, we sorted and processed the queries and updates in the same step.
+It looks like MergeSort.
+  
+This technique is nice, but it seems to be kinda useless because we can use a compressed BIT2D. Both need to be used offline.
+  
+This technique is nice for matrix query/update problems because we use the time of the events (query or update) as a dimension, which guarantees the processing of all relevant events prior to the current one.
+  
+Cost: `Q*log(Q)*log(dim)`
+
+Check: https://robert1003.github.io/2020/01/31/cdq-divide-and-conquer.html
