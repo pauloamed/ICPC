@@ -1,7 +1,7 @@
 # Divide and Conquer
 
-- Segtree is divide and conquer with memoization and update.
-
+- Segtree is divide and conquer with memoization and update.  
+Check: https://neps.academy/br/exercise/1107
 
 ### Max/min/coprime in range
 
