@@ -28,7 +28,7 @@ How to keep this info (point update, don't know how to handle range update):
   - top-down: if `X` is maximal, unset it as maximal and set `l(X)` and `r(X)` as maximals
   - bottom-up: if `pred(X)`, it must be that `pred(l(X))` and `pred(r(X))` and that `l(X)` and `r(X)` are maximals. Unset them as maximals and set `X` as maximal. 
 
-### "Best" interval after some updates for easily mergeble intervals
+### "Best" interval after some updates for associative function
 A node `X` with interval `[l;r]` can keep 3 infos: the best interval, preffix and suffix totally inside it.
 When merging `X` to `Y` (`X` left and `Y` right) into `Z`:  
 - `Z.best = max(X.best, Y.best, f(X.suffix + Y.prefix))`
