@@ -9,6 +9,31 @@ P is sufficient and necessary for Q, (P => Q) and (Q => P)
 
 ## General
 
+### System of Difference Constraints
+Given is a list of **inequalities** in the form:
+```
+x_i - y_i <= T_i
+x_i, y_i <= N
+```
+That is a system of inequalities (a positive variable and a negative `<=` a threshold) of differences between 2 of `N` variables.  
+Satisfying these constraints can be done by using the shortest path algorithm:
+- For each inequality, create an edge from the negative variable `y_i` to the positive `x_i` with cost `T_i`
+- Create a phantom node `0` and create edges w/ cost `0` from this node to every other node
+- Run shortest path w/ negative edges. If there is a negative cycle, it is not feasible
+
+**Note**: equality can be represented by 2 inequalities
+
+#### Solving *The army of Thutmose III*
+Ww have `M` intervals `[l;r]` and we want to know if we can turn some numers `x` on in order that
+- The number of active elements inside each interval is at least 1
+- The number of active elements inside each interval is at most `K`
+
+For this:
+- The number of elements inside a interval can be represented as a difference in the prefix sum vector
+- Defining that a position has at most one element can be represented as a difference between variable. The same goes for "not negative".
+- Solve using the system of difference constraints
+  
+Check: https://codeforces.com/gym/103934/problem/A
 ### Maximum size with bounded cost
 Can also be solved finding minimum cost for each size and taking the greatest size with cost inside the bounds.
 
@@ -118,11 +143,18 @@ Check: https://codeforces.com/gym/102433/problem/J
 
 ### Reduce the number of variables in conditions (invariants)
 **Building a sequence**  
-Let's say we have the following condition `a_j - a_i < v(t_j - t_i)` for building a sequence.  
-This can be manipulated to `a_j - a_i < vt_j - vt_i` and further to `a_j - vt_j < a_i - vt_i`. 
-If we define `x_i = a_i - vt_i`, we can reduce this to `x_j < x_i`.
-
-If there are multiple conditions `AND`, it is feasible to reduce these to `(x_i < x_j, y_i < y_j, ...)`  and solve this as the longest increasing subsequence of tuples.
+Let's say we have the following condition `|a_j - a_i| <= v(t_j - t_i)` for building a sequence.  
+  
+This can be manipulated to `a_j - a_i <= vt_j - vt_i` and further to `a_j - vt_j <= a_i - vt_i`. 
+If we define `x_i = a_i - vt_i`, we can reduce this to `x_j <= x_i`.
+  
+Similarly, this can be manipulated to `a_i - a_j <= vt_j - vt_i` and further to `a_j + vt_j <= a_i + vt_i`. 
+If we define `y_i = a_i + vt_i`, we can reduce this to `y_j <= y_i`.
+  
+These two (`x_i` and `y_i`) were possible since `|a-b| <= T iff a-b <= T AND b-a <= T`. 
+We are now trying to build the longest (non-strictly) increasing subsequence following `x_i <= x_j AND y_i <= y_j`.
+  
+If there are multiple conditions `AND`, it is feasible to reduce these to `(x_i <= x_j, y_i <= y_j, ...)`  and solve this as the longest increasing subsequence of tuples.
 
 Check: https://codeforces.com/contest/1662/problem/L
 
