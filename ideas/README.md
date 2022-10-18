@@ -221,7 +221,10 @@ Miminals and maximals will occur only in activation and deactivation points.
   
 Check: https://codeforces.com/gym/102433/problem/J
 
-### Reduce the number of variables in conditions (invariants)
+### Manipulating conditions w/ multiple variables, creating invariants
+
+Check: https://oj.uz/problem/view/JOI18_art
+  
 **Building a sequence**  
 Let's say we have the following condition `|a_j - a_i| <= v(t_j - t_i)` for building a sequence.  
   
