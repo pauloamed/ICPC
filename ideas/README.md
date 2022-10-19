@@ -9,6 +9,23 @@ P is sufficient and necessary for Q, (P => Q) and (Q => P)
 
 ## General
 
+### Evaluation of sums of sliding window on ordered list
+Let's say we are sliding a window of size `K` through an orderd list of integers.  
+If we create a virtual list of the sum for each sliding window,
+- it will be a sorted array
+- the difference between the `i`-th and `i+1`-th element is `V[k+i] - V[i]`
+
+#### Solving IOI16 - Molecules
+https://oj.uz/problem/view/IOI16_molecules  
+
+**1:**
+Observe the answer: let's say the answers has size `k`.
+Then, if there is an answer of size `k`, in the ordered list of values, it must be that `sum(0:k-1) <= R` and that `sum(n-k:n-1) >= L`.
+That is, there is an intersection between `[L;R]` and `[sum(0:k-1); sum(n-k:n-1)]`.
+**2:** 
+Also, the points of these virtual list have distance at most `R-L`.
+Thus, if we iterate through this list, it must be that at least one of such points are inside `[L;R]`.
+
 ### System of Difference Constraints
 Given is a list of **inequalities** in the form:
 ```
