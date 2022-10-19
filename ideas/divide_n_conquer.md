@@ -31,7 +31,8 @@ Examples of problems:
 - Partition array into `K` contiguos sets. Cost of a `[l;r]` set is `C(l,r)` which is monge.
   - Check: https://www.hackerrank.com/contests/ioi-2014-practice-contest-2/challenges/guardians-lunatics-ioi14
   - Check: https://www.codechef.com/problems/CHEFAOR
-  - Check: https://acm.timus.ru/problem.aspx?space=1&num=1167
+  - Check: https://acm.timus.ru/problem.aspx?space=1&num=1167  
+  - Check: https://oj.uz/problem/view/APIO14_sequence  
 - Find best range `[l;r]` for maximizing `f(l,r)` knowing that `best_l()` for `r` is monotone decreasing.
   - Check: https://atcoder.jp/contests/arc067/tasks/arc067_d
 - Find best pair of elements `(a_i, b_j)`, `a_i \in A` and `b_j \in B`, that maximize a function. Best element `b` for `a` is monotone.
