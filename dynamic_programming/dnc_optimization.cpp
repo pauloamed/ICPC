@@ -24,6 +24,7 @@ void solve(int l, int r, int searchL, int searchR){
     int validR = min(j, searchR);
     pair<int,int> best = {LLONG_MIN, -1LL};
     for(int k = searchL; k <= validR; ++k){
+      // getting first ok position, change if last is needed
       best = max(best, {query(k, j) + get_dp(k - 1), k});
     }
     curr_dp[j] = best.first;
