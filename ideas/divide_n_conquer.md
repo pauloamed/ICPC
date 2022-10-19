@@ -25,7 +25,7 @@ Having such propery allows us to enhance a `O(N^2)` evaluation into a `O(NlogN)`
   
 This is done by using D&C: find `A_i` for `i=mid` than recurse on each half. The search points `A_k` for the left part are all `A_k <= A_i` and for the right part all `A_k >= A_i`. These splits create a partition over the search space, having each point being visited at most `O(logN)` times.
 
-**Note:** it can be that `cost(i,j) = C(i,j) + f(i)`. If `C()` is convex/concave monge, so it is `cost`.
+**Note:** it can be that `cost(l,r) = C(l,r) + f(l)`. If `C()` is convex/concave monge, so it is `cost`.
 
 Examples of problems:
 - Partition array into `K` contiguos sets. Cost of a `[l;r]` set is `C(l,r)` which is monge.
