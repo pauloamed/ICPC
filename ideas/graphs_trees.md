@@ -131,6 +131,9 @@ TODO
 
 # Graphs properties
 
+### Tree: Sum of subtree sizes
+In a tree, the sum of all subtree sizes equal to the sum of all depths.
+
 ### Functional graphs
 Each node has outdegree 1. A connected component contains exactly one cycle (and possibly some chains of nodes leading into the cycle).
 
