@@ -110,6 +110,14 @@ A potential is valid iff for every edge `u->v`, `w(u->v) + p(u) - p(v) >= 0`.
 
 Check: https://atcoder.jp/contests/abc237/tasks/abc237_e
 
+#### `A` red nodes pointing to `B` blue nodes but edge weights are fixed for each blue node
+Let's say we have this problem. The number of edges would be `A*B` (for each red, create an edge to a blue).  
+However, since edge weights `B_i` are fixed for each blue node, we can create a virtual middleware node `V`:  
+- All red nodes point to `V` with edge cost `0`  
+- `V` points to each blue node with edge cost `B_i`  
+  
+Check: https://oj.uz/problem/view/APIO15_skyscraper
+
 #### SPFA - Fast Bellmanford
 Some optimizations can be done by pushing front instead of only back (use a deque).  
 Random shuffle edges.
@@ -141,13 +149,42 @@ Using naive list: `cost(D) = O(1)` and `cost(E)=O(n)`. Resulting in `O(m*1+n*n)=
 #### If graph is complete `m > n * n / log(n)`
 Use disjktra with naive list
 
+#### If edge weights `\in {0, K}` : 0-1 BFS using deque
+Push-front `0`-valued edges and push-back `K`-valued edges in the deque. Push-front for quering. This emulates a priority_queue.
+
 #### If edge weights `\in [0;K]` : Dijkstra with buckets `O(N*K+E)` : Dial's algorithm
-Suppose that our graph has edge weights at most `K` and that we are running a BFS from `src`.  
+Suppose that our graph has edge weights at most `K` and that we are running a shortest-path from `src`.  
 When visiting a node `v` with distance `d[v]` from `src`, all other nodes `x` in the queue will have `d[x] <= d[v] + K`, since `K` is the max distance.
+
+**1**  
 Because of this, we only need to keep and "horizon" of the `K` next layers in such graph.  
 While using a circular vector of queues of size `K+1`, we can a BFS in `O(N*K+E)`: for each node, we may need to find the next valid queue in `O(K)`.
+  
+**2**  
+Alternatively, don't keep a circular vector, but a vector with `size = MAXDIST` and perform a line sweep in this vector. Note that `N*K <= MAXDIST`, since we won't visit more than `MAXDIST` positions approach **1**.
 
+**Summary**
 This works like a Dijkstra but we use an array of queues for sorting and also we don't need to sort inside the same queue.
+
+#### If edge weights `\in {0, K} U Nat` : Combine deque with priority queue : 
+This is actuall a simple optimization on the priority queue.  
+Instead of adding updates to the priority queue, having cost `O(logN)`, add updates with edge cost `0` and `K` to a deque (`0-1` BFS).  
+We know that, by doing this, it will be correctly sorted. Other edge weights will go into the priority queue.    
+  
+When querying, take the min between the priority queue and the deque. 
+  
+Suppose that there are `M1` `0,K` edges and `M2` non-trivial edges.
+Then,
+- For decrease-key: `O(M1 + M2 * log(N))`
+- For get_min: `O(N*log(N))`
+- Total: `O(max(N,M2) * log(N))`
+  
+This helps us generalize to:
+- Querying the next min can be done by querying the min of `S` sorted structures
+- Keep structures with 2-fixed edge costs into a deque when possible
+- Let the heap solve non-fixed edge costs
+  
+Check: https://oj.uz/problem/view/APIO15_skyscraper
 
 #### If edge weights `\in [A;A*K]` : Dijkstra with real buckets `O(N*K+E)`
 Suppose that our graph has edge weights in a **real** range `[1;K)`, Dijkstra is too slow but `K` is small. 
