@@ -118,7 +118,26 @@ However, since edge weights `B_i` are fixed for each blue node, we can create a 
   
 Check: https://oj.uz/problem/view/APIO15_skyscraper
 
-#### SPFA - Fast Bellmanford
+#### Objective function is a ratio
+Let's say each edge has a profit `p` and a cost `c`.  
+Given that `E` is the set of edges traversed, the final cost function is `sumP / sumC`, a ratio.
+  
+You want to find the path of greatest ratio. You can't use the cost function as is since it is tricky. Do binary search instead:
+```
+Find greatest R s.t.:
+sumP / sumC >= R
+sumP >= R*sumC
+sumP - R*sumC >= 0
+Since P and C are indexed by edges,
+sum(p - R*c) >= 0
+```
+Define a new cost for each edge: `p - R*c`. The predicate is true iff there exists a path w/ non-negative cost.
+  
+If a path is a cycle, try to use Floyd-Warshall for searching any non-negative cycle.
+  
+Check: https://oj.uz/problem/view/APIO17_merchant  
+
+## SPFA - Fast Bellmanford
 Some optimizations can be done by pushing front instead of only back (use a deque).  
 Random shuffle edges.
 
