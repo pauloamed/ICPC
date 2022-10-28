@@ -60,7 +60,23 @@ Check: https://codeforces.com/contest/59/problem/E
 #### Minimum coins problem (allowing negative edges)
 Check: https://codeforces.com/gym/101512/problem/B
 
-#### (Irreplaceable) Edges in shortest path from `s` to `t`
+#### Graph from `s` to `t` with bounded cost `C`
+Given a graph `G=(V,E)`, a source `s` and target `t` and a cost `C` we can recover a subgraph `G(C)` of `G` s.t.
+- `(x,y) \in E` with cost `w` belongs to `G(C)` iff there is a path from `s` to `t` with cost **at most `C`** that goes through `(x,y)`
+  - **(T1)** Run a dijkstra from `s` and `t`. If `dist(s,x) + dist(t,y) + w <= C` or `dist(s,y) + dist(t,x) + w <= C`, it belongs to `G(C)`
+  - **(T2)** Paths musn't repeat vertices, but only **T1** does not assure that. Thus, it must also be checked if (assuming direction `x->y`) `y` reaches `t`. Do this with a DFS starting from `s`.
+
+Properties:
+- An edge `e` is not a bridge iff its removal implies that there is still a path `s->t` with cost at most `C`  
+- `G(inf)` is composed of all edges that somehow lead from `s` to `t` regardless of cost
+
+Check: https://codeforces.com/gym/101879/problem/F
+
+##### (Irreplaceable) Edges in shortest path from `s` to `t`
+**Solution 1**
+It is a bridge in `G(dist(s,t))`.
+
+**Solution 2**
 First, run a Dijkstra from `s` and other from `t`, which will compute, for each node `x`, its minimum distance to `s` (`d_s[x]`) and to `t` (`d_t[x]`).  
 If an edge `(u,v)` with weight `w` is in the shortest path from `s` to `t`, then, it must be that `d_s[u] + w + d_t[v] = d_s[t] = d_t[s]`.  
 Every edge `(u,v)` in the shortest path is responsible for an interval `[d_s[u], d_s[v]]` in the shortest path. If an edge is irreplaceable, it must be the only responsible for such interval i.e. doesn't intersect w/ other edge intervals.
