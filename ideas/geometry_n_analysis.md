@@ -129,6 +129,8 @@ We don't want this to happen.
 - Linear functions are both convex and concave
 - `f(x)=|A-x|` is convex
 
+Check: https://www.thehuxley.com/problem/615
+
 ### Absolute error and squared euclidean minimization
 If in 1D, the median of `A`s minimizes the sum of `|x - A|` errors.
 Also, the mean minimizes the sum of **squared** euclidian distances (`||x - A||^2`).
