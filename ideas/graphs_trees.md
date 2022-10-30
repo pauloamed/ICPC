@@ -131,6 +131,9 @@ TODO
 
 # Graphs properties
 
+### Tree: LCA of list of nodes
+LCA of a list of nodes is defined by a single pair of adjacent nodes
+
 ### Tree: Sum of subtree sizes
 In a tree, the sum of all subtree sizes equal to the sum of all depths.
 
