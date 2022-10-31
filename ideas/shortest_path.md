@@ -60,7 +60,23 @@ Check: https://codeforces.com/contest/59/problem/E
 #### Minimum coins problem (allowing negative edges)
 Check: https://codeforces.com/gym/101512/problem/B
 
-#### (Irreplaceable) Edges in shortest path from `s` to `t`
+#### Graph from `s` to `t` with bounded cost `C`
+Given a graph `G=(V,E)`, a source `s` and target `t` and a cost `C` we can recover a subgraph `G(C)` of `G` s.t.
+- `(x,y) \in E` with cost `w` belongs to `G(C)` iff there is a path from `s` to `t` with cost **at most `C`** that goes through `(x,y)`
+  - **(T1)** Run a dijkstra from `s` and `t`. If `dist(s,x) + dist(t,y) + w <= C` or `dist(s,y) + dist(t,x) + w <= C`, it belongs to `G(C)`
+  - **(T2)** Paths musn't repeat vertices, but only **T1** does not assure that. Thus, it must also be checked if (assuming direction `x->y`) `y` reaches `t`. Do this with a DFS starting from `s`.
+
+Properties:
+- An edge `e` is not a bridge iff its removal implies that there is still a path `s->t` with cost at most `C`  
+- `G(inf)` is composed of all edges that somehow lead from `s` to `t` regardless of cost
+
+Check: https://codeforces.com/gym/101879/problem/F
+
+##### (Irreplaceable) Edges in shortest path from `s` to `t`
+**Solution 1**
+It is a bridge in `G(dist(s,t))`.
+
+**Solution 2**
 First, run a Dijkstra from `s` and other from `t`, which will compute, for each node `x`, its minimum distance to `s` (`d_s[x]`) and to `t` (`d_t[x]`).  
 If an edge `(u,v)` with weight `w` is in the shortest path from `s` to `t`, then, it must be that `d_s[u] + w + d_t[v] = d_s[t] = d_t[s]`.  
 Every edge `(u,v)` in the shortest path is responsible for an interval `[d_s[u], d_s[v]]` in the shortest path. If an edge is irreplaceable, it must be the only responsible for such interval i.e. doesn't intersect w/ other edge intervals.
@@ -110,7 +126,34 @@ A potential is valid iff for every edge `u->v`, `w(u->v) + p(u) - p(v) >= 0`.
 
 Check: https://atcoder.jp/contests/abc237/tasks/abc237_e
 
-#### SPFA - Fast Bellmanford
+#### `A` red nodes pointing to `B` blue nodes but edge weights are fixed for each blue node
+Let's say we have this problem. The number of edges would be `A*B` (for each red, create an edge to a blue).  
+However, since edge weights `B_i` are fixed for each blue node, we can create a virtual middleware node `V`:  
+- All red nodes point to `V` with edge cost `0`  
+- `V` points to each blue node with edge cost `B_i`  
+  
+Check: https://oj.uz/problem/view/APIO15_skyscraper
+
+#### Objective function is a ratio
+Let's say each edge has a profit `p` and a cost `c`.  
+Given that `E` is the set of edges traversed, the final cost function is `sumP / sumC`, a ratio.
+  
+You want to find the path of greatest ratio. You can't use the cost function as is since it is tricky. Do binary search instead:
+```
+Find greatest R s.t.:
+sumP / sumC >= R
+sumP >= R*sumC
+sumP - R*sumC >= 0
+Since P and C are indexed by edges,
+sum(p - R*c) >= 0
+```
+Define a new cost for each edge: `p - R*c`. The predicate is true iff there exists a path w/ non-negative cost.
+  
+If a path is a cycle, try to use Floyd-Warshall for searching any non-negative cycle.
+  
+Check: https://oj.uz/problem/view/APIO17_merchant  
+
+## SPFA - Fast Bellmanford
 Some optimizations can be done by pushing front instead of only back (use a deque).  
 Random shuffle edges.
 
@@ -141,13 +184,42 @@ Using naive list: `cost(D) = O(1)` and `cost(E)=O(n)`. Resulting in `O(m*1+n*n)=
 #### If graph is complete `m > n * n / log(n)`
 Use disjktra with naive list
 
+#### If edge weights `\in {0, K}` : 0-1 BFS using deque
+Push-front `0`-valued edges and push-back `K`-valued edges in the deque. Push-front for quering. This emulates a priority_queue.
+
 #### If edge weights `\in [0;K]` : Dijkstra with buckets `O(N*K+E)` : Dial's algorithm
-Suppose that our graph has edge weights at most `K` and that we are running a BFS from `src`.  
+Suppose that our graph has edge weights at most `K` and that we are running a shortest-path from `src`.  
 When visiting a node `v` with distance `d[v]` from `src`, all other nodes `x` in the queue will have `d[x] <= d[v] + K`, since `K` is the max distance.
+
+**1**  
 Because of this, we only need to keep and "horizon" of the `K` next layers in such graph.  
 While using a circular vector of queues of size `K+1`, we can a BFS in `O(N*K+E)`: for each node, we may need to find the next valid queue in `O(K)`.
+  
+**2**  
+Alternatively, don't keep a circular vector, but a vector with `size = MAXDIST` and perform a line sweep in this vector. Note that `N*K <= MAXDIST`, since we won't visit more than `MAXDIST` positions approach **1**.
 
+**Summary**
 This works like a Dijkstra but we use an array of queues for sorting and also we don't need to sort inside the same queue.
+
+#### If edge weights `\in {0, K} U Nat` : Combine deque with priority queue : 
+This is actuall a simple optimization on the priority queue.  
+Instead of adding updates to the priority queue, having cost `O(logN)`, add updates with edge cost `0` and `K` to a deque (`0-1` BFS).  
+We know that, by doing this, it will be correctly sorted. Other edge weights will go into the priority queue.    
+  
+When querying, take the min between the priority queue and the deque. 
+  
+Suppose that there are `M1` `0,K` edges and `M2` non-trivial edges.
+Then,
+- For decrease-key: `O(M1 + M2 * log(N))`
+- For get_min: `O(N*log(N))`
+- Total: `O(max(N,M2) * log(N))`
+  
+This helps us generalize to:
+- Querying the next min can be done by querying the min of `S` sorted structures
+- Keep structures with 2-fixed edge costs into a deque when possible
+- Let the heap solve non-fixed edge costs
+  
+Check: https://oj.uz/problem/view/APIO15_skyscraper
 
 #### If edge weights `\in [A;A*K]` : Dijkstra with real buckets `O(N*K+E)`
 Suppose that our graph has edge weights in a **real** range `[1;K)`, Dijkstra is too slow but `K` is small. 

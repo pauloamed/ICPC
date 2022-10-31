@@ -1,21 +1,11 @@
 # Geometry
 
-### General observations
-- Avoid using floating points (division, square root, trigonometric functions); try to use fractions
-- Avoid doing too much comparisons w/ floating points
-- Avoid using floating points with big magnitude. This implies a greater error.
 
 ### Convex Hull
 Fun facts:
 - Set of points s.t. there exists a half-plane for each point that doesnt contain any other point
 - If coordinates are `[0;C]`, there are at most `O(C^(2/3))` points inside the convex hull
   - https://codeforces.com/blog/entry/62183
-
-
-#### Catastrophic cancelletion
-Assume that the relative error is `10^-6`. 
-Lets say we cancel out `A=10^6` and `B=10^6`, their erros are `10^0`. `A-B` is now `10^0` with error `10^0`.
-We don't want this to happen.
 
 ### Try working the formulas instead of just using the geometry lib
 For example, if you know that the points follow a formula and you are dealing the problem of checking if a line crosses these points, try working this on paper instead of jumping to the code. Use cross product and you may have now a number theory problem.
@@ -89,7 +79,6 @@ Let:
 - b: #integer points in the polygon boundaries
 Then, A = i + (b/2) - 1
 ```
-
 ### Range of points inside trapezoidal defined by segment `AB` and query point `Q`
 ![Ancient Towers. Thanks kobus!](assets/ancient_towers.png)
 
@@ -100,15 +89,6 @@ The desired points are `prefix_i(X) - prefix_j(Y)`, `i` and `j` can be found by 
 This is a special case of the "contribution" techinique in which we decompose a complex update into simpler ones and solve the final result at the end of all updates.
   
 Check: https://codeforces.com/gym/103640/problem/A  
-
-### Convex closures
-(http://www.cs.cmu.edu/afs/cs/academic/class/15456-s10/ClassNotes/lecture2.pdf)  
-A convex combination of a set of points is a linear combination that is both non-negative and affine i.e. a weighted sum of such points s.t. their coefficients sum up to 1 and all are >= 0.
-- The convex closure of a point is the point itself. 
-- The convex closure of two points is the line segment between them. 
-- The convex closure of a set of points in the plane is a convex polygon.
-With this, we know that a point is inside a polygon iff it can be represented as a convex combination of some of its vectors (which can be the polygon's vertixes).
-Also, a polygon can be seen as an infinite set of vectors.
 
 ### Minkoviski sum
 Definition: `A ^ B = {a + b | a \in A, b \in B}`
@@ -126,3 +106,41 @@ Properties:
   - If `0` lies on inside `A-B`, `A /\ B` is a polygon
   - `0` is inside `A-B` iff exists `a \in A` and `b \in B` s.t. `a = b <=> a - b = 0`. Since the image of `a - b` equals `A-B`, `0 \in A-B`.
 - `argmin_v((A + {v}) /\ B = NULL) = argmin_v(0 \not_in A-B+{v})`
+
+
+## Analysis
+
+### General observations
+- Avoid using floating points (division, square root, trigonometric functions); try to use fractions
+- Avoid doing too much comparisons w/ floating points
+- Avoid using floating points with big magnitude. This implies a greater error.
+
+#### Catastrophic cancelletion
+Assume that the relative error is `10^-6`. 
+Lets say we cancel out `A=10^6` and `B=10^6`, their erros are `10^0`. `A-B` is now `10^0` with error `10^0`.
+We don't want this to happen.
+
+### Convex/Concave function
+- A function is convex iff its derivative is monotonic non-decreasing. It has one minimal=minimum point.
+- A function is concave iff its derivative is monotinic non-increasing. It has one maximal=maximum point.
+- You can ternary search a convex/concave function  
+- The linear combination of convex/concave functions is convex/concave
+- Max/Min of convex/concave functions is also convex/concave
+- Linear functions are both convex and concave
+- `f(x)=|A-x|` is convex
+
+Check: https://www.thehuxley.com/problem/615
+
+### Absolute error and squared euclidean minimization
+If in 1D, the median of `A`s minimizes the sum of `|x - A|` errors.
+Also, the mean minimizes the sum of **squared** euclidian distances (`||x - A||^2`).
+
+### Convex closures
+(http://www.cs.cmu.edu/afs/cs/academic/class/15456-s10/ClassNotes/lecture2.pdf)  
+A convex combination of a set of points is a linear combination that is both non-negative and affine i.e. a weighted sum of such points s.t. their coefficients sum up to 1 and all are >= 0.
+- The convex closure of a point is the point itself. 
+- The convex closure of two points is the line segment between them. 
+- The convex closure of a set of points in the plane is a convex polygon.
+With this, we know that a point is inside a polygon iff it can be represented as a convex combination of some of its vectors (which can be the polygon's vertixes).
+Also, a polygon can be seen as an infinite set of vectors.
+
