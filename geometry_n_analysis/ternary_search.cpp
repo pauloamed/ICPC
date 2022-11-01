@@ -13,12 +13,13 @@ ld ternary_search(ld l, ld r) {
 }
 
 // DOMAIN IS INTEGER
-int lo = -1, hi = n; // (lo;hi)
-while (hi - lo > 1){
+int ternary_search(int lo, int hi){
+  while (hi - lo > 1){
     int mid = (hi + lo)>>1;
     if (f(mid) > f(mid + 1)) 
-         hi = mid;
+      hi = mid;
     else 
-         lo = mid; 
+      lo = mid; 
+  }
+  return f(lo + 1);
 }
-//lo + 1 is the answer
