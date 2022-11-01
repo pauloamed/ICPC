@@ -131,6 +131,17 @@ We don't want this to happen.
 
 Check: https://www.thehuxley.com/problem/615
 
+#### Abstracting parameters can help
+For example, finding the maximum segment sum on an array where we can do `a_i - x` for all `i` is described as:
+```
+max_x max_(i<j) sum_i_j a_i - x
+```
+But we can note that `max_(i<j) sum_i_j a_i - x` is a function decreasing on `x`. 
+Abstracting `i` and `j` as inputs and only think of `f(x)`, that outputs this maximum value.  
+We can now think of `f(x)` as a non-decreasing function, not analyzing the behaviour of variables `i` and `j`.
+  
+Check: https://codeforces.com/contest/1355/problem/E
+
 ### Absolute error and squared euclidean minimization
 If in 1D, the median of `A`s minimizes the sum of `|x - A|` errors.
 Also, the mean minimizes the sum of **squared** euclidian distances (`||x - A||^2`).
