@@ -1,4 +1,4 @@
-
+// DOMAIN IS DOUBLE
 // code for max. for min, negate f
 ld ternary_search(ld l, ld r) {
   const ld eps = 1e-9;
@@ -11,3 +11,14 @@ ld ternary_search(ld l, ld r) {
   }
   return f(l); // or l if argmax
 }
+
+// DOMAIN IS INTEGER
+int lo = -1, hi = n; // (lo;hi)
+while (hi - lo > 1){
+    int mid = (hi + lo)>>1;
+    if (f(mid) > f(mid + 1)) 
+         hi = mid;
+    else 
+         lo = mid; 
+}
+//lo + 1 is the answer
