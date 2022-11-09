@@ -107,7 +107,12 @@ Properties:
   - `0` is inside `A-B` iff exists `a \in A` and `b \in B` s.t. `a = b <=> a - b = 0`. Since the image of `a - b` equals `A-B`, `0 \in A-B`.
 - `argmin_v((A + {v}) /\ B = NULL) = argmin_v(0 \not_in A-B+{v})`
 
-
+### Subset of vectors w/ sum w/ maximal sqrt norm
+Observe the answer vector `V`. Only vectors `u` with `angle(V,u) <= 90degs` were used to build `V`.
+If we sort the list of input vectors by angle (polar sort), the answer will be a subsegment of the final list in which the distance between the first and last vector does not exceed `90degs`. There may be a border case if `angle == 90`.
+  
+Check: https://atcoder.jp/contests/abc139/tasks/abc139_f
+  
 ## Analysis
 
 ### General observations
