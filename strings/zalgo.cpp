@@ -1,6 +1,8 @@
 // s[l:r] == s[0:r-l] => s[i:r] == s[0:min(z[i-l], r-i)]
 // uses own function for faster computing
 // not always `r` will be updated, z[i-l] can be really low
+
+// z[i]: size of longest substring starting from i that is also a prefix
 vector<int> compute_z(string &s){
   int n = s.size();
   vector<int> z(n);
