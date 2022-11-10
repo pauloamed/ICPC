@@ -145,8 +145,16 @@ Note that, depending on commutativity, different orders of inverse operations ne
 ### Maximum size with bounded cost
 Can also be solved finding minimum cost for each size and taking the greatest size with cost inside the bounds.
 
-### Median on sub-arrays `[TODO]`
+### Convert median to binary vector of `>= x`
+Depends on the definition of median.  
+Checking the median of a list can be done by binary searching it (search key is `x`) and setting all values `vi` to `eval(vi>=x)`. 
+The first value in the search space s.t. `cnt 1s >= N/2` is the median.  
+  
+Check: https://atcoder.jp/contests/abc107/tasks/arc101_b
+
+#### Median on sub-arrays `[TODO]`
 https://codeforces.com/blog/entry/18879?#comment-238126
+
 
 ### Use offset in structures for values
 If modifying values kept in a structure by subtracting/adding `x` at each iteration, instead of updating the stored values, create an offset for both stored values and values to be stored comprising such modifications.
