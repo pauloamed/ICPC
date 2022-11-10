@@ -381,8 +381,3 @@ AS LONG AS it is formed by the combination of an even number of basis vectors.
 This will create an odd-length cycle with this added vector and the ones that formed it.
   
 Check: https://codeforces.com/gym/101611/problem/I
-
-# Game theory
-
-### Last to play wins/unwanted positions
-If the problem presents this variation, set the "about to win" positions as unwanted positions (really high grundy). Thus, states leading only to such positions will get a losing status.
