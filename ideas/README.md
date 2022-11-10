@@ -9,6 +9,26 @@ P is sufficient and necessary for Q, (P => Q) and (Q => P)
 
 ## General
 
+#### Objective function is a ratio
+Let's say each element has a profit `p` and a cost `c`.  
+We are selecting a subset of elements s.t. its final cost is `sumP / sumC`, a ratio.
+  
+You want to find the subset of greatest ratio. You can't use the cost function as is since it is tricky. Do binary search instead:
+```
+Find greatest R s.t.:
+sumP / sumC >= R
+sumP >= R*sumC
+sumP - R*sumC >= 0
+Since P and C are indexed by edges,
+sum(p - R*c) >= 0
+```
+Define a new cost for each element: `p - R*c`. The predicate is true iff there exists a subset w/ non-negative cost.
+  
+If elements are edges and we interested in cycles, try to use Floyd-Warshall for searching any non-negative cycle.  
+Check: https://oj.uz/problem/view/APIO17_merchant  
+  
+Some tweaks but same main idea. Check: https://atcoder.jp/contests/abc275/tasks/abc275_g
+  
 ### List of `K` funcs of the form `b + k*M` visiting elements in the range `[1;N]`
 **There will be at most `O(sqrt(K) * N)` pairs `(M, pos)` visited.**
 - Note that `(b, M)` is equivalent to `(b', M)` iff `b = b' (mod M)`  
