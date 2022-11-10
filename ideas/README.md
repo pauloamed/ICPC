@@ -9,7 +9,11 @@ P is sufficient and necessary for Q, (P => Q) and (Q => P)
 
 ## General
 
-#### Objective function is a ratio
+### Operations and invariants
+  
+Check: https://atcoder.jp/contests/arc136/tasks/arc136_c
+
+### Objective function is a ratio
 Let's say each element has a profit `p` and a cost `c`.  
 We are selecting a subset of elements s.t. its final cost is `sumP / sumC`, a ratio.
   
@@ -277,7 +281,7 @@ Miminals and maximals will occur only in activation and deactivation points.
   
 Check: https://codeforces.com/gym/102433/problem/J
 
-### Manipulating conditions w/ multiple variables, creating invariants
+### Manipulating conditions w/ multiple variables
 
 Check: https://oj.uz/problem/view/JOI18_art
   
