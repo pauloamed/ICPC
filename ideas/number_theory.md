@@ -133,3 +133,18 @@ The number of swaps required for sorting this permutation is `SUM_cycle len(cycl
 Also note that any swap between elements in the advances. That is, even if a swap does not put an element at its right position, it will advance since we are creating two new cycles, what compensates. Also, an element in its right position is a unicycle. Also note that a single element can be used in all swaps of a cycle for solving it if we always solve a position.
   
 Check: https://atcoder.jp/contests/arc111/tasks/arc111_c
+
+## Inclusion-Exclusion
+
+### Want: exactly `k`; Know: at least `k`
+Example, you have `R`, `G` and `B` elements and will create a permutation from these.  
+You want to compute how many permutation will have exactly `0` `RG` pairs together.
+  
+You can compute how many will have at least `K` by forcibly merging them into a unique element.
+Let's say `g(R,G,B,K)` computes this.
+Using inc-exc,
+```
+sum i:[0,min(R,G)] of (i is even? 1 : -1) * g(R,G,B,K)
+```
+  
+Check: https://atcoder.jp/contests/abc266/tasks/abc266_g
