@@ -126,7 +126,7 @@ A potential is valid iff for every edge `u->v`, `w(u->v) + p(u) - p(v) >= 0`.
 
 Check: https://atcoder.jp/contests/abc237/tasks/abc237_e
 
-#### `A` red nodes pointing to `B` blue nodes but edge weights are fixed for each blue node
+#### Set of nodes `A` pointing to set `B` w/ fixed edge weights for each `b \in B` | Reducing `O(|A||B|)` edges to `O(|A|+|B|)` edges
 Let's say we have this problem. The number of edges would be `A*B` (for each red, create an edge to a blue).  
 However, since edge weights `B_i` are fixed for each blue node, we can create a virtual middleware node `V`:  
 - All red nodes point to `V` with edge cost `0`  
