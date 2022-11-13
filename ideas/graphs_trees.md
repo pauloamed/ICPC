@@ -1,5 +1,14 @@
 # Graphs and trees
 
+### TopoSort All-to-all relation - Reducing `O(|A||B|)` edges to `O(|A|+|B|)` edges
+Let's say we have two sets of nodes `A` and `B`. Each node in `A` points to every node in `B` (all-to-all).  
+Instead of creating `O(|A||B|)` edges, create a virtual node `V` comprising this relation:
+- Each node from `A` points to `V`
+- `V` points to each node from `B`
+If there is a valid toposort in this extended DAG, there is also one in the original DAG
+  
+Check: https://atcoder.jp/contests/abc277/tasks/abc277_f  
+
 ### Query: walk 10^9 steps from a node
 Binary lifting or cycle detection may be used. This is probably a graph in which every outdegree is `1`.
 
