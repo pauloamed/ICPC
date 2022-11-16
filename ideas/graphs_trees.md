@@ -134,9 +134,20 @@ If that is the case, there is a path from `x` to `~x` and from `~x` to `x`, it m
 
 Then, build the condensation graph. All variables in the same SCC have the same truth value. 
 
-TODO
-  
+### Assigining values to sequences
 
+2SAT can be used for finding assignment of values to sequences.  
+Assuming that each element can use a value in `[1;M]`, for each element create `M+1` propositions, where
+- `Xi >= 1` is true  
+- `Xi >= M+1` is false  
+- `Xi >= A` implies that `Xi >= A-1`  
+  
+For each condition of the problem `PC` to be satisfied, you will need to find a model condition `MC` s.t. `MC => PC` and `MC` is written in terms of `Xi >= A`.  
+  
+For example, `Xa + Xb >= L` is equivalent to: for each `t \in Z`, `t <= Xa || L - t + 1 <= Xb`.
+Not all `t \in Z` is needed, it is feasible to create conditions for only the needed `t`.  
+  
+Check: https://atcoder.jp/contests/abc277/tasks/abc277_h
 
 # Graphs properties
 
