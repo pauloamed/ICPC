@@ -136,7 +136,48 @@ Check: https://atcoder.jp/contests/arc111/tasks/arc111_c
 
 ## Inclusion-Exclusion
 
-### Want: exactly `k`; Know: at least `k`
+There is a set `P` of properties. `f(T), T \in P,` equals the number of elements that satisfy at least properties in `T`.  
+`f(empty):` elements that satisfy any property, but at least one
+```
+f(empty) = SUM_k_1_N (-1)^k (SUM_T\inP_|T|=k f(T))
+
+
+for every set size k from 1 to N:
+  for every subset T of P of size k:
+    ans += f(T) * (-1) ^ k
+```
+We start with smaller `|T|` and 
+**Homogeniety: `|A| = |B| -> f(A) = f(B)`**. If homogeniety of properties is true, it can be simplified to
+```
+f(empty) = SUM_k_1_N (-1)^k C(N, k) * f(k)
+```
+
+### Defining properties to compute answer (mainstream)
+  
+If the problem asks for number of configurations that respect (AND) a list of constraints, it may be useful to define a propertie as the negation of each constraint and compute `all - f(empty) = elements with zero properties`.
+  
+Meanwhile, if problem asks for number of configurations w/ at least one constraint true, define a property for each constraint and find `f(empty)`.
+
+   
+##### Example: Solution to `x1 + x2 + ... + xn = K` w/ `xi <= Ai` constraints
+Define `P_i` as `xi > Ai`. Find `all - f(empty)`.  
+`f({xi > Ai, xj > Aj}): #confs x1+x2+...+xn = K-(Ai+1)-(Aj+1)`
+
+##### Example: Solution to `x1 + x2 + ... + xn = K` w/ `xi <= M` constraints
+Define `P_i` as `xi > M`. Find `all - f(empty)`.  
+Note that **homogenity** holds.  
+`f(k): #confs x1+x2+...+xn = K-k*(M+1)`
+
+##### Example: number of onto (surjectives) functions `A -> B`
+Define `P_i` as `Bi not in range(f)` (`Bi` is element in `B`). Find `all - f(empty)`.   
+Note that **homogenity** holds. 
+`f(k): #confs w/out k elements = (|B|-k)^|A|
+
+##### Example: Derangements; permutation not keeping original position
+Define `P_i` as `P_i staying in i`.  Find `all - f(empty)`.
+Note that **homogenity** holds. 
+
+### Want: exactly `0`; Know: at least `k`
 Example, you have `R`, `G` and `B` elements and will create a permutation from these.  
 You want to compute how many permutation will have exactly `0` `RG` pairs together.
   
