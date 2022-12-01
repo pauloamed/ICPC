@@ -1,5 +1,7 @@
 # Number Theory
 
+## Prime and modular arithmetic
+
 ```
 1- If D divides A and B, A < B, D divides B-A
 2- Consecutive Fibonacci numbers are coprimes
@@ -101,12 +103,28 @@ Eg, if `x_i >= 1`, `N >= M_0 + A_0`; implying that there exists a `k_min` s.t. `
 
 Check: https://codeforces.com/gym/101472/problem/H
 
+## Counting
+
 ### Extended stars and bars
-Stars and bars: number of ways to split a `N` sized array into `K` sub-arrays.
-Solve using combination: create `K-1` artificial elements for acting as splitters (bars).
-Choose `K-1` elements from `N+K-1` to be bars; the other `N` elements will the stars (elements to be splitted).
+Stars and bars: number of ways to split a `N` sized array into `K` sub-arrays.  
+Solve using combination: create `K-1` artificial elements for acting as splitters (bars).  
+Choose `K-1` elements from `N+K-1` to be bars; the other `N` elements will the stars (elements to be splitted).  
+
+The first extension concearns forcing each array to be non-empty.   
+For this, just pretend that there are `N-K` elements to be splitted by assigning previously one to each array.  
   
-This can be formulated as:
+Other extension builds on, instead of selecting only `K-1` elements, selecting also some of the stars.  
+For instance, how many ways to partition into `K` subarrays and choose one element from each array.  
+For this, `C(N + K - 1, 2*K - 1)` does the job, because we are selecting extra `1*K` elements.  
+We choose `K-1` bars and `K` stars, disposed as `S B S B ... S`.  
+  
+One can also vary the interleaving between stars and bars.  
+For instance, select an element from at most `3` boxes. We are then interested in how many ways can one interleave `K` `B`s and 3 `S`s such that there are no `S` adjacent.
+Suppose that `f(K, 3)` counts this. The final answer would be `C(N + K - 1, K - 1 + 3) * f(K, 3)`.
+
+### Stars and bars: Sum of products of `f(`subarrays sizes`)`
+  
+Stars and bars can be formulated as:
 ```
 SUM (for each S_1 + S_2 + ... + S_K = N) 1 [S_i: size of ith subarray]
 or
@@ -114,14 +132,14 @@ SUM (for each S_1 + S_2 + ... + S_K = N) f(S_1)f(S_2)...f(S_K) [productory of f 
 where f(m) = 1
 ```
   
-In other problems, it may be a different `f`. It is nice when `f(S_i)` can be expressed as `C(S_i, l)`
+In other problems, it may be a different `f`. 
+It is nice when `f(S_i)` can be expressed as `C(S_i, l)`
 For instance (https://atcoder.jp/contests/abc214/tasks/abc214_g), `f(S_i) = S_i = C(S_i, 1)`.
-  
-If that is the case, we can think of choosing `l` elements from each of the `k` splitted subarray (of size `S_i`).
-That is, we want all possible manners of splitting `N` elements in `k` subarrays and combine the ways of choosing `l` elements:
+In this problem, we are interested in the sum of all products of subarray sizes from each possible partition.
+   
+If `f(S_i) = C(S_i, l)`, we can think of choosing `l` elements from each of the `k` splitted subarray (of size `S_i`).
+That is, we want all possible manners of splitting `N` elements in `k` subarrays and combine the ways of choosing `l` elements from each:
 `C(N + k - 1, k - 1 + l * k)`
-
-
 
 ## Permutations
 
@@ -159,7 +177,7 @@ Check: https://atcoder.jp/contests/arc111/tasks/arc111_c
 ## Inclusion-Exclusion
 
 There is a set `P` of properties. `f(T), T \in P,` equals the number of elements that satisfy at least properties in `T`.  
-`f(empty):` elements that satisfy any property, but at least one
+`f(empty):` num. of elements that satisfy any property, but at least one
 ```
 f(empty) = SUM_k_1_N (-1)^k (SUM_T\inP_|T|=k f(T))
 
@@ -168,46 +186,68 @@ for every set size k from 1 to N:
   for every subset T of P of size k:
     ans += f(T) * (-1) ^ k
 ```
-We start with smaller `|T|` and 
+
 **Homogeniety: `|A| = |B| -> f(A) = f(B)`**. If homogeniety of properties is true, it can be simplified to
 ```
 f(empty) = SUM_k_1_N (-1)^k C(N, k) * f(k)
 ```
+There can be less obvious forms of homogeniety also.   
+The main idea however is group sets `T` of size `k` by `f()`.  
+Suppose that we can partition the property sets `T`s by the count of a `l` i.e. `(|A| = |B| && cnt(Al) = cnt(Bl)) -> f(A) = f(B)`.  
+Then, count the number of sets with size `k` and `l` (similar to the `C(N,k)` above) and multiply by `f(k, l)`.
+  
+Check: https://atcoder.jp/contests/abc214/submissions/36887251
 
 ### Defining properties to compute answer (mainstream)
   
-If the problem asks for number of configurations that respect (AND) a list of constraints, it may be useful to define a propertie as the negation of each constraint and compute `all - f(empty) = elements with zero properties`.
+If the problem asks for number of configurations that respect (AND) a list of constraints,
+it may be useful to define a propertie as the negation of each constraint and compute `all - f(empty) = elements with zero properties`.
   
 Meanwhile, if problem asks for number of configurations w/ at least one constraint true, define a property for each constraint and find `f(empty)`.
 
+#### More on modelling
+
+The same problem can accept different modellings of properties.
+For instance, in (https://atcoder.jp/contests/abc214/tasks/abc214_g), 
+we have a list of `K` constraints:
+- `r_0` != `p_0` AND `r_0` != `q_0`
+- `r_1` != `p_1` AND `r_1` != `q_1`
+- ...
+  
+We will negate these contraints and compute `all - f(empty)`. This can be done in 2 ways:
+- **Ap1**: `r_i` = `p_i`
+- **Ap2**: `r_i` = `p_i` OR `r_i` = `q_i`  
+Using **Ap1** approach, there would be `2K` properties and this can be modelled to selecting **nodes** from a graph.
+In **Ap2**, there would be `K` properties and this can be modelled to selecting **edges** from another graph.
    
-##### Example: Solution to `x1 + x2 + ... + xn = K` w/ `xi <= Ai` constraints
-Define `P_i` as `xi > Ai`. Find `all - f(empty)`.  
-`f({xi > Ai, xj > Aj}): #confs x1+x2+...+xn = K-(Ai+1)-(Aj+1)`
+### Examples
+- Solution to `x1 + x2 + ... + xn = K` w/ `xi <= Ai` constraints
+  - Define `P_i` as `xi > Ai`. Find `all - f(empty)`.  
+  - `f({xi > Ai, xj > Aj}): #confs x1+x2+...+xn = K-(Ai+1)-(Aj+1)`
+- Solution to `x1 + x2 + ... + xn = K` w/ `xi <= M` constraints
+  - Define `P_i` as `xi > M`. Find `all - f(empty)`.  
+  - Note that **homogenity** holds.  
+  - `f(k): #confs x1+x2+...+xn = K-k*(M+1)`
+- Number of onto (surjectives) functions `A -> B`
+  - Define `P_i` as `Bi not in range(f)` (`Bi` is element in `B`). Find `all - f(empty)`.   
+  - Note that **homogenity** holds. 
+  - `f(k): #confs w/out k elements = (|B|-k)^|A|
+- Derangements; permutation not keeping original position
+  - Define `P_i` as `p_i staying in i`.  Find `all - f(empty)`.
+  - Note that **homogenity** holds. 
+  - `f(k): #perms fixing k positions = (n-k)!`
+  - Check: https://atcoder.jp/contests/abc214/tasks/abc214_g
+- Permutations of `R`, `G` and `B` elements without `RG` occuring adjacent
+  - A property `P` here would be an occurence of `RG`: there are a lot of properties and distinguishing them is not the objective
+  - Here, instead of counting 
+  ```
+    How many ways to select `k`-sized property sets
+    Given a fixed set of `k` properties, how many permutations have at least this exact set
+  ```
+  - It is done
+  ```
+  Compute all possible permutations where at least `k` properties are satisfied, varying which
+  properties composed the `k`-sized set
+  ```
+  - Check: https://atcoder.jp/contests/abc266/tasks/abc266_g
 
-##### Example: Solution to `x1 + x2 + ... + xn = K` w/ `xi <= M` constraints
-Define `P_i` as `xi > M`. Find `all - f(empty)`.  
-Note that **homogenity** holds.  
-`f(k): #confs x1+x2+...+xn = K-k*(M+1)`
-
-##### Example: number of onto (surjectives) functions `A -> B`
-Define `P_i` as `Bi not in range(f)` (`Bi` is element in `B`). Find `all - f(empty)`.   
-Note that **homogenity** holds. 
-`f(k): #confs w/out k elements = (|B|-k)^|A|
-
-##### Example: Derangements; permutation not keeping original position
-Define `P_i` as `P_i staying in i`.  Find `all - f(empty)`.
-Note that **homogenity** holds. 
-
-### Want: exactly `0`; Know: at least `k`
-Example, you have `R`, `G` and `B` elements and will create a permutation from these.  
-You want to compute how many permutation will have exactly `0` `RG` pairs together.
-  
-You can compute how many will have at least `K` by forcibly merging them into a unique element.
-Let's say `g(R,G,B,K)` computes this.
-Using inc-exc,
-```
-sum i:[0,min(R,G)] of (i is even? 1 : -1) * g(R,G,B,K)
-```
-  
-Check: https://atcoder.jp/contests/abc266/tasks/abc266_g
