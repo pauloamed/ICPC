@@ -155,7 +155,7 @@ Than, it must be that `value_i = i + g(i) - s(i)`
 Check: https://codeforces.com/gym/101964/problem/I  
 
 ### Permutation graphs are the union of simple cycles
-They just are. Every node has outdegree `= 1`.
+They just are. Every node has out and in degree `= 1`.
 
 ### Swapping elements and number of cycles
 By choosing `i` and `j` (`i!=j`) and swapping `p_i` and `p_j`, in the functional graph, the number of cycles (including a cycle of size 1) increases or decreases by 1.  
