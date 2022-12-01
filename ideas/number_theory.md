@@ -101,6 +101,28 @@ Eg, if `x_i >= 1`, `N >= M_0 + A_0`; implying that there exists a `k_min` s.t. `
 
 Check: https://codeforces.com/gym/101472/problem/H
 
+### Extended stars and bars
+Stars and bars: number of ways to split a `N` sized array into `K` sub-arrays.
+Solve using combination: create `K-1` artificial elements for acting as splitters (bars).
+Choose `K-1` elements from `N+K-1` to be bars; the other `N` elements will the stars (elements to be splitted).
+  
+This can be formulated as:
+```
+SUM (for each S_1 + S_2 + ... + S_K = N) 1 [S_i: size of ith subarray]
+or
+SUM (for each S_1 + S_2 + ... + S_K = N) f(S_1)f(S_2)...f(S_K) [productory of f over sizes],
+where f(m) = 1
+```
+  
+In other problems, it may be a different `f`. It is nice when `f(S_i)` can be expressed as `C(S_i, l)`
+For instance (https://atcoder.jp/contests/abc214/tasks/abc214_g), `f(S_i) = S_i = C(S_i, 1)`.
+  
+If that is the case, we can think of choosing `l` elements from each of the `k` splitted subarray (of size `S_i`).
+That is, we want all possible manners of splitting `N` elements in `k` subarrays and combine the ways of choosing `l` elements:
+`C(N + k - 1, k - 1 + l * k)`
+
+
+
 ## Permutations
 
 ### Recover permutation from inversion
