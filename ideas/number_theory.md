@@ -174,6 +174,26 @@ Also note that any swap between elements in the advances. That is, even if a swa
   
 Check: https://atcoder.jp/contests/arc111/tasks/arc111_c
 
+### How many lists of elements given that values `<=i` happen at most `f(i)` times; f() non-dec; any size; order matters
+Values range from `1` to `MAX=3`. Examples for this: `[1,2,3], [1,3,3], [3,1,1]`.
+  
+Solve this using push-DP.  
+`f(n, j):` current size of `n` and only elements with value `<= j` are being considered.
+  
+Compute this by iterating through values from `1` to `MAX`.
+For each new value `i+1`, itereate through how many `x` elements from this value will be added.
+It must be that `x + n <= f(i+1)`.  
+There are `C(x + n, x)` ways of interleaving these new elements.
+```
+dp[0][0] = 1
+for i: 0...MAX-1:
+  for n: 0...f(i):
+    for x: 0...(n + x <= f(i + 1)):
+      dp[i + 1][n + x] += C(x + n, x) * dp[i][n]
+```
+
+Check: https://codeforces.com/gym/104012/problem/I
+
 ## Inclusion-Exclusion
 
 There is a set `P` of properties. `f(T), T \in P,` equals the number of elements that satisfy at least properties in `T`.  
