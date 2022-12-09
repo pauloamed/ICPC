@@ -70,7 +70,38 @@ It is linear because `pref` and `suf` increment together and `pref` decresal is 
 
 Check: https://codeforces.com/contest/1721/problem/E  
 
+## Suffix Array
 
+### Unique substrings
+Note that `LCP(i,i+1)` is the maximum size of a common prefix between suffixes that do not start at the same position.
+Thus, all suffixes from this common prefix are substrings from different positions but with the same value.
+```
+ABABA:
+4:A
+2:ABA
+0:ABABA
+3:BA
+1:BABA
+```
+Second and third elements have `LCP(1,2) = 3` that represent 3 strings (`A, BA, ABA`) from different ranges (`[2:4]` and `[0:3]`) that are equal i.e. duplicates.
+  
+Each instance of a duplicate substring in value appears as a suffix from exactly one LCP between adjacent positions.
+  
+Thus, the number of unique substrings is `all - sum_lcp`.
+  
+Unique substrings can be mapped to prefixes of some suffixes:
+```
+ABABA:
+4:A
+2:ABA
+0:(ABABA)
+3:BA
+1:(BABA)
+```
+For each element in suffix array, if it starts at `i`, all prefixes starting at `i+lcp(i,i+1)` are unique.
+In our example, all prefixes starting at `0` and `1` are unique.
+  
+Check: https://codeforces.com/gym/102302/problem/K
 
 ## Aho-chorasik
 A Trie with fail/suffix links that resemble the prefix function.
