@@ -74,32 +74,25 @@ Check: https://codeforces.com/contest/1721/problem/E
 
 ### Unique substrings
 Note that `LCP(i,i+1)` is the maximum size of a common prefix between suffixes that do not start at the same position.
-Thus, all suffixes from this common prefix are substrings from different positions but with the same value.
+If we are interested in unique substrings, we need to skip already ocourred strings using the LCP.
+For instance,
 ```
 ABABA:
-4:A
-2:ABA
-0:ABABA
-3:BA
-1:BABA
+4:A => >[A]
+2:ABA => >[ABA]
+0:ABABA => >ABA[BA]
+3:BA => >[BA]
+1:BABA => >BA[BA]
 ```
-Second and third elements have `LCP(1,2) = 3` that represent 3 strings (`A, BA, ABA`) from different ranges (`[2:4]` and `[0:3]`) that are equal i.e. duplicates.
+Here, `>[]` means a substring starting right after `>` and ending between `[` and `]`.
+Note that `[` occurs after the LCP, implying that repeated substrings are skipped.
   
-Each instance of a duplicate substring in value appears as a suffix from exactly one LCP between adjacent positions.
+#### Representing unique substrings
+For each suffix, we can represent the unique substrings that start at it by `(P, i)` where `P` is a common prefix and `i` is a starting position of the unique suffixes.
+For instance, substrings that start at `0` can be represented as `(ABA, 3) = ABA+B, ABA+BA`.
   
-Thus, the number of unique substrings is `all - sum_lcp`.
-  
-Unique substrings can be mapped to prefixes of some suffixes:
-```
-ABABA:
-4:A
-2:ABA
-0:(ABABA)
-3:BA
-1:(BABA)
-```
-For each element in suffix array, if it starts at `i`, all prefixes starting at `i+lcp(i,i+1)` are unique.
-In our example, all prefixes starting at `0` and `1` are unique.
+This decomposition is particulary useful when substrings are associated with an associative score. 
+`P` can be precomputed (associative) and suffixes starting at `i` can be solved using a suffix-query algo.
   
 Check: https://codeforces.com/gym/102302/problem/K
 
