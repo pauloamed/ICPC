@@ -1,32 +1,61 @@
 # Probability
 
-#### `E(x) = P(x > 0) + P(x > 1) + P(x > 2) + ...`
-???? #confia
+### `E(x) = P(x > 0) + P(x > 1) + P(x > 2) + ...`
+The expected value for `x` equals to the inifite sum of the probability of `x > n`.
+  
+#### Exepcted number of valid moves until move to final state (finite)
+Every move is an independent trial that may go to the final state.
+  
+Compute `f(i)` probability of performing more than `i` movements.  
+Note that `f(n) >= f(n + 1)`: 
+as `n` grows, it gets harder and harder to not reach the final state.
+  
+`f(i)` is computed by the probability of being able to reach `i` movements while still alive (not visited final state).  
+This means that *at least* `i` movements were done `x > i`.
+  
+Check: https://codeforces.com/gym/104012/problem/I
 
-#### Equiprobable subsets of same size on uniform distribution
+### Equiprobable subsets of same size on uniform distribution
 Given a set of numbers from which we are sampling (with or without replacement), subsets with the same amount of different elements are all equally probable.
 That is, given that we are interested in subsets of size `k` while sampling, the probability of accessing any of these is: `1 / Choose(n, k)`.
 
-#### Expected number of trials until success
+### Expected number of trials until success
 If probability of success is `P`, the expected number of independent trials until success is `1/P`.
 
-#### Expected number of moves until final state
-##### Approach 1
-Let's say you have a process in which you keep updating a state and there is a set of final states you may reach. You wan't to know the expected number of moves until you reach a final state.  
+### Expected number of moves until final state (infinite)
+Let's say you have a process in which you keep moving between states and there is a set of final states you may reach.  
+You wan't to know the expected number of moves until you reach a final state.  
   
-Note that states can be seen as a graph and for each state there is a set of edges going out from it to other states. Cycles may be allowed.
-There are several modellings for this since this is quite generic. One of such modellings is:
-- Partition states such that for each partition you are able to compute:
-  - Probability of a state in this partiton not being a final state
-  - Expected number of moves for leaving this partition
-  - Note: There can't be cycles between different partitions
-  - We are then finding the answer not aiming a final state but counting the number of steps non-final states take until leaving the current partition
+Note that states can be seen as a graph and for each state there is a set of edges going out from it to other states.
+Cycles may be allowed.
+There are several modellings for this since this is quite generic.  
+  
+#### Approach 1
+Partition states such that for each partition you are able to compute:
+  - Probability (`p_not_final`) of a state in this partiton not being a final state   
+  - Expected number of moves for leaving this partition (`expected_leave`)    
+  - 
+Note: There can't be cycles between different partitions.  
+We are then finding the answer not aiming a final state but counting the number of steps non-final states take until leaving the current partition.  
+  
+The answer is `SUM_i p_not_final_i * expected_leave_i` for `i:partition`.
 
 Check: https://atcoder.jp/contests/abc242/tasks/abc242_h
 
-##### Approach 2
-Map the moves that were done TODO
+### Probability of fixed point in permutation
+Probability of a fixed point in a permutation is
+```
+Exactly k:
+1/k! * SUM_i_0_n-k((-1)^i / k)
+That converges to as n grows: 1/(ek!)
 
+At least 1:
+Converges to 1 - (1/e) as n grows.
+
+Convergence due to:
+SUM_k_0_inf(x^k / k!) = e ^ x
+```
+`1-1/e = 0.6321` and `(1-1/e)^50 = 1e-10`
 # Randomized
 
 Mainly from Randomized algorithms lectures from Errichto.  
