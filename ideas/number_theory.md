@@ -11,6 +11,22 @@
 6- First multiple of `x >= L`: `ceil(L/x)*x`
 ```
 
+### Number of coprimes pairs without Mobius
+Solve using inclusion-exclusion.
+The property is: prime `p` divides the pair.
+We want the number of pairs that do not satisfy any property.
+  
+For each number, generate all prime subsets that divide it and 
+keep a dictionary `cnt[X]` storing how many numbers are divided by a subset `X`.  
+  
+The number of pairs divided by a prime subset `X`: `f(X) = (cnt[X] * cnt[X]-1)/2`.
+Note that `X` can be kept as a productory.  
+  
+Start the answer w/ `(n*(n-1))/2`.
+Iterate through all `X`, add `f(X)` to the answer if the number of primes in it is even; else, substract.
+  
+Check: https://atcoder.jp/contests/abc230/tasks/abc230_g
+
 ### Finding primes in `[L;R]`: find primes until `sqrt(R)` : mark as sieve
 Note that `x \in [L;R]` is prime iff it is not divisible by any prime `p <= sqrt(R)`.
 - Find all primes smaller than `sqrt(R)`
