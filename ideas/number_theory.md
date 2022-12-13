@@ -270,4 +270,8 @@ In **Ap2**, there would be `K` properties and this can be modelled to selecting 
   properties composed the `k`-sized set
   ```
   - Check: https://atcoder.jp/contests/abc266/tasks/abc266_g
+- Want `f(i)` but can only compute `g(i) = sum_j|i f(j)`
+  - Want to compute `f` for exact number `i` but can only compute the sum of `f` for all `i` multiples
+  - Use the sieve going to the end to the beginning
+  - At `i`, compute `g(i)` and remove all `f(j)` for all `j` multiple of `i`; this computed `f(i)`
 
