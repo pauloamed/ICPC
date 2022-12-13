@@ -304,6 +304,7 @@ In **Ap2**, there would be `K` properties and this can be modelled to selecting 
   - Check: https://atcoder.jp/contests/abc214/tasks/abc214_g
 - Permutations of `R`, `G` and `B` elements without `RG` occuring adjacent
   - A property `P` here would be an occurence of `RG`: there are a lot of properties and distinguishing them is not the objective
+  - Note that **homogenity** holds. 
   - Here, instead of counting 
   ```
     How many ways to select `k`-sized property sets
@@ -317,6 +318,7 @@ In **Ap2**, there would be `K` properties and this can be modelled to selecting 
   - Check: https://atcoder.jp/contests/abc266/tasks/abc266_g
 - Ways to dispose `R` red balls and `B` blue balls in `N` boxes, without having any empty box
   - A property `P` is: box `i` is empty
+  - Note that **homogenity** holds. 
   - Similar to not allowing adjacent pairs: Iterate through forcing `k` empty boxes (at least `k` empty)
     - Compute `C(n, i)` for choosing the certain (forced) empty boxes
     - Multiply by how many ways dipose balls into at most `n-k` boxes (allowing empty boxes)
