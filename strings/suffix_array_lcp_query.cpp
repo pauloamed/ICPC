@@ -2,7 +2,7 @@
 #define K 19
 
 namespace SA{
-	using arrayType = string;
+	using arrayType = string; // vector<int>
 
   // suffix id is position where it starts
   // id(s[i...]) = i
