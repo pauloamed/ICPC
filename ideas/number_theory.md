@@ -121,6 +121,35 @@ Check: https://codeforces.com/gym/101472/problem/H
 
 ## Counting
 
+### Evaluating summation of binomial coefficient `C(a, b)` (summation of `a:r...N`, fixing `b=r`)
+We want to compute
+```
+for i : r...N
+  C(i, r)
+
+That is, SUM_i_r:N C(i, r)
+```
+This is equal to `C(N+1, r+1)`
+Check: https://en.wikipedia.org/wiki/Hockey-stick_identity
+
+
+### Evaluating summation of binomial coefficient `C(a, b)` (iterating `a`, summation of `b:0...M`)
+We want to compute
+```
+for n : 0...N
+  for i : 0...M
+    C(n, i)
+
+That is, SUM_n_0:N SUM_i_0:M C(n, i)
+```
+Define `fM(n) = SUM_i_0:M C(n, i)`. The following recurrence relation holds
+```
+fM(n + 1) = 2*fM(n) - C(n,M)
+if a < b, C(a, b) = 0
+```
+  
+Check: https://atcoder.jp/contests/abc235/editorial/3262
+
 ### Extended stars and bars
 Stars and bars: number of ways to split a `N` sized array into `K` sub-arrays.  
 Solve using combination: create `K-1` artificial elements for acting as splitters (bars).  
@@ -286,6 +315,12 @@ In **Ap2**, there would be `K` properties and this can be modelled to selecting 
   properties composed the `k`-sized set
   ```
   - Check: https://atcoder.jp/contests/abc266/tasks/abc266_g
+- Ways to dispose `R` red balls and `B` blue balls in `N` boxes, without having any empty box
+  - A property `P` is: box `i` is empty
+  - Similar to not allowing adjacent pairs: Iterate through forcing `k` empty boxes (at least `k` empty)
+    - Compute `C(n, i)` for choosing the certain (forced) empty boxes
+    - Multiply by how many ways dipose balls into at most `n-k` boxes (allowing empty boxes)
+  - Check: https://atcoder.jp/contests/abc235/tasks/abc235_g
 - Want `f(i)` but can only compute `g(i) = sum_j|i f(j)`
   - Want to compute `f` for exact number `i` but can only compute the sum of `f` for all `i` multiples
   - Use the sieve going to the end to the beginning
