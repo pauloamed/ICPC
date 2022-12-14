@@ -286,23 +286,27 @@ Using **Ap1** approach, there would be `2K` properties and this can be modelled 
 In **Ap2**, there would be `K` properties and this can be modelled to selecting **edges** from another graph.
    
 ### Examples
-- Solution to `x1 + x2 + ... + xn = K` w/ `xi <= Ai` constraints
-  - Define `P_i` as `xi > Ai`. Find `all - f(empty)`.  
-  - `f({xi > Ai, xj > Aj}): #confs x1+x2+...+xn = K-(Ai+1)-(Aj+1)`
-- Solution to `x1 + x2 + ... + xn = K` w/ `xi <= M` constraints
+##### Derangements; permutation not keeping original position
+  - Define `P_i` as `p_i staying in i`.  Find `all - f(empty)`.  
+  - Note that **homogenity** holds.   
+  - `f(k): #perms fixing k positions = (n-k)!`  
+  - Check: https://atcoder.jp/contests/abc214/tasks/abc214_g  
+  - Check: https://atcoder.jp/contests/arc121/tasks/arc121_e  
+##### Solution to `x1 + x2 + ... + xn = K` w/ `xi <= Ai` constraints
+- Define `P_i` as `xi > Ai`. Find `all - f(empty)`.  
+- `f({xi > Ai, xj > Aj}): #confs x1+x2+...+xn = K-(Ai+1)-(Aj+1)`
+
+##### Solution to `x1 + x2 + ... + xn = K` w/ `xi <= M` constraints
   - Define `P_i` as `xi > M`. Find `all - f(empty)`.  
   - Note that **homogenity** holds.  
   - `f(k): #confs x1+x2+...+xn = K-k*(M+1)`
-- Number of onto (surjectives) functions `A -> B`
+  
+##### Number of onto (surjectives) functions `A -> B`
   - Define `P_i` as `Bi not in range(f)` (`Bi` is element in `B`). Find `all - f(empty)`.   
   - Note that **homogenity** holds. 
-  - `f(k): #confs w/out k elements = (|B|-k)^|A|
-- Derangements; permutation not keeping original position
-  - Define `P_i` as `p_i staying in i`.  Find `all - f(empty)`.
-  - Note that **homogenity** holds. 
-  - `f(k): #perms fixing k positions = (n-k)!`
-  - Check: https://atcoder.jp/contests/abc214/tasks/abc214_g
-- Permutations of `R`, `G` and `B` elements without `RG` occuring adjacent
+  - `f(k): #confs w/out k elements = (|B|-k)^|A|`
+
+##### Permutations of `R`, `G` and `B` elements without `RG` occuring adjacent
   - A property `P` here would be an occurence of `RG`: there are a lot of properties and distinguishing them is not the objective
   - Note that **homogenity** holds. 
   - Here, instead of counting 
@@ -316,15 +320,16 @@ In **Ap2**, there would be `K` properties and this can be modelled to selecting 
   properties composed the `k`-sized set
   ```
   - Check: https://atcoder.jp/contests/abc266/tasks/abc266_g
-- Ways to dispose `R` red balls and `B` blue balls in `N` boxes, without having any empty box
+##### Ways to dispose `R` red balls and `B` blue balls in `N` boxes, without having any empty box
   - A property `P` is: box `i` is empty
   - Note that **homogenity** holds. 
   - Similar to not allowing adjacent pairs: Iterate through forcing `k` empty boxes (at least `k` empty)
     - Compute `C(n, i)` for choosing the certain (forced) empty boxes
     - Multiply by how many ways dipose balls into at most `n-k` boxes (allowing empty boxes)
   - Check: https://atcoder.jp/contests/abc235/tasks/abc235_g
-- Want `f(i)` but can only compute `g(i) = sum_j|i f(j)`
+##### Want `f(i)` but can only compute `g(i) = sum_j|i f(j)`
   - Want to compute `f` for exact number `i` but can only compute the sum of `f` for all `i` multiples
   - Use the sieve going to the end to the beginning
   - At `i`, compute `g(i)` and remove all `f(j)` for all `j` multiple of `i`; this computed `f(i)`
-
+  - Check: https://atcoder.jp/contests/abc230/tasks/abc230_g  
+  - Check: https://atcoder.jp/contests/abc206/tasks/abc206_e  
