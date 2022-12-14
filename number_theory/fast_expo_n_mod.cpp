@@ -1,12 +1,3 @@
-// recursive fast_exp
-int fastexp(int base, int expo){
-	if(expo == 0) return 1;
-	else if(expo == 1) return a % MOD;
-	int x = (base * base) % MOD;
-	if(expo & 1) return (fastexp(x, expo / 2) * base) % MOD;
-	return fastexp(x, expo / 2);
-}
-
 // expo = SUM(2^i * expo_i), expo_i: ith bit of expo
 // base^expo = base^(SUM(2^i * expo_i)) = PROD base^(2^i*expo_i)
 // we will iterate through base^(2^i) and use this value only if expo_i is on
