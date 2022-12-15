@@ -159,8 +159,9 @@ initialize the `DP` for a node with value from the big child over the cost of `O
   
 When `f(x) = n * x`, this leads to an optimization from `O(n^3)` to `O(n^2)`.
   
-Check: https://codeforces.com/contest/815/problem/C    
-Check: https://codeforces.com/gym/101964/problem/D
+Check: https://codeforces.com/contest/815/problem/C     
+Check: https://codeforces.com/gym/101964/problem/D  
+Check: https://atcoder.jp/contests/arc121/tasks/arc121_e  
 
 ### Transition looks at an interval (range query : pull dp) / Element is looked by range (range update : push dp)
 Approach solving the transitions using a RMQ/segment query structure.  
