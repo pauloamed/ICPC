@@ -333,3 +333,4 @@ In **Ap2**, there would be `K` properties and this can be modelled to selecting 
   - At `i`, compute `g(i)` and remove all `f(j)` for all `j` multiple of `i`; this computed `f(i)`
   - Check: https://atcoder.jp/contests/abc230/tasks/abc230_g  
   - Check: https://atcoder.jp/contests/abc206/tasks/abc206_e  
+  - Check: https://atcoder.jp/contests/abc248/tasks/abc248_g  
