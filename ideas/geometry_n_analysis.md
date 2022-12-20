@@ -160,3 +160,5 @@ A convex combination of a set of points is a linear combination that is both non
 With this, we know that a point is inside a polygon iff it can be represented as a convex combination of some of its vectors (which can be the polygon's vertixes).
 Also, a polygon can be seen as an infinite set of vectors.
 
+Given a convex set, a point `P` is in its convex hull iff there is a vector `(x,y)` s.t. `scalar(P, (x,y))` is maximum. If there is an edge point `eP` with `scalar(eP, (x,y)) = X`, there is also a vertice `vP` s.t. `scalar(vP, (x,y)) = X`.
+
