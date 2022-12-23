@@ -3,9 +3,13 @@
 ### Using the "indistinguishable" argument
 If you execute a random process in a set/list/container of elements but these are indistinguishable, the probability of each having a property `P` after the process (or expected value) will be the same.  
   
-Check: https://codeforces.com/gym/102302/problem/F  
-Check: https://codeforces.com/gym/104064/problem/L  
+Check: https://codeforces.com/gym/102302/problem/F   
   
+It also can be that, initially, there is one special element; but, after a move, this becomes indistinguishable in the process.
+This can be used to build the solution.  
+  
+Check: https://codeforces.com/gym/104064/problem/L  
+
 ### `E(x) = P(x > 0) + P(x > 1) + P(x > 2) + ...`
 The expected value for `x` equals to the inifite sum of the probability of `x > n`.
   
