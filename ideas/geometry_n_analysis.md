@@ -7,6 +7,9 @@ Fun facts:
 - If coordinates are `[0;C]`, there are at most `O(C^(2/3))` points inside the convex hull
   - https://codeforces.com/blog/entry/62183
 
+### Upper Hull and CHT
+Every point in the CHT maximizes `(x,y=1)` and thus will compose the upper hull border.
+
 ### Try working the formulas instead of just using the geometry lib
 For example, if you know that the points follow a formula and you are dealing the problem of checking if a line crosses these points, try working this on paper instead of jumping to the code. Use cross product and you may have now a number theory problem.
 
@@ -160,5 +163,5 @@ A convex combination of a set of points is a linear combination that is both non
 With this, we know that a point is inside a polygon iff it can be represented as a convex combination of some of its vectors (which can be the polygon's vertixes).
 Also, a polygon can be seen as an infinite set of vectors.
 
-Given a convex set, a point `P` is in its convex hull iff there is a vector `(x,y)` s.t. `scalar(P, (x,y))` is maximum. If there is an edge point `eP` with `scalar(eP, (x,y)) = X`, there is also a vertice `vP` s.t. `scalar(vP, (x,y)) = X`.
+Given a convex set, a point `P` is in its convex hull border iff there is a vector `(x,y)` s.t. `scalar(P, (x,y))` is maximum. If there is an edge point `eP` with `scalar(eP, (x,y)) = X`, there is also a vertice `vP` s.t. `scalar(vP, (x,y)) = X`.
 
