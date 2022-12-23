@@ -29,6 +29,24 @@ Check: https://community.topcoder.com/stat?c=problem_statement&pm=13596
 Some may need you to compress the graph into only useful nodes.  
 Check: https://codeforces.com/gym/101512/problem/H  
 
+#### Expected value: 
+The direct formula is something like:
+```
+[1]  f(x, i) = MIN [(f(i, i) + c) * p + (f(x + 1, i) + 1) * (1 - p)] [f(x, i + 1) + t]
+```
+Handling `f(a) * p + f(b) * (1-p)` as a transition is not feasible.
+  
+To solve this, another modeling is needed, encapsulating this special transition as an edge.
+This is due to:
+- homogenity: edges from left side in `[1]` have the same weight; evaluating only the left side `n` times can be seen as applying an edge of cost `g(n)`.
+- interleaving the evaluation of `MIN` in `[1]`, allowing to tackle this using an auxiliary function `g(n)`.
+```
+[2]  f(x) = MIN [f(x)] [f(x - i) + g(i) + t]
+g(n) = g(n - 1) + 1 + p * (g(n) + r)
+```
+
+Check: https://codeforces.com/gym/104020/problem/C
+
 #### Some problems don't look like shortest path
 Because it isn't obivious:  
 Check: https://szkopul.edu.pl/problemset/problem/ROXsaseQWYR11jbNvCgM19Er/site/?key=statement   
