@@ -284,6 +284,14 @@ We will negate these contraints and compute `all - f(empty)`. This can be done i
 - **Ap2**: `r_i` = `p_i` OR `r_i` = `q_i`  
 Using **Ap1** approach, there would be `2K` properties and this can be modelled to selecting **nodes** from a graph.
 In **Ap2**, there would be `K` properties and this can be modelled to selecting **edges** from another graph.
+
+### Executing several inc-exc solvers over `P union A_i` (`P` is a common set of properties, `A_i` is specific)
+Instead of executing the solver `|A|` times getting a cost of `O(|A| * 2^(P+1) * C)` (for each `A_i`, iterate over all properties subsets, executing a `O(C)` loop iteration),
+  
+one can precompute the answer for all subsets of `P` without (`A_i`) and solve the `|A|` single properties by adding `A_i` to these precomputed subsets of `P`.
+All subsets of `P union A_i` are in the form of: `subsets(P)` union `subsets(P) + A_i`.
+  
+Check: https://codeforces.com/gym/104114/problem/C
    
 ### Examples
 ##### Derangements; permutation not keeping original position
