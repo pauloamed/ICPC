@@ -9,6 +9,15 @@ P is sufficient and necessary for Q, (P => Q) and (Q => P)
 
 ## General
 
+### Rotation and reversal of arrays
+It is performed several rotations and reversals of an array `N=10^5`, find the final configuration of it.  
+  
+Basically, perform `p = -p % n` and `p = (p + x) % n` operations in a position `p`.  
+Note that these operations can be merged, apply the result to each `i`.
+
+  
+Check: https://atcoder.jp/contests/arc153/tasks/arc153_b
+
 ### Operations and invariants
   
 Check: https://atcoder.jp/contests/arc136/tasks/arc136_c
