@@ -151,6 +151,55 @@ Check: https://codeforces.com/gym/101666/problem/G
   
 ## Optimization
 
+### Decomposable transitions costs: `(Ai - Aj) ^ 2` and similars
+In some max/min DPs, we are transitioning from `i` to `j` and this is followed by a `cost(Ai, Aj)`.
+```
+f_i = max_j>i (f_j + cost(A_i, A_j))
+```
+It may be that `cost(A_i, A_j)` is decomposable into two functions that depend solely on `i` or `j`.  
+We are calling these costs functions decomposable. Following are some examples.
+
+#### `cost(A_i, A_j) = A_i + A_j`
+Just `f_i = A_i + max_j>i (f_j + A_j)`
+
+#### `cost(A_i, A_j) = (A_i + A_j)^2 = A_i^2 + 2 * A_i * A_j + A_j^2` (Convex hull trick)
+By querying `j`, `2 * A_i * A_j + A_j^2` can be seen as evaluating a linear function `g(x) = 2*A_j*x + A_j^2`, where `x = A_i`.
+  
+Keeping the maximal linear functions for each query value can be done using CHT.
+
+#### `cost(A_i, A_j) = |A_i - A_j|`
+It is trickier since `|A_i - A_j|` depends on `A_i<A_j`.
+We will decompose this query in two cases: `A_i<A_j` and `A_i>A_j` and index `A_k` values in 2 easy queriable structures.
+  
+That is, when visiting `A_i`, execute the cases:
+```
+(C1: A_i < A_j) f_i = -A_i + max_j>i (f_j + A_j)
+(C2: A_i > A_j) f_i = A_i + max_j>i (f_j - A_j)
+```
+Compute `C1` by quering `max` on `A_k > A_i` (a suffix starting after `A_i`); 
+similarly, compute `C2` by quering `max` on `A_k < A_i` (a preffix ending before `A_i`).
+  
+After computing `f_i`, update the `C1`-structure `G` at position `A_i` w/ `max(G_(A_i), f_i + A_i)`;
+similarly update the `C2`-structure `H` at position `A_i` w/ `max(H_(A_i), f_i - A_i)`;
+
+#### `cost(A_i, A_j) = (j - i) / M`
+Note that `floor((j-i)/M) = `
+```
+(C1: j < i (mod M)) floor(j/M) - floor(i/M) - 1
+(C2: j >= i (mod M)) floor(j/M) - floor(i/M)
+```
+Then,
+```
+(C1) f_i = -floor(i/M) - 1 + max_j>i (f_j + floor(j/M))
+(C2) f_i = -floor(i/M) + max_j>i (f_j + floor(j/M))
+```
+Addressing `C1` and `C2` can be done as in `|A_i - A_j|`.
+Index 2 queriable structures using `k % M` and, when at `i`, 
+perform a query on `C1`-structure `G` on the prefix smaller then `i`
+and a quer on `C2`-structure `H` on the suffix starting at `i`.
+  
+Check: http://qoj.ac/problem/4590  
+
 ### Avoid doing transitions on Big Child in tree
 Let's say a transition costs `O(f(sz(T)))` but initialization of `DP` can process ONE transition in `O(sz(T)))`.
   
