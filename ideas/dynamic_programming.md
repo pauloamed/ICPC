@@ -182,7 +182,7 @@ similarly, compute `C2` by quering `max` on `A_k < A_i` (a preffix ending before
 After computing `f_i`, update the `C1`-structure `G` at position `A_i` w/ `max(G_(A_i), f_i + A_i)`;
 similarly update the `C2`-structure `H` at position `A_i` w/ `max(H_(A_i), f_i - A_i)`;
 
-#### `cost(A_i, A_j) = (j - i) / M`
+#### `cost(A_i, A_j) = floor((j - i) / M)`
 Note that `floor((j-i)/M) = `
 ```
 (C1: j < i (mod M)) floor(j/M) - floor(i/M) - 1
