@@ -121,6 +121,8 @@ void built_pts(int MAX_COORD){
 	});
 }
  
+// chosen points are endpoints from intervals in GD
+// if GD is not a cycle (front == back), also use endpoint from last GD element
 int get_min_clique(const vector<pair<int,int>> &_v, int MAX_COORD = MAXN){
 	v = _v;
 	n = v.size();
