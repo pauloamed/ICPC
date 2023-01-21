@@ -9,6 +9,7 @@
 4- ceil(ceil(A/B)/C) = ceil(A/(B*C))
 5- If x+y is prime, either (x=y=1) or (x and y have different parity)
 6- First multiple of `x >= L`: `ceil(L/x)*x`
+7- Given S with mmc(S) > Y, its sum is minimized if its elements are in the form p_i^e_i, where p_i is prime
 ```
 
 ### Number of coprimes pairs without Mobius
