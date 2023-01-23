@@ -30,7 +30,10 @@ Note that these operations can be merged. In the end, just apply the final resul
 Check: https://atcoder.jp/contests/arc153/tasks/arc153_b
 
 ### Operations and invariants
+Mainly, there is a `f()` for the global state and operations guarantee decreasal in this state. 
+We want to get to `f() = 0`.  
   
+Check: https://open.kattis.com/problems/enemydivision  
 Check: https://atcoder.jp/contests/arc136/tasks/arc136_c
 
 ### Objective function is a ratio
