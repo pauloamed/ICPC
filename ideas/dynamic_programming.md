@@ -37,6 +37,15 @@ Pushing and pulling in the same implementation: https://atcoder.jp/contests/abc2
 
 ## Modellings
 
+### When `N` is not a dimension
+In some DPs, even if the problem relates to a structure of size `N`, it may be that `N` is not a dimension, but appears only in the transitions.
+
+#### Ways of building sequence of size `N` w/ `xor 0` and `sum M`
+`dp[i][k]:` sequences using until `i`-th bit with sum `k` and xor `0`  
+`N` will appear in the transition when choosing which of the `N` numbers will recieve `2*l` active bits (`C(N,2l)`).
+  
+Check: https://atcoder.jp/contests/arc116/tasks/arc116_d
+
 ### Independent set on layered graph
 Use bitmasks: `dp[i][mask]`: at layer `i` used `mask` from this layer
 
