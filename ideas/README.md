@@ -199,7 +199,13 @@ Check: https://atcoder.jp/contests/abc107/tasks/arc101_b
 #### Median on sub-arrays `[TODO]`
 https://codeforces.com/blog/entry/18879?#comment-238126
 
-
+#### Game: A chooses max vs. B chooses first free
+Transform: set bottom half elements to `1` and top half to `-1`  
+  
+If we apply this transform, A can get N/2 top values if every prefix sum of the vector is non-negative. 
+  
+Check: https://atcoder.jp/contests/arc138/tasks/arc138_c
+  
 ### Use offset in structures for values
 If modifying values kept in a structure by subtracting/adding `x` at each iteration, instead of updating the stored values, create an offset for both stored values and values to be stored comprising such modifications.
   
