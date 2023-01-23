@@ -9,12 +9,23 @@ P is sufficient and necessary for Q, (P => Q) and (Q => P)
 
 ## General
 
+### Constructive: `x_0 < x_1 < x_2 < ...` => `y_0, y_1, y_2, ...`
+You need to build a sequence with a `x_0 < x_1 < x_2 < ...` constraint between variables.
+It may be better to change this to constraint over each variable. 
+Do this by defining
+```
+y_i = x_i - x_i-1, i > 0
+y_0 = x_0
+```
+Now, it must be that `y_i > 0` for `i > 0`.
+  
+Check: https://atcoder.jp/contests/arc153/tasks/arc153_c
+
 ### Rotation and reversal of arrays
 It is performed several rotations and reversals of an array `N=10^5`, find the final configuration of it.  
   
 Basically, perform `p = -p % n` and `p = (p + x) % n` operations in a position `p`.  
-Note that these operations can be merged, apply the result to each `i`.
-
+Note that these operations can be merged. In the end, just apply the final result to each `i`.
   
 Check: https://atcoder.jp/contests/arc153/tasks/arc153_b
 
