@@ -109,6 +109,11 @@ Properties:
   - If `0` lies on inside `A-B`, `A /\ B` is a polygon
   - `0` is inside `A-B` iff exists `a \in A` and `b \in B` s.t. `a = b <=> a - b = 0`. Since the image of `a - b` equals `A-B`, `0 \in A-B`.
 - `argmin_v((A + {v}) /\ B = NULL) = argmin_v(0 \not_in A-B+{v})`
+  
+Can be seen as the combination of convex sets represented by convex polygons.
+Combination in the sense of the definiton (`x + y, x \in X, y \in Y`) 
+   
+Check: https://open.kattis.com/problems/joiningflows
 
 ### Subset of vectors w/ sum w/ maximal sqrt norm
 Observe the answer vector `V`. Only vectors `u` with `angle(V,u) <= 90degs` were used to build `V`.
