@@ -12,6 +12,20 @@ Check: https://codeforces.com/gym/104064/problem/L
 
 ### `E(x) = P(x > 0) + P(x > 1) + P(x > 2) + ...`
 The expected value for `x` equals to the inifite sum of the probability of `x > n`.
+
+#### Expected number of steps until absorbing state `T` in a Markov walk
+- Create a `I - P` (identity minus probability `i->j`) matrix without the final (absorbing) state `T`
+- Augment this matrix by adding `1...1` as a last column
+- Run gaussian elimination, recover `ans`
+- `ans[i]` number of expected steps from `i` until `T`
+  
+Note that `E(i) = 1 + sum_j_1_N (p_j_i * E(j))` (`E(i):` expected steps from `i` to `T`)
+  - Expected number of steps from `i` to `T` equals to `1+prob_i_j*E(j)` (recursive definition)
+  - `E(i) - sum_j_1_N (p_j_i * E(j)) = 1` 
+    - What yields (`I - P`)
+  - Note that, if from `i` to `j`, the number of steps is different from `1`, we can modify the equation and change the modelling to handle this case.
+ 
+Check: https://codeforces.com/blog/entry/60003
   
 #### Exepcted number of valid moves until move to final state (finite)
 Every move is an independent trial that may go to the final state.
