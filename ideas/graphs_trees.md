@@ -9,6 +9,12 @@ If there is a valid toposort in this extended DAG, there is also one in the orig
   
 Check: https://atcoder.jp/contests/abc277/tasks/abc277_f  
 
+### All paths are subsequences of the toposort array
+Thus, if we split the toposort array in a prefix and a suffix, each path will be affected by this.
+For instance, if we paint `topo[:i]` black and `topo[i+1:]` white, all paths will be of the form: `www...bbb`.
+  
+Check: https://open.kattis.com/problems/customscontrols
+
 ### Query: walk 10^9 steps from a node
 Binary lifting or cycle detection may be used. This is probably a graph in which every outdegree is `1`.
 
