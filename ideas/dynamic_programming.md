@@ -160,6 +160,23 @@ Check: https://codeforces.com/gym/101666/problem/G
   
 ## Optimization
 
+### `f(x, a) = min_b_gcd(a,b)!=1 f(y, b)` in `O(VlogV)`
+We are transitioning from `x` to `y`. There is a cost function `f_x(v)` to be minimized (`f(x,v):` min cost of `x` if assumes value `v`).
+  
+Functional equation is: `f(x, a) = min_b_gcd(a,b)!=1 f(y, b)` (minimum value for `(x,v)` comes from `(y,b)` where `b` is **not coprime** with `a`).
+  
+Optimize this by defining:
+- `g(x,v):` min cost of `x` if gcd used at transition is `v`
+- `h(x,v):` min cost that `x` "offers" to `y` (`y` is LHS and `x` RHS) if value of `y` is `v`
+
+Functional equation can then be rewriten as: `f(x, a) = h(y, a)`
+  
+Compute `g` and `h` using the sieve:
+- `g_x(a) = min_b_a|b f_x(b)` (iterate through multiples of `a`, pull dp)
+- `h_x(a) = min_b_b|a g_x(b)` (iterate through multiples of `b` (divisors of `a`), push dp)
+  
+Check: https://open.kattis.com/problems/gcdharmony
+  
 ### Decomposable transitions costs: `(Ai - Aj) ^ 2` and similars
 In some max/min DPs, we are transitioning from `i` to `j` and this is followed by a `cost(Ai, Aj)`.
 ```
