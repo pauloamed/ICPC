@@ -10,6 +10,7 @@
 5- If x+y is prime, either (x=y=1) or (x and y have different parity)
 6- First multiple of `x >= L`: `ceil(L/x)*x`
 7- Given S with mmc(S) > Y, its sum is minimized if its elements are in the form p_i^e_i, where p_i is prime
+8- Maximum number of values in [1;V] that do not form a triangle is O(log(V)) (2log(V) is fine); its fibonacci: A + B = C + 1
 ```
 
 ### Number of coprimes pairs without Mobius
