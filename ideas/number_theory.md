@@ -309,7 +309,10 @@ Check: https://codeforces.com/gym/104114/problem/C
 ##### Solution to `x1 + x2 + ... + xn = K` w/ `xi <= M` constraints
   - Define `P_i` as `xi > M`. Find `all - f(empty)`.  
   - Note that **homogenity** holds.  
-  - `f(k): #confs x1+x2+...+xn = K-k*(M+1)`
+  - `f(k): #confs x1+x2+...+xn = K-k*(M+1)` (remember to choose: `C(n, k)`)
+###### Number of ways to dispose `B` blue and `R` red balls without placing `M+1` adjacent blue balls  
+- We are summing `R+1` numbers (quantity of blue balls in between reds) that must not be greater than `M`
+- Check: https://codeforces.com/group/XrhoJtxCjm/contest/422715/problem/A
   
 ##### Number of onto (surjectives) functions `A -> B`
   - Define `P_i` as `Bi not in range(f)` (`Bi` is element in `B`). Find `all - f(empty)`.   
