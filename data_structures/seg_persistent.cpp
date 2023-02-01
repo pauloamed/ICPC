@@ -71,8 +71,8 @@ template<int MAXN> struct PersSegtree{
       return build_node(-1, -1, x);
     }else{
       int mid = (l + r)/2;
-      int left_id = _update_range(l, mid, l_ptr[node], i, x);
-      int right_id = _update_range(mid+1, r, r_ptr[node], i, x);
+      int left_id = _point_update(l, mid, l_ptr[node], i, x);
+      int right_id = _point_update(mid+1, r, r_ptr[node], i, x);
       return build_node(left_id, right_id, segt[left_id] + segt[right_id]);
     }
   }
