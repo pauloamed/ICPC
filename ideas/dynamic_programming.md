@@ -37,6 +37,51 @@ Pushing and pulling in the same implementation: https://atcoder.jp/contests/abc2
 
 ## Modellings
 
+### Computing number of permutations when adding `k` of `i`-th element
+Let's say we have `n` elements. There are two ways to do it:
+- **1:** Choose `k` of the `n + k` elements to put the `i` elements
+- **2:** Multiply the current state by `inv_fat(k)` and, when computing the final answer, multiply by `n!`
+
+These are equivalent:
+- **1:** you will have `C(k0, k0) * C(k0 + k1, k1) * C(k0 + k1 + k2, k2) * ... = C(k0+k1+k2+k3+...,k0 k1 k2 k3 ...)`
+- **2:** yuo will have `inv_fat(k0) * inv_fat(k1) * inv_fat(k2) * ... * fat(k0+k1+k2+k3+...) = C(k0+k1+k2+k3+...,k0 k1 k2 k3 ...)`
+
+### Subset of `N` elements w/ maximal sum `<= W`
+First, sort elements by decrasing value. Now, a subset that respect such constraint can be bijected to **any subsequence followed by a contiguous subarray** (also called suffix).  
+This modelling can be seen as trivial, but it makes sense for this restricted-sum problem since, in a solution, if fixing that what follows is strictly a contiguos subarray, there are at most `N` greedly-computable subarrays that can be used.  
+  
+For instance, `[5,4,3,2,1], W = 10`. If we take `(5)`, the contiguos subarrays that can be matched w/ it are `[3,2]` and `[2,1]`.
+These can also be seen as: `[5,_,3,2,_]` and `[5,_,_,2,1]`.  
+  
+**Obs1:** it makes sense to enforce a gap before the suffix `s`. If there is not one, the actual suffix would be the merge between the last active subarray in the subsequence and `s`.  
+  
+**Obs2:** when repeated elements occur, we need to take caution to nut hurt our bijection:  
+If the input is `[3,2,2,2,1]`, the following 3 represent the same subset:  
+- `[3,2,2,_,1]`: subsequence is `(3,2,2)`, `[1]` is suffix  
+- `[3,2,_,2,1]`: subsequence is `(3,2)`, `[2,1]` is suffix    
+- `[3,_,2,2,1]`: subsequence is `(3)`, `[2,2,1]` is suffix  
+Thus, we must fix how we are taking the elements when there is more than one to be taken.  
+It makes sense to remove them from left to right (arbitrary). Thus, the correct representation would be:
+- `[3,_,2,2,1]`
+  
+**Obs3:** the subsequence can be empty: `[3,2,2,2,1] W=5`, one of the solutions is `[_,_,2,2,1]`  
+  
+Now, we build a dp `f(i, w):` given that we considered until the `i`-th smallest value (one value can have multiple elements) and that the current sum is `w`, number of solutions (subsequences respecting our bijection).  
+The functional equation is `f(i, w) += f(i - 1, w - (j * Vi))`, if we are adding `j` elements of the `i-th` smallest value to a solution.  
+  
+Consider `Delta f(i, w)` (sum of updates). This is the number of subsequences created after considering the `i`-th value. These are different from the ones already stored in `f()` and can thus be used to compute new solutions by matching with the contiguos intervals.  
+That is, having `D` (delta) subsets and `S` valid contiguos intervals, we build `D*S` new solutions.  
+  
+Now there remains the question: how many contiguos intervals can be considered from `(i, w)`?  
+These can be found before and kept in stack. Find them using a simple bruteforce. Now, while we advance `i`, remove those intervals that cross `i` or don't present a gap, keeping only the valid ones.
+  
+#### Permutations of `N` elements w/ maximal sum `<= W`
+Similar to the subset problem, but now we need to keep the permutation counts (and repeated elements discounts) in `f`.  
+A new `dp` state will be needed since the number of inserted elements is necessary to compute the answer (both in `f` and for the suffixes).
+Also, if we add `j` elements from value `i`, discount the current permutation w/ `1/(j!)` 
+    
+Check: https://codeforces.com/group/XrhoJtxCjm/contest/422715/submission/191737107
+
 ### When `N` is not a dimension
 In some DPs, even if the problem relates to a structure of size `N`, it may be that `N` is not a dimension, but appears only in the transitions.
 
