@@ -2,14 +2,14 @@
 
 class LagrangePoly {
 public:
-  LagrangePoly(std::vector<mint> _a) {
+  LagrangePoly(vector<mint> _a) {
     //f(i) = _a[i]
     //interpola o vetor em um polinomio de grau y.size() - 1
     y = _a;
     den.resize(y.size());
     int n = (int) y.size();
     for(int i = 0; i < n; i++) {
-      den[i] = ifat[n - i - 1] * ifat[i] ;
+      den[i] = invfat[n - i - 1] * invfat[i] ;
       if((n - i - 1) % 2 == 1) {
           den[i] = -den[i];
       }
@@ -21,7 +21,7 @@ public:
     if(x.get() < n) {
       return y[x.get()];
     }
-    std::vector<mint> l, r;
+    vector<mint> l, r;
     l.resize(n);
     l[0] = 1;
     for(int i = 1; i < n; i++) {
@@ -41,5 +41,5 @@ public:
   }
     
 private:
-  std::vector<mint> y, den;
+  vector<mint> y, den;
 };
