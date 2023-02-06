@@ -1,3 +1,5 @@
+std::mt19937 rng((int) std::chrono::steady_clock::now().time_since_epoch().count());
+
 const int NUM_HASHES = 3;
 
 struct PolyHasher{
