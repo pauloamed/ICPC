@@ -2,17 +2,21 @@
 using namespace std;
 
 struct Node{
-
-  Node operator+(const Node x){
-
+  int x;
+  Node(){x = 0;}
+  Node(int y){x = y;}
+  Node operator+(const Node n){
+    Node ret;
+    ret.x = x + n.x;
+    return ret;
   }
 };
 
-template<int MAXN> struct PersSegtree{
-  // 4 * MAXN + 50 * MAXQ
-  Node segt[64*MAXN];
-  int l_ptr[64*MAXN], r_ptr[64*MAXN];
-  int time2node[MAXN];
+template<int MAXN, int MAXQ> struct PersSegtree{
+  const static int MAX = 4 * MAXN + 25 * MAXQ;
+  Node segt[MAX];
+  int l_ptr[MAX], r_ptr[MAX];
+  int time2node[MAX];
  
   int n;
   int next_node = 0;
@@ -68,7 +72,7 @@ template<int MAXN> struct PersSegtree{
   int _point_update(int l, int r, int node, int i, int x){
     if(i > r || l > i) return node;
     if(i == r && i == l){
-      return build_node(-1, -1, x);
+      return build_node(-1, -1, {x});
     }else{
       int mid = (l + r)/2;
       int left_id = _point_update(l, mid, l_ptr[node], i, x);
@@ -76,26 +80,55 @@ template<int MAXN> struct PersSegtree{
       return build_node(left_id, right_id, segt[left_id] + segt[right_id]);
     }
   }
-
-  int kth(int k, int l, int r, vector<int> &pos, vector<int> &neg){
-    if(l == r) return l;
-    int tot_left = 0;
-    for(auto x : pos) tot_left += segt[l_ptr[x]];
-    for(auto x : neg) tot_left -= segt[l_ptr[x]];
-
-    int mid = (l + r) / 2;
-    if(tot_left >= k){
-      for(auto &x : pos) x = l_ptr[x];
-      for(auto &x : neg) x = l_ptr[x];
-      return kth(k, l, mid, pos, neg);
-    }else{
-      for(auto &x : pos) x = r_ptr[x];
-      for(auto &x : neg) x = r_ptr[x];
-      return kth(k - tot_left, mid + 1, r, pos, neg);
-    } 
-  }
 };
 
-int main(){
+PersSegtree<100000, 100000> seg;
+
+int32_t main(){
+  cin.tie(NULL)->sync_with_stdio(false);
+  
+  int n; cin >> n;
+  map<int, vector<int>> m;
+  for(int i = 0; i < n; ++i){
+    int x; cin >> x;
+    m[x].push_back(i);
+  }
+  
+  seg.init(n);
+ 
+  vector<pair<int,int>> v;
+  map<int, int> m2;
+  for(auto [x, u] : m){
+    int t;
+    for(auto i : u) t = seg.update(i, x);
+    v.push_back({x, t});
+  }
+
+
+  int q; cin >> q;
+  while(q--){
+    int l, r; cin >> l >> r; l--; r--;
+    if(v[0].first > 1){
+      cout << 1 << "\n";
+      continue;
+    }
+
+    int ans = 1;
+    int prev_id = -1;
+    while(true){
+      auto it = prev(lower_bound(v.begin(), v.end(), ans, [](const pair<int,int> &a, int x){
+        return x >= a.first;
+      }));
+      auto ic = it - v.begin();
+      if(ic <= prev_id) break;
+      prev_id = ic;
+      if(it->first <= ans){
+        auto t = it->second;
+        ans = seg.query(l, r, t).x + 1;
+      }else break;
+    }
+    cout << ans << "\n";
+  }
+
 
 }
