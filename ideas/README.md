@@ -9,6 +9,29 @@ P is sufficient and necessary for Q, (P => Q) and (Q => P)
 
 ## General
 
+### Operations on subarrays
+
+#### Inverting bits of subarrays
+If you have a bit-array `a` and do operations of subarrays bit inversion, there is a bijection to it:
+- use the transformed array `b[i] = a[i - 1] ^ a[i]`
+- inverting `[l:r]` in `a` is equivalent to inverting `b[l]` and `b[r+1]`
+  
+Check: https://codeforces.com/gym/101519/problem/D  
+
+#### Summing on a contiguos subarray
+Some problems have the operation to sum on contiguos subarrays. Also, depending on the objective, it makes transforming the original array to an array of differences:
+- define `bi = a(i+1) - ai`
+- assume, enforce `a0 = an + 1 = 0`
+- transforming: `0, a1, a2, ..., an, 0 => a1, a2 - a1, a3 - a2, ..., -an`
+    
+Under this transform, note that all `ai` are 0 iff all `bi` are 0.
+Now, consider the operation: add `c` to `a[i:i+k-1]`.
+In `b`, this translates to `bi+=c`, `b(i+k)-=c`.
+  
+Thus, the problem of using this operation in `a` to turn it to `0` can be translated to the equivalent operation and constraint in `b`.  
+    
+Check: https://atcoder.jp/contests/abc288/tasks/abc288_d  
+
 ### Hash polynome multisets
 Some multisets `S` are well described by the union of `K` image multisets on contiguos points of polynomes.
 For instance,
@@ -93,23 +116,33 @@ Some tweaks but same main idea. Check: https://atcoder.jp/contests/abc275/tasks/
   
 Check: https://oj.uz/problem/view/APIO15_skyscraper  
 
-### Evaluation of sums of sliding window on ordered list
+### Evaluation of sums of sliding window on ordered list w/ restricted delta
 Let's say we are sliding a window of size `K` through an orderd list of integers.  
 If we create a virtual list of the sum for each sliding window,
 - it will be a sorted array
 - the difference between the `i`-th and `i+1`-th element is `V[k+i] - V[i]`
 
 #### Solving IOI16 - Molecules
-https://oj.uz/problem/view/IOI16_molecules  
+- We want a subset of elements which sum is inside `[L;R]`
+- **C:** It is guaranteed that `max_val - min_val <= R - L`
 
 **1:**
-Observe the answer: let's say the answers has size `k`.
+Observe the answer: let's say the answers has size `k` (size of subset).
 Then, if there is an answer of size `k`, in the ordered list of values, it must be that `sum(0:k-1) <= R` and that `sum(n-k:n-1) >= L`.
-That is, there is an intersection between `[L;R]` and `[sum(0:k-1); sum(n-k:n-1)]`.  
+That is, there is an intersection between intervals `[L;R]` and `[sum(0:k-1); sum(n-k:n-1)]`.  
+  - Since `sum(0:k-1) <= R`, `[L;R]` ends after `[sum(0:k-1); sum(n-k:n-1)]` begins  
+  - Since `sum(n-k:n-1) >= L`, `[L;R]` starts before `[sum(0:k-1); sum(n-k:n-1)]` ends  
   
 **2:** 
-Also, the points of these virtual list have distance at most `R-L`.
-Thus, if we iterate through this list, it must be that at least one of such points are inside `[L;R]`.
+Also, consecutive points of these virtual list have distance at most `R-L` (**C**).
+Thus, if we iterate through this list, it must be that at least one of such points are inside `[L;R]`.  
+- Think of the evaluation of the sliding window as points in a line
+  - Per **1**, `[L;R]` intersects w/ the interval between the first and last points
+  - Since the distance between consecutive points is at most `R-L`, there can't be a gap greater than the size `[L;R]`
+- If the intersection occurs in the beggining or end, the first/last points would be valid answers
+- Else, the gap indicates that there will be an intersection
+  
+Check: https://oj.uz/problem/view/IOI16_molecules  
 
 ### System of Difference Constraints
 Given is a list of **inequalities** in the form:
@@ -386,13 +419,6 @@ Lets say we have sets `A` and `B` and we are assigning elements from `B` to `A`.
 If `cost(a) = sz(b) + cost(b)`, i.e. the cost of assiging `b \subset B` to element `a` equals to a `cost(b)` plus `sz(b)`,
 - Then we can update values in `B` with `-1` since this value will always be accounted in the final result.
 - It is like every element has a contribution to `sz(b)` and, since element will be used **exactly** once, we can compute this contribution beforehand.
-
-### Inverting bits of subarrays
-If you have a bit-array `a` and do operations of subarrays bit inversion, there is a bijection to it:
-- use the transformed array `b[i] = a[i - 1] ^ a[i]`
-- inverting `[l:r]` in `a` is equivalent to inverting `b[l]` and `b[r+1]`
-  
-Check: https://codeforces.com/gym/101519/problem/D  
 
 ## Structures
 
