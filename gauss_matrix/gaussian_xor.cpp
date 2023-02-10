@@ -59,7 +59,7 @@ namespace xor_base{
     bitset<MAXN> ans;
     for(int i = MAXN - 1; i >= 0; --i){
       if(!base[i][i]) continue;
-      int half = (1 << (curr_cnt - 1));
+      int half = (1LL << (curr_cnt - 1));
       if(!ans[i]){
         if(k > half){
           ans ^= base[i];
