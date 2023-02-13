@@ -54,6 +54,22 @@ Subtree(a)--a--b--c--d--e--Subtree(e)
 (u,v), s.t. dist(u,v) <= D: u,v \in {a,b,c,d,e,X,Y,Z,X',Y',Z'}
 ```
 
+### Trees: Given a set of paths, find the set of nodes of minimal size that contain all paths
+Just the set of LCA's of all paths, generalization of the array problem.
+  
+Check: https://codeforces.com/contest/1709/problem/E
+
+### Trees: Sack with removal
+It may be that, while during sack we want to stop considering a whole subtree.
+For this, check the code in problems.  
+   
+The idea is:  
+- use a time for entering and a time for leaving a node (instead of new time only entering)  
+- keeping a "range update" array marking `in` and `out` of a deleted subtree  
+- erasing the current state when keep is set if subtree must go  
+  
+Check: https://codeforces.com/contest/1709/problem/E  
+
 ### Trees: iterativelly: find deepest node `X` from root -> destroy nodes in path from `X` to root -> solve created trees
 Run an euler tour in your tree and also compute the depths. Label each node to it's order in the euler tour. Keep a segtree for RMQ and sum update using the created indexes.  
   
