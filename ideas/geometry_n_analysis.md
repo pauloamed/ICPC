@@ -7,6 +7,15 @@ Fun facts:
 - If coordinates are `[0;C]`, there are at most `O(C^(2/3))` points inside the convex hull
   - https://codeforces.com/blog/entry/62183
 
+### Sum of `k` vectors "dominates" a query point
+If `k=1`, is equivalent to checking if the query point is inside of the Chull of such vectors.  
+   
+If we are combining these vectors `k` times, we are actually summing (minkoviski sum) the Chull with itself `k` times. 
+This is equivalent to multiplying each Chull coordinate by `k`.  
+And, for checking if the point is inside, we can also just divide it by `k`, leaving the chull coordinates fixed.  
+  
+Check: https://open.kattis.com/problems/hiringhelp  
+
 ### Upper Hull and CHT
 Every point in the CHT maximizes `(x,y=1)` and thus will compose the upper hull border.
 
