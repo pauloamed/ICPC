@@ -63,16 +63,16 @@ template<int MAXN, int MAXQ> struct PersSegtree{
     return _rng_query(0, n - 1, time2node[time], lq, rq);
   }
   
-  int update(int pos, int x, int time = -1){
+  int update(int pos, Node x, int time = -1){
     if(time == -1) time = next_time - 1;
     time2node[next_time] = _point_update(0, n - 1, time2node[time], pos, x);
     return next_time++;
   }
 
-  int _point_update(int l, int r, int node, int i, int x){
+  int _point_update(int l, int r, int node, int i, Node x){
     if(i > r || l > i) return node;
     if(i == r && i == l){
-      return build_node(-1, -1, {x});
+      return build_node(-1, -1, x);
     }else{
       int mid = (l + r)/2;
       int left_id = _point_update(l, mid, l_ptr[node], i, x);
