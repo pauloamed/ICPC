@@ -24,9 +24,18 @@ For example, if you know that the points follow a formula and you are dealing th
 
 ### Manhattan to Chebyshev distante
 Chebyshev distance: `D(X,Y)=max(|X_i-Y_i|)`  
-The Manhattan distance between points `X` and `Y` is "equivalent" to the Chebyshev distance between `X'` and `Y'`, where `P'` is the expansion of the abs for a point (all `2^(d-1)` combinations of signals. One coordinate can be fixed since we are taking the abs). Ex:
-- `(x,y)` => `(x+y,x-y)`
-- `(x,y,z)` => `(x+y+z,x+y-z,x-y+z,x-y-z)`  
+The Manhattan distance between points `X` and `Y` is "equivalent" to the maximum Chebyshev distances between points `X'` and `Y'`, where `P'` is a point in which each the `2^(d-1)` coordinates is the sum of coordinates of `P` while varying signals. Ex:
+- `(x,y)` => `(x+y,x-y)` (`Xd=2`, `X'd=2`)
+- `(x,y,z)` => `(x+y+z,x+y-z,x-y+z,x-y-z)` (`Xd=3`, `X'd=4`)
+
+Note that the Manhattan distance between `A=(a,b)` and `B=(x,y)` equals `|a-x|+|b-y|`, which can be rewritten as `max(a-x,x-a) + max(b-y,y-b)`.
+Instead of creating 2 choices for each coordinate, we can generate all combinations as:
+- Manhatthan distance = `max((a-x)+(b-y), (a-x)+(y-b), (x-a)+(b-y), (x-a)+(y-b)) = max(a-x,x-a) + max(b-y,y-b)`
+- If we reorder terms, keeping values from each point `A,B` together: `max((a+b)-(x+y), (a-b)-(x-y), (x-y)-(a-b), (x+y)-(a+b))`
+- Further: `max(|(a+b)-(x+y)|, |(a-b)-(x-y)|)`
+- Now, this is in the form of Chebischev, create `A'=(a+b,a-b)` and `B'=(x+y,x-y)`, the answer is `Chebyschev(A',B')=max(|A'_i, B'_i|)`
+  - For each axis, coordinates have the same signal, but one will be switched when perfoming Chebischev's `|a_i-b_i|`, what agrees with Manhattan
+  
 Check: https://www.spoj.com/problems/DISTANCE/
 
 ### Place the largest non-overlapping polygon without touching other already placed
