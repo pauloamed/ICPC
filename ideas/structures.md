@@ -18,3 +18,8 @@ Every visited segment is either updated or deleted. One can only delete inserted
 **Note:** dividing by `K` or successive `phi()`, `C=log`
   
 Check: https://atcoder.jp/contests/abc256/tasks/abc256_h
+
+### Use offset in structures for values
+If modifying values kept in a structure by subtracting/adding `x` at each iteration, instead of updating the stored values, create an offset for both stored values and values to be stored comprising such modifications.
+  
+Check: https://atcoder.jp/contests/agc024/submissions/33929120
