@@ -1,8 +1,14 @@
 # Transforming
 Stuff to try for changing perspective over some problems.
 
-### Operations on subarrays
+### Abs vs. min function
+It is true that `∣∣x−a∣−b∣=min(∣x−(a−b)∣, ∣x−(a+b)∣)`.
+  
+In a problem where we are interested in minimizing `q(x) = min_i(||x-a_i|-b_i|)`, we can apply this reduction, simplifying the problem to finding the closes point (between all `a_i-b_i`, `a_i+b_i`) to `x`.  
+  
+Check: https://atcoder.jp/contests/arc155/tasks/arc155_b  
 
+### Operations on subarrays
 #### Inverting bits of subarrays
 If you have a bit-array `a` and do operations of subarrays bit inversion, there is a bijection to it:
 - use the transformed array `b[i] = a[i - 1] ^ a[i]`
