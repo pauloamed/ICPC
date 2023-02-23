@@ -13,6 +13,19 @@
 8- Maximum number of values in [1;V] that do not form a triangle is O(log(V)) (2log(V) is fine); its fibonacci: A + B = C + 1
 ```
 
+### Transform when counting predicate over sequences' elements
+```
+X: sequence of numbers
+P(x) = x >= k
+
+Ans = sum_X (number of X_i s.t. P(X_i))
+= sum_X sum_i P(X_i) = sum_i sum_X P(X_i)
+= sum_i (number of X s.t. P(X_i))
+= (number of X s.t. P(X_1)) * N [There is nothing special about i, X_i]
+```
+  
+Check: https://atcoder.jp/contests/abc290/editorial/5813
+
 ### Number of coprimes pairs without Mobius
 Solve using inclusion-exclusion.
 The property is: prime `p` divides the pair.
