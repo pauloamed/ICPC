@@ -1,5 +1,15 @@
 # Graphs and trees
 
+### Removing leaves = Pop front/back in paths
+One can see the process of removing leaves from a tree as pop front/back from pathes.
+  
+The removal of one leaf `x` is the popfront from paths starting at `x` and popback from paths ending at `x`.
+Removal of a pair of leaves `x,y` is popfront/popback from pathes `x...y` and `y...x` but also popfronts from `x...z (z!=y)`, `y... (z!=x)` and popbacks `z...x (z!=y)`, `z...y (z!=x)`
+  
+If the problem concearns solving stuff regarding all paths from a tree, controlling these using leaf manipulation can be useful.
+  
+Check: https://atcoder.jp/contests/arc156/tasks/arc156_c
+
 ### TopoSort All-to-all relation - Reducing `O(|A||B|)` edges to `O(|A|+|B|)` edges
 Let's say we have two sets of nodes `A` and `B`. Each node in `A` points to every node in `B` (all-to-all).  
 Instead of creating `O(|A||B|)` edges, create a virtual node `V` comprising this relation:
