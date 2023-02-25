@@ -132,6 +132,17 @@ Can be seen as the combination of convex sets represented by convex polygons.
 Combination in the sense of the definiton (`x + y, x \in X, y \in Y`) 
    
 Check: https://open.kattis.com/problems/joiningflows
+  
+#### Minkoviski sum of arrays upper hulls in `O(logN^2)`
+Let's say that two arrays `A`, `B` are each an upper hull. 
+We can compute their Minkoviski sum in `O(logN^2)` if using treaps.  
+  
+Note that upper hulls are concave, which present non-ascending derivative.  
+We can use `A': a'_i = a_i - a_i-1` and `B'` here.  
+Merging `A'` and `B'`, using Minkoviski Sum algorithms, reduces to merging 2 sorted lists (derivatives are edges, here sorted in both non-ascending). 
+Using treaps (`A'` and `B'` stored as treaps), this can be done in `O(logN^2)`.
+  
+Check: https://codeforces.com/gym/104128/problem/H  
 
 ### Subset of vectors w/ sum w/ maximal sqrt norm
 Observe the answer vector `V`. Only vectors `u` with `angle(V,u) <= 90degs` were used to build `V`.
@@ -155,11 +166,15 @@ We don't want this to happen.
 - A function is convex iff its derivative is monotonic non-decreasing. It has one minimal=minimum point.
 - A function is concave iff its derivative is monotinic non-increasing. It has one maximal=maximum point.
 - You can ternary search a convex/concave function  
-- The linear combination of convex/concave functions is convex/concave
-- Max/Min of convex/concave functions is also convex/concave
+- The linear combination (weigthed pointwise sum) of convex/concave functions is convex/concave
+- Pointwise Max/Min of convex/concave functions is also convex/concave
 - Linear functions are both convex and concave
 - `f(x)=|A-x|` is convex
-
+- Convolution (+, Max) between concave functions is also concave (Mikoviski sum on upper hull)
+  - `c_k = Max_i+j=k(a_i + b_j)`   
+  
+  
+Check: https://codeforces.com/gym/104128/problem/H
 Check: https://www.thehuxley.com/problem/615
 
 #### Abstracting parameters can help
