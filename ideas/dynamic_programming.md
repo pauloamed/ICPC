@@ -205,6 +205,16 @@ Check: https://codeforces.com/gym/101666/problem/G
   
 ## Optimization
 
+### Convolution `(max, +)` of concave functions as Minkoviski Sum `O(N^2) => O(logN^2)`
+If the DP transition `f(i,c) = max_a+b=c(f(j,a)+f(k,b))`  is a `(max,+)` convolution (also handles scalar sum/multiplication, linear combination of concave functions), concavity is preserved and `f(i,.)` will be a concave function.
+  
+Concave functions can be fastly convoluted using Minkoviski Sum if using treaps.  
+- Store the derivatives `a'_i = a_i - a_i-1`  
+- Minkoviski sum of `a'` and `b'` will be the combination of 2 non-asc arrays  
+- Using treaps, this costs `O(logN^2)`  
+   
+Check: https://codeforces.com/gym/104128/problem/H
+
 ### `f(x, a) = min_b_gcd(a,b)!=1 f(y, b)` in `O(VlogV)`
 We are transitioning from `x` to `y`. There is a cost function `f_x(v)` to be minimized (`f(x,v):` min cost of `x` if assumes value `v`).
   
