@@ -22,16 +22,16 @@ namespace lca{
   }
 
   int lca(int x, int y){
-      if(d[x] < d[y]) swap(x, y);
-      int falta_subir = (d[x] - d[y]);
-      for(int i = MAXLOG-1; i >= 0; --i) if((1<<i) <= falta_subir){
-        falta_subir -= (1<<i);
-        x = st[x][i];
-      }
-      if(x == y) return x;
-      for(int i = MAXLOG-1; i >= 0; --i) if(st[x][i] != st[y][i])
-        x = st[x][i], y = st[y][i];
-      return st[x][0];
+    if(d[x] < d[y]) swap(x, y);
+    int falta_subir = (d[x] - d[y]);
+    for(int i = MAXLOG-1; i >= 0; --i) if((1<<i) <= falta_subir){
+      falta_subir -= (1<<i);
+      x = st[x][i];
+    }
+    if(x == y) return x;
+    for(int i = MAXLOG-1; i >= 0; --i) if(st[x][i] != st[y][i])
+      x = st[x][i], y = st[y][i];
+    return st[x][0];
   }
 
   int dist(int a, int b){
