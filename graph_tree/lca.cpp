@@ -15,7 +15,7 @@ namespace lca{
 
   void init(int root, int n){
     get_par(root, -1);
-    for(int l = 1; l < MAXLOG; ++l) for(int i = 0; i < MAXN; ++i){
+    for(int l = 1; l < MAXLOG; ++l) for(int i = 0; i < n; ++i){
       if(st[i][l-1] == -1) st[i][l] = -1;
       else st[i][l] = st[st[i][l-1]][l-1];
     }
