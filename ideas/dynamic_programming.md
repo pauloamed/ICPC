@@ -203,7 +203,41 @@ A naive 3^N algorithm is possible but a N2^N is also feasible if we look at the 
   
 Check: https://codeforces.com/gym/101666/problem/G
   
+### Bin packing
+First fit: Given that bins have an order, put the next weight on the next available bin.  
+  
+If we sort bin capacities descending order and test every permutation of items using first fit, we will find the answer.
+  
+There is a total order over the scenarios of all permutations when using mask M:
+```
+x: num of boats used; y: weight left in the last boat
+a,b: masks
+
+(ax, ay) < (bx, by) iff (ax < bx) OR (ax == bx && ay > by)
+Scenario a is better iff it uses less boats or if, inside the same boat, there is more space left
+```
+  
+This leads to a DP formulation (easier w/ push): 
+- When for a mask `M`, `f(M)` is computed, we create all `M'=M|x`, where `x \not \in M`, and update as follows
+- If `f(M).spaceLeft >= weight[x]`, `f(M|x) = min(f(M|x), {f(M).binsUsed, f(M).spaceLeft - weight[x]})` 
+- Else, if `f(M).binsUsed < totBins` and `binCap[f(M).binsUsed] >= weight[x]`, `f(M|x) = min(f(M|x), {f(M).binsUsed + 1, boatCap[f(M).binsUsed] - weight[x]})` 
+  
+
+
 ## Optimization
+
+### `f(x) = OR_y f(y)`, `y` has nice form
+We want to know whether `x` is reachable: `f(x): bool`.  
+There can be a lot of transitions: `|{y}|` is big; but, we can define `y` as someting tractable. For instance, `y = a*k + x + b`
+  
+Then instead of visiting all `a*k + x + b` when in `x` (a lot, TLE), we can create a virtual transition where we only walk `k` steps at a time.
+  
+Solving this with `BFS`, this transition will be happening in a virtual graph:  
+- `(x, 0)` has edge to `(x + b, 1)` (going into virtual graph)
+- `(x, 1)` has edge to `(x + k, 1)` (executing 1 transition in virtual graph)
+- `(x, 1)` has edge to `(x, 0)` (going back to real graph)
+  
+Check: https://codeforces.com/gym/103811/problem/G
 
 ### Convolution `(max, +)` of concave functions as Minkoviski Sum `O(N^2) => O(logN^2)`
 If the DP transition `f(i,c) = max_a+b=c(f(j,a)+f(k,b))`  is a `(max,+)` convolution (also handles scalar sum/multiplication, linear combination of concave functions), concavity is preserved and `f(i,.)` will be a concave function.
