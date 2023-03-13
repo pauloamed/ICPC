@@ -239,7 +239,16 @@ adding |x| to f(x)
 Check: http://www.usaco.org/index.php?page=viewproblem2&cpid=650  
   
 ## Keeping step function in best increasing subseq
-
+We want to build a subtree where each path going up is a increasing subseq in time; want to maximize sum of all points
+- The ideia is to keep time-points in which there is an increment (steps): `f(t) = w: step of size w at t`  
+- Staying until `t` can be evaluated as `sum_x f(x), x <= t`
+- It can be that a step can't coexist w/ others (parent at dies at `t`, children die at `t'>t`), but, we need to keep both options, but not allowing both to be taken:
+  - Choosing `t'` and maybe a `t'' >> t'`
+  - Choosing `t` and not `t' > t`
+- Let's say that the update at `t` is `w` and a sequence of `t'` also contributes to `w`
+- We delete all adjacent `t'` from `t` w/ contribution summing `w`, allowing other `t''` to query `t` as if it were the sequence of `t'`
+- Thus, the seq of `t'` is still usable, but there won't be the case where both `t` and `t'` are taken  
+  
 Check: https://oj.uz/problem/view/CEOI19_magictree
 
 ## Keeping piecewise-linear convex function
