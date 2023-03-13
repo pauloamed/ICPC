@@ -133,17 +133,6 @@ Combination in the sense of the definiton (`x + y, x \in X, y \in Y`)
    
 Check: https://open.kattis.com/problems/joiningflows
   
-#### Minkoviski sum of arrays upper hulls in `O(logN^2)`
-Let's say that two arrays `A`, `B` are each an upper hull. 
-We can compute their Minkoviski sum in `O(logN^2)` if using treaps.  
-  
-Note that upper hulls are concave, which present non-ascending derivative.  
-We can use `A': a'_i = a_i - a_i-1` and `B'` here.  
-Merging `A'` and `B'`, using Minkoviski Sum algorithms, reduces to merging 2 sorted lists (derivatives are edges, here sorted in both non-ascending). 
-Using treaps (`A'` and `B'` stored as treaps), this can be done in `O(logN^2)`.
-  
-Check: https://codeforces.com/gym/104128/problem/H  
-
 ### Subset of vectors w/ sum w/ maximal sqrt norm
 Observe the answer vector `V`. Only vectors `u` with `angle(V,u) <= 90degs` were used to build `V`.
 If we sort the list of input vectors by angle (polar sort), the answer will be a subsegment of the final list in which the distance between the first and last vector does not exceed `90degs`. There may be a border case if `angle == 90`.
@@ -172,7 +161,9 @@ We don't want this to happen.
 - `f(x)=|A-x|` is convex
 - Convolution (+, Max) between concave functions is also concave (Mikoviski sum on upper hull)
   - `c_k = Max_i+j=k(a_i + b_j)`   
-  
+- Intersection between `f(x)` and a translation `f(x + d) + k` is at most 1 point
+  - `f(x) = f(x + d) + k` iff  `f(x) - f(x + d) - k = 0`
+  - There can only be more than 1 point if there is a `x^2` factor; but this will be cancelled
   
 Check: https://codeforces.com/gym/104128/problem/H
 Check: https://www.thehuxley.com/problem/615
@@ -202,4 +193,105 @@ With this, we know that a point is inside a polygon iff it can be represented as
 Also, a polygon can be seen as an infinite set of vectors.
 
 Given a convex set, a point `P` is in its convex hull border iff there is a vector `(x,y)` s.t. `scalar(P, (x,y))` is maximum. If there is an edge point `eP` with `scalar(eP, (x,y)) = X`, there is also a vertice `vP` s.t. `scalar(vP, (x,y)) = X`.
+
+# Slope tricks
+
+## Keeping difference array (increasing seq. if convex)
+
+#### Treaps for convoluting (Mink sum) upper hulls in `O(logN^2)`
+Let's say that two arrays `A`, `B` are each an upper hull. 
+We can compute their Minkoviski sum in `O(logN^2)` if using treaps.  
+  
+Note that upper hulls are concave, which present non-ascending derivative.  
+We can use `A': a'_i = a_i - a_i-1` and `B'` here.  
+Merging `A'` and `B'`, using Minkoviski Sum algorithms, reduces to merging 2 sorted lists (derivatives are edges, here sorted in both non-ascending). 
+Using treaps (`A'` and `B'` stored as treaps), this can be done in `O(logN^2)`.
+  
+Check: https://codeforces.com/gym/104128/problem/H  
+  
+#### Priority queue for `f(x) = max(f(x), f(x+1) + w)`
+Using the problem as context `f(x):` best profit when holding `x` stocks
+  
+There are `n` steps as follows:  
+- 1: Buy a stock for price `w`: `f(x) = f(x - 1) - w`
+- 2: Maybe sell stock for price `w`: `f(x) = max(f(x), f(x + 1) + w)`
+- 3: 2 again
+  
+If we think of the arrays of differences:  
+- 1: changes nothing, since all elements change by the same amount  
+- 2: there is only one intersection between `f(x)` and `f(x + 1) + w`  
+  - When `f(x)` overtakes `f(x+1)+w`, it is the first `x` s.t. `f(x)>f(x+1)+w`   
+  - There element before it was thus `f(x)+w` and now we know we have `f(x)`  
+  - This leads to adding a `w` difference to our difference list  
+  - Since it's concave, keep it sorted (keep a PQ)  
+  - When applying `f(x)=f(x-1);f(x)=f(x+1);f(x)=f(x+1)`, we create a negative entry for `f()`. This is not allowed, pop the first difference (first entry)  
+Check: https://codeforces.com/contest/866/problem/D
+
+#### Asc and Desc deques while lazy evaluating `f`
+```
+OPERATIONS:
+shifting f(x) = f(x +- delta) in O(delta)
+f(x) = min(f(x), f(x - 1) + A) in O(1) (invariant, not op)
+f(x) = min(f(x), f(x + 1) + B) in O(1) (invariant, not op)
+adding |x| to f(x)
+```
+  
+Check: http://www.usaco.org/index.php?page=viewproblem2&cpid=650  
+  
+## Keeping step function in best increasing subseq
+
+Check: https://oj.uz/problem/view/CEOI19_magictree
+
+## Keeping piecewise-linear convex function
+
+#### Building non-desc sequence
+A recurrent problem is, given an array,
+build a non-desc sequence w/ min num of ops where
+the op is adding or subtracting 1 to any element over cost of 1.
+  
+This is solved by using two functions in each `i`: `f_i(x)` and `g_i(x)`:
+- `f_i(x):` min cost of solving sequence until `i` and turning `i`-th element equal to `x`
+- `g_i(x):` min cost that `i+1` element would deal if equal to `x`
+- `f_i(x) = g_(i-1)(x) + |A_i - x|` (**SUM OP**)
+- `g_i(x) = min_y<=x f_i(y)` (**MIN PREF OP**)
+  
+##### `a_(i + 1) - a_i >= d` constraint
+Some problems modify this constraint a bit by setting `a_(i + 1) - a_i >= d` (eg. `d=1` iff increasing sequence)
+  
+For this, we build a sequence `a'` where:
+- `a'_i = a_i - d * i`
+- `a_(i + 1) - a_i >= d` IFF `a'_(i + 1) - a'_i >= 0` (solvable non-desc constraint) 
+- adding 1 in `a'` is also adding 1 in `a` (ops have the same cost)
+  
+Check: https://codeforces.com/contest/713/problem/C  
+Check: https://codeforces.com/gym/102576/problem/C  
+Check: https://www.codechef.com/problems/CCDSAP  
+
+##### For all `i`, `a_i >= 0`
+It may also be that `a_i >= k` for all `i`. In order to solve this, watch out for the **MIN PREF OP**.  
+It must be that for any `k' < k`, `f(k') = k`. This comes as a problem when the starting slope `a` is positive (`a > 0`).  
+  
+When `a > 0` and **MIN PREF OP** is executed, we don't want `g(x)=-inf`, but rather `g(x)=f(0)` (`a=0`,`b=f(0)`).
+  
+Check: https://oj.uz/problem/view/LMIO19_bulves    
+Check: https://www.codechef.com/problems/CCDSAP  
+  
+**`a_i >= k`:** Just define `a'_i = a_i - k`  
+  
+##### `a_n = x`
+Instead of taking the `f_n(x)` where it is min, we may want to get `x=a_n`.  
+For this, don't take `f_n(x)` when slope is `0`, but keep walking until a turning point `x>a_n` is reached.
+The value `f_n(a_n)` can be evaluated using the stored `a` and `b`.
+  
+Check: https://oj.uz/problem/view/LMIO19_bulves
+
+#### Further operations: `g_i(x) = min_y f_i(y)` where `y \in [x - da; x + db]`
+Since we are convex, analyze the curve before minimum and the curve after:
+- before: every `x` will look at `[x;x+db]` and take the minimum from there  
+  - this will make all this descending curve to be shifted `db` points to the left
+- after: every `x` will look at `[x-da;x]` and take the minimum from there
+  - this will make all this ascending curve to be shifted `da` points to the right
+- minimum will be extended `da` to left and `db` to right  
+  
+Keep a priority queue with lazy update in order to solve this.
 
