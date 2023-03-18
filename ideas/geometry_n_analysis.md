@@ -177,7 +177,7 @@ But we can note that `max_(i<j) sum_i_j a_i - x` is a function decreasing on `x`
 Abstracting `i` and `j` as inputs and only think of `f(x)`, that outputs this maximum value.  
 We can now think of `f(x)` as a non-decreasing function, not analyzing the behaviour of variables `i` and `j`.
   
-Check: https://codeforces.com/contest/1355/problem/E
+Check: https://codeforces.com/problemset/problem/578/C  
 
 ### Absolute error and squared euclidean minimization
 If in 1D, the median of `A`s minimizes the sum of `|x - A|` errors.
