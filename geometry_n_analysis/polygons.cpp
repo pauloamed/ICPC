@@ -124,9 +124,7 @@ struct ConvexPoly{
     else{
       pv left = a[0], right = a.back();
  
-      up.push_back(left);
-      down.push_back(left);
- 
+      up = down = {left}; 
       for(int i = 1; i < n; i++){
         T orient_ul = left.orient(a[i], right);
         if(i == n - 1 || orient_ul < 0 || (orient_ul == 0 && include_collinear)){
